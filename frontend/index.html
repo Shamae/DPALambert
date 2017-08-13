@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>WORLDMAP PROTO</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.pm@0.17.3/dist/leaflet.pm.css" />
+    <link rel="stylesheet" href="https://npmcdn.com/leaflet@1.0.0-rc.3/dist/leaflet.css" />
+
+    <script src="https://npmcdn.com/leaflet@1.0.0-rc.3/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.pm@0.17.3/dist/leaflet.pm.min.js"></script>
+
+    <script>
+      var layer;
+      function init() {
+        var mapMinZoom = 0;
+        var mapMaxZoom = 4;
+        var map = L.map('map', {
+          maxZoom: mapMaxZoom,
+          minZoom: mapMinZoom,
+          crs: L.CRS.Simple
+        }).setView([0, 0], mapMaxZoom);
+        
+        var mapBounds = new L.LatLngBounds(
+            map.unproject([0, 3072], mapMaxZoom),
+            map.unproject([2048, 0], mapMaxZoom));
+            
+        map.fitBounds(mapBounds);
+        layer = L.tileLayer('sourcemap/{z}/{x}/{y}.png', {
+          minZoom: mapMinZoom, maxZoom: mapMaxZoom,
+          bounds: mapBounds,
+          attribution: 'Rendered with <a href="https://www.maptiler.com/">MapTiler</a>',
+          noWrap: true,
+          tms: false
+        }).addTo(map);
+
+
+      
+
+// begin the fiddling 
+
+
+// define toolbar options
+var options = {
+    position: 'topleft', // toolbar position, options are 'topleft', 'topright', 'bottomleft', 'bottomright'
+    drawMarker: true,  // adds button to draw markers
+    drawPolygon: true,  // adds button to draw a polygon
+    drawPolyline: true,  // adds button to draw a polyline
+    drawCircle: false,  // adds button to draw a cricle
+    editPolygon: true,  // adds button to toggle global edit mode
+    deleteLayer: true   // adds a button to delete layers
+};
+
+// add leaflet.pm controls to the map
+map.pm.addControls(options);
+var geojsonFeature = {
+    "type": "Feature",
+    "properties": {
+        "name": "Coors Field",
+        "amenity": "Baseball Stadium",
+        "popupContent": "This is where the Rockies play!"
+    },
+    "geometry": {
+        "type": "Point",
+        "coordinates": [0, 0]
+    }
+};
+
+
+//L.geoJSON(geojsonFeature).addTo(map);
+var geojsonFeature = {
+    "type": "Feature",
+    "properties": {
+        "name": "Coors Field",
+        "amenity": "Baseball Stadium",
+        "popupContent": "This is where the Rockies play!"
+    },
+    "geometry": {
+        "type": "Point",
+        "coordinates": [100, 100]
+    }
+};
+//L.geoJSON(geojsonFeature).addTo(map);
+
+
+map.on('click', function(e) {
+    var myElement = document.getElementById("log");
+    myElement.innerText = "Lat, Lon : " + e.latlng.lat + ", " + e.latlng.lng;
+    //alert("Lat, Lon : " + e.latlng.lat + ", " + e.latlng.lng)
+});
+
+//end the fiddling
+}
+
+
+
+</script>
+    <style>
+      html, body, #map { width:95%; height:95%; margin:0; padding:0; z-index: 1; }
+      #slider{ position: absolute; top: 10px; right: 10px; z-index: 5; }
+      .leaflet-tile { border: solid black 2px; }
+    </style>
+  </head>
+  <body onload="init()">
+    <div id="map"></div>
+    <div id="log">Nothing to say...</div>
+    
+    <input id="slider" type="range" min="0" max="1" step="0.1" value="1" oninput="layer.setOpacity(this.value)">
+  </body>
+</html>
