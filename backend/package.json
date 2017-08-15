@@ -1,0 +1,19 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "backend server for worldmap prototype",
+  "main": "server.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "shamae",
+  "license": "GPL",
+  "dependencies": {
+    "express": "^4.15.4",
+    "express-generator": "^4.15.0",
+    "gulp": "^3.9.1",
+    "gulp-nodemon": "^2.2.1",
+    "mongodb": "^2.2.31",
+    "mongoose": "^4.11.7"
+  }
+}
