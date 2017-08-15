@@ -1,6 +1,7 @@
 var gulp = require('gulp'),
     nodemon = require('gulp-nodemon');
 
+// starts server and restart on code change
 gulp.task('default', function(){
     nodemon({
         script: 'server.js',

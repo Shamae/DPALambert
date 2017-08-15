@@ -1,9 +1,11 @@
 var mongoose = require('mongoose');
 
+// create model
 var categoryModel = new mongoose.Schema({
     displayName: [{
         type: String
     }]
 });
 
-module.exports = mongoose.model('category', categoryModel, "category");
+// export model
+module.exports = mongoose.model('category', categoryModel, 'category');
