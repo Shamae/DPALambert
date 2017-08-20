@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet.pm@0.17.3/dist/leaflet.pm.css" />
     <link rel="stylesheet" href="https://npmcdn.com/leaflet@1.0.0-rc.3/dist/leaflet.css" />
 
+    <script src="src/SMVlib.js"></script>
     <script src="https://npmcdn.com/leaflet@1.0.0-rc.3/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet.pm@0.17.3/dist/leaflet.pm.min.js"></script>
 
@@ -38,7 +39,8 @@
       
 
 // begin the fiddling 
-
+//get results from the API
+fetchAPIdata();
 
 // define toolbar options
 var options = {
@@ -104,6 +106,7 @@ map.on('click', function(e) {
   <body onload="init()">
     <div id="map"></div>
     <div id="log">Nothing to say...</div>
+   
     
     <input id="slider" type="range" min="0" max="1" step="0.1" value="1" oninput="layer.setOpacity(this.value)">
   </body>

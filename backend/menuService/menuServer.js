@@ -13,6 +13,14 @@ var port = process.env.port || 3000;
 // route setup
 var menuRouter = require('./routes/menuRoutes')(Category);
 
+//bv fiddling on
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+  });
+//bv fiddling off
+
 // set routes
 app.use('/api/menu', menuRouter);
 
