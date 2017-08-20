@@ -4,7 +4,7 @@ var gulp = require('gulp'),
 // starts server and restart on code change
 gulp.task('default', function(){
     nodemon({
-        script: 'server.js',
+        script: 'menuServer.js',
         ext: 'js',
         env: {
             port: 8000
