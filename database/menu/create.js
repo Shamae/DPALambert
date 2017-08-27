@@ -31,10 +31,7 @@ db.featureType.insert([
     { '_id' : 13, 'displayName' : 'Population', 'categoryId' : 3, 'geometryType' : 'overlay' },
     { '_id' : 14, 'displayName' : 'Cult influence', 'categoryId' : 3, 'geometryType' : 'overlay' }
 ]);
-db.featureType.ensureIndex({ 'categoryId' : 1 })
-
-db.createCollection('featureItem');
-db.featureItem.ensureIndex({ 'featureTypeId' : 1 })
+db.featureType.ensureIndex({ 'categoryId' : 1 });
 
 // check
 cursor = db.category.find();
