@@ -20,10 +20,14 @@ var menuController = function(Category){
                 }
             }
         ], function(err, menu){
-            if (err) 
-                res.status(500).send(err);
-            else
+            if (err){ 
+                res.status(500);
+                res.send(err);
+            }
+            else{
+                res.status(200);
                 res.json(menu);
+            }
         });
     }
 

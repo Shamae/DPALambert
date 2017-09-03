@@ -2,9 +2,18 @@ var express = require('express'),
     mongoose = require('mongoose');
 
 // database setup
-var db = mongoose.connect('mongodb://localhost/worldmapdb', { useMongoClient: true })
+var db;
+if(process.env.ENV == 'Test'){
+    // test DB
+    db = mongoose.connect('mongodb://localhost/worldmapdb_test', { useMongoClient: true });
+}
+else{
+    db = mongoose.connect('mongodb://localhost/worldmapdb', { useMongoClient: true });
+}
+
+// intialize models
 var Category = require('./models/categoryModel');
-var FeatureType = require('./models/featureTypeModel');
+// var FeatureType = require('./models/featureTypeModel');
 
 // server setup
 var app = express();
@@ -32,3 +41,5 @@ app.get('/', function(req, res){
 app.listen(port, function(){
     console.log('Running WorldMap API on port: ' + port);
 });
+
+module.exports = app;
