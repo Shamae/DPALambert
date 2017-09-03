@@ -11,6 +11,9 @@
     <script src="https://npmcdn.com/leaflet@1.0.0-rc.3/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet.pm@0.17.3/dist/leaflet.pm.min.js"></script>
 
+    <link rel="stylesheet" href="plugins/Leaflet.StyledLayerControl/css/styledLayerControl.css" />
+	<script src="plugins/Leaflet.StyledLayerControl/src/styledLayerControl.js"></script>
+
     <script>
       var layer;
       function init() {
@@ -41,28 +44,8 @@
       
 
 // begin the fiddling 
-//get results from the API
 
-fetchAPIdata();
-
-var littleton = L.marker([0, 0]).bindPopup('This is Littleton, CO.'),
-    denver    = L.marker([39.74, -104.99]).bindPopup('This is Denver, CO.'),
-    aurora    = L.marker([39.73, -104.8]).bindPopup('This is Aurora, CO.'),
-    golden    = L.marker([39.77, -105.23]).bindPopup('This is Golden, CO.');
-var cities = L.layerGroup([littleton, denver, aurora, golden]);
-
-var baseMaps = {
-  
-};
-
-var overlayMaps = {
-    "Cities": cities
-};
-
-L.control.layers(baseMaps, overlayMaps).addTo(map);
-
-
-
+createMenu(map);
 
 // define toolbar options
 var options = {
@@ -75,36 +58,6 @@ var options = {
     deleteLayer: true   // adds a button to delete layers
 };
 
-// add leaflet.pm controls to the map
-map.pm.addControls(options);
-var geojsonFeature = {
-    "type": "Feature",
-    "properties": {
-        "name": "Coors Field",
-        "amenity": "Baseball Stadium",
-        "popupContent": "This is where the Rockies play!"
-    },
-    "geometry": {
-        "type": "Point",
-        "coordinates": [0, 0]
-    }
-};
-
-
-//L.geoJSON(geojsonFeature).addTo(map);
-var geojsonFeature = {
-    "type": "Feature",
-    "properties": {
-        "name": "Coors Field",
-        "amenity": "Baseball Stadium",
-        "popupContent": "This is where the Rockies play!"
-    },
-    "geometry": {
-        "type": "Point",
-        "coordinates": [100, 100]
-    }
-};
-//L.geoJSON(geojsonFeature).addTo(map);
 
 
 map.on('click', function(e) {
@@ -112,7 +65,7 @@ map.on('click', function(e) {
     myElement.innerText = "Lat, Lon : " + e.latlng.lat + ", " + e.latlng.lng;
     //alert("Lat, Lon : " + e.latlng.lat + ", " + e.latlng.lng)
     console.log('dafuk?');
-    fetchAPIdata();
+    //fetchAPIdata();
 });
 
 //end the fiddling
