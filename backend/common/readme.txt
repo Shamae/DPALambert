@@ -10,7 +10,7 @@ Base (do once)
 
 For each service (execute the NPM comands via powershell/cmd in the folder of the new service)
 
-    nmp init
+    npm init
         follow installation instructions on screen
         creates node_modules folder and package.json file
     npm install express --save

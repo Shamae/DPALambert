@@ -1,13 +1,13 @@
 {
-  "name": "backend",
+  "name": "menuservice",
   "version": "1.0.0",
-  "description": "backend server for worldmap prototype",
-  "main": "server.js",
+  "description": "menu server for worldmap prototype",
+  "main": "menuServer.js",
   "scripts": {
     "test": "test"
   },
   "author": "shamae",
-  "license": "GPL",
+  "license": "GPL-3.0",
   "dependencies": {
     "express": "^4.15.4",
     "express-generator": "^4.15.0",

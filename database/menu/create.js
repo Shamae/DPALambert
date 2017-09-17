@@ -29,7 +29,9 @@ db.featureType.insert([
     { '_id' : 11, 'displayName' : 'Temperature', 'categoryId' : 3, 'geometryType' : 'overlay' },
     { '_id' : 12, 'displayName' : 'Rainfall', 'categoryId' : 3, 'geometryType' : 'overlay' },
     { '_id' : 13, 'displayName' : 'Population', 'categoryId' : 3, 'geometryType' : 'overlay' },
-    { '_id' : 14, 'displayName' : 'Cult influence', 'categoryId' : 3, 'geometryType' : 'overlay' }
+    { '_id' : 14, 'displayName' : 'Cult influence', 'categoryId' : 3, 'geometryType' : 'overlay' },
+    { '_id' : 15, 'displayName' : 'Non-player characters', 'categoryId' : 4, 'geometryType' : 'point' },
+    { '_id' : 16, 'displayName' : 'Player characters', 'categoryId' : 4, 'geometryType' : 'point' }
 ]);
 db.featureType.ensureIndex({ 'categoryId' : 1 });
 

@@ -4,7 +4,7 @@ var gulp = require('gulp'),
     env = require('gulp-env'),
     supertest = require('supertest');
 
-// starts server and restart on code change
+// starts server and restarts on code change
 gulp.task('default', function(){
     nodemon({
         script: 'menuServer.js',

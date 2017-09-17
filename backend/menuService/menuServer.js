@@ -9,7 +9,7 @@ if(process.env.ENV == 'Test'){
 }
 else{
     db = mongoose.connect('mongodb://localhost/worldmapdb', { useMongoClient: true });
-}
+};
 
 // intialize models
 var Category = require('./models/categoryModel');
@@ -27,7 +27,7 @@ app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
-  });
+});
 
 // set routes
 app.use('/api/menu', menuRouter);
