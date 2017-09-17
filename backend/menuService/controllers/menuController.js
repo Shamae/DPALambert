@@ -14,7 +14,6 @@ var menuController = function(Category){
             {
                 $project: { 
                     _id: 0,
-                    'submenu._id' : 0,
                     'submenu.categoryId': 0,
                     'submenu.geometryType': 0
                 }
