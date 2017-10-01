@@ -3,6 +3,8 @@ var itemController = function(Item){
     var get = function(req, res){
         // initialize query
         var query = {};
+        if (req.query)
+            query = req.query;
 
         // get all items with featureTypeId
         Item.find(query, function(err, items){
