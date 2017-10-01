@@ -1,4 +1,4 @@
-function fetchAPIdata() {
+function fetchAPIdata(url) {
 
     url = "http://localhost:8000/api/menu";
 
@@ -36,64 +36,105 @@ function onEachFeature(feature, layer) {
     }
 };
 
-function getItem(map){
+function getAllFeatures(map) {
 
-    console.log('playing with geoJ like a boss')
-   
-    var geoJ= [{
-        "type": "Feature",
-        "properties": {"description": "Republican"},
-        "geometry": {
-            "type": "Polygon",
-            "coordinates": [[
-                [23, -85],
-                [42,  -86],
-                [67,  -145.94],
-                [40, -145.94],
-                [20, -148.99]
-            ]]
+    url = "http://localhost:8001/api/item";
+
+    fetch(url, {
+        method: 'get'
+    }).then(function (response) {
+
+        if (response.status !== 200) {
+            console.log('Looks like there was a problem. Status Code: ' +
+                response.status);
+            return;
         }
-    }, {
-        "type": "Feature",
-        "properties": {"description": "Democrat"},
-        "geometry": {
-            "type": "Polygon",
-            "coordinates": [[
-                [109.05,-41.00],
-                [102.06, -40.99],
-                [102.03, -36.99],
-                [109.04, -36.99],
-                [109.05, -41.00]
-            ]]
+
+        console.log("**** Fetching Items");
+        return response.json();
+
+    }).then(function (data) {
+        console.log("**** Items are: " + JSON.stringify(data));
+        console.log("**** Putting items on the map");
+        L.geoJSON(data, {
+            onEachFeature: onEachFeature
+        }).addTo(map);
+        console.log("**** Putting items on the map - done!")
+
+    }).catch(function (err) {
+        console.log("*** Failed to fetch Items! ***");
+    });
+
+};
+
+function createFeatureLayerByType(map, controlparam, typeId) {
+
+    url = "http://localhost:8001/api/item?properties.featureTypeId=" + typeId;
+
+    var control = controlparam.base;
+    var name = controlparam.name;
+    var group = controlparam.group;
+
+    fetch(url, {
+        method: 'get'
+    }).then(function (response) {
+
+        if (response.status !== 200) {
+            console.log('Looks like there was a problem. Status Code: ' +
+                response.status);
+            return;
         }
-    },
 
-    {
-        "type":"Feature",
-        "geometry":{
-            "type": "Point",
-            "coordinates": [78, -60],
+        console.log("**** Fetching Items by typeId (" + typeId + ")");
+        return response.json();
 
-        },
-        "properties":{
-            "description": "it is so cool to put popups on the markers"
-        },
-    }
+    }).then(function (data) {
+        console.log("**** Items are: " + JSON.stringify(data));
+        console.log("**** Putting items of typeId (" + typeId + ") on the map");
 
-];
+        var geoMarkers = L.geoJSON(data, {
+            onEachFeature: onEachFeature
+        }).addTo(map);
 
+        control.addOverlay(geoMarkers, name, group);
 
-var myLayer = new L.LayerGroup();
-L.marker([-22, -49.80]).addTo(soybeans_sp),
-    L.marker([-23, -49.10]).addTo(soybeans_sp),
-    L.marker([-21, -49.50]).addTo(soybeans_sp);
+        console.log("**** Putting items of typeId (" + typeId + ") the map - done!")
 
-    L.geoJSON(geoJ, {
-    onEachFeature: onEachFeature
-}).addTo(map);
+    }).catch(function (err) {
+        console.log("*** Failed to fetch Items! ***");
+    });
+
+};
 
 
+function getFeatureByTYpe(map, typeId) {
 
+    url = "http://localhost:8001/api/item?properties.featureTypeId=" + typeId;
+
+    fetch(url, {
+        method: 'get'
+    }).then(function (response) {
+
+        if (response.status !== 200) {
+            console.log('Looks like there was a problem. Status Code: ' +
+                response.status);
+            return;
+        }
+
+        console.log("**** Fetching Items by typeId (" + typeId + ")");
+        return response.json();
+
+    }).then(function (data) {
+        console.log("**** Items are: " + JSON.stringify(data));
+        console.log("**** Putting items of typeId (" + typeId + ") on the map");
+        L.geoJSON(data, {
+            onEachFeature: onEachFeature
+        }).addTo(map);
+        console.log("**** Putting items of typeId (" + typeId + ") the map - done!")
+
+    }).catch(function (err) {
+        console.log("*** Failed to fetch Items! ***");
+    });
 
 };
 
@@ -117,45 +158,8 @@ function createMenu(map) {
 
     }).then(function (data) {
 
-
-        getItem(map);
-
-        // Sao Paulo Soybeans Plant
-        var soybeans_sp = new L.LayerGroup();
-        L.marker([-22, -49.80]).addTo(soybeans_sp),
-            L.marker([-23, -49.10]).addTo(soybeans_sp),
-            L.marker([-21, -49.50]).addTo(soybeans_sp);
-
-        // Sao Paulo Corn Plant
-        var corn_sp = new L.LayerGroup();
-        L.marker([-22, -48.10]).addTo(corn_sp),
-            L.marker([-21, -48.60]).addTo(corn_sp);
-
-        // Rio de Janeiro Bean Plant
-        var bean_rj = new L.LayerGroup();
-        L.marker([-22, -42.10]).addTo(bean_rj),
-            L.marker([-23, -42.78]).addTo(bean_rj);
-
-        // Rio de Janeiro Corn Plant
-        var corn_rj = new L.LayerGroup();
-        L.marker([-22, -43.20]).addTo(corn_rj),
-            L.marker([-23, -43.50]).addTo(corn_rj);
-
-        // Rio de Janeiro Rice Plant
-        var rice_rj = new L.LayerGroup();
-        L.marker([-22, -42.90]).addTo(rice_rj),
-            L.marker([-22, -42.67]).addTo(rice_rj),
-            L.marker([-23, -42.67]).addTo(rice_rj);
-
-        // Belo Horizonte Sugar Cane Plant
-        var sugar_bh = new L.LayerGroup();
-        L.marker([-19, -44.90]).addTo(sugar_bh),
-            L.marker([-19, -44.67]).addTo(sugar_bh);
-
-        // Belo Horizonte Corn Plant
-        var corn_bh = new L.LayerGroup();
-        L.marker([-19.45, -45.90]).addTo(corn_bh),
-            L.marker([-19.33, -45.67]).addTo(corn_bh);
+        // getAllFeatures(map);
+        // getFeatureByTYpe(map, 15);
 
 
 
@@ -165,19 +169,19 @@ function createMenu(map) {
 
         var overlays = [
         ];
+        /*
+                // configure StyledLayerControl options for the layer soybeans_sp
+                soybeans_sp.StyledLayerControl = {
+                    removable: true,
+                    visible: false
+                }
+        
+                // configure the visible attribute with true to corn_bh
+                corn_bh.StyledLayerControl = {
+                    removable: false,
+                    visible: true
+                }*/
 
-        // configure StyledLayerControl options for the layer soybeans_sp
-        soybeans_sp.StyledLayerControl = {
-            removable: true,
-            visible: false
-        }
-
-        // configure the visible attribute with true to corn_bh
-        corn_bh.StyledLayerControl = {
-            removable: false,
-            visible: true
-        }
-*/
         var options = {
             container_width: "300px",
             group_maxHeight: "80px",
@@ -199,6 +203,7 @@ function createMenu(map) {
 
 
         var obj = {};
+        var controlparam = {};
 
         // Loop through categories...
         for (var j = 0; j < data.length; j++) {
@@ -208,7 +213,7 @@ function createMenu(map) {
 
             obj.groupName = categoryName;
             obj.expanded = "true";
-         
+
 
             var subMenu = data[j].submenu;
             var subObj = {};
@@ -216,42 +221,42 @@ function createMenu(map) {
             for (var i = 0; i < subMenu.length; i++) {
 
                 var name = subMenu[i].displayName;
+                var typeId = subMenu[i]._id;
                 console.log("== We fetched the subcategory name: " + name + " ==");
-
-                // we should retrieve the markers of subcategory from itemService but temporarily we don't: ... 
-                markers = new L.LayerGroup();
-                L.marker([-22, -49.80]).addTo(markers),
-                    L.marker([-23, -49.10]).addTo(markers),
-                    L.marker([-21, -49.50]).addTo(markers);
-
-                // ...we should have retrieved the markers of subcategory from itemService.
-                //subObj.name = "markers";
-                control.addOverlay(markers, name, obj);
-                
-
-            };
-            obj ={};
-
-        };
 
         
 
+                // ...we should have retrieved the markers of subcategory from itemService.
+                console.log("== We fetched the subcategory nameid: " + typeId + " ==");
+
+                controlparam.menu = data
+                controlparam.base = control;
+                controlparam.name = name;
+                controlparam.group = obj;
+
+                createFeatureLayerByType(map, controlparam, typeId)
 
 
 
 
-        console.log("test stylized off");
+                //subObj.name = "markers";
+                //control.addOverlay(markers, name, obj);
+
+
+            };
+            obj = {};
+
+        };
 
 
 
-        console.log("data is: " + JSON.stringify(data));
+    
 
-        var myElement = document.getElementById("log");
-        myElement.innerText = "Data" + JSON.stringify(data);
+   
 
 
     }).catch(function (err) {
-        console.log("bouuuuuh!");
+        console.log("**** Failed to create content!");
         // Error :(
     });
 

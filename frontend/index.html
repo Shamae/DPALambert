@@ -30,9 +30,9 @@
             map.unproject([2048, 0], mapMaxZoom));
             
         map.fitBounds(mapBounds);
-        http://localhost:8001/api/tiles
+      //  http://localhost:7999/api/tiles
       //  layer = L.tileLayer('sourcemap/{z}/{x}/{y}.png',
-        layer = L.tileLayer('http://localhost:8001/api/tiles/{z}/{x}/{y}',  {
+        layer = L.tileLayer('http://localhost:7999/api/tiles/{z}/{x}/{y}',  {
           minZoom: mapMinZoom, maxZoom: mapMaxZoom,
           bounds: mapBounds,
           attribution: 'Rendered with <a href="https://www.maptiler.com/">MapTiler</a>',
