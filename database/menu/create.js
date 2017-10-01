@@ -33,7 +33,7 @@ db.featureType.insert([
     { '_id' : 15, 'displayName' : 'Non-player characters', 'categoryId' : 4, 'geometryType' : 'point' },
     { '_id' : 16, 'displayName' : 'Player characters', 'categoryId' : 4, 'geometryType' : 'point' }
 ]);
-db.featureType.ensureIndex({ 'categoryId' : 1 });
+db.featureType.createIndex({ 'categoryId' : 1 });
 
 // check
 cursor = db.category.find();

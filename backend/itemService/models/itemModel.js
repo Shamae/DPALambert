@@ -1,11 +1,26 @@
 var mongoose = require('mongoose');
 
 // create model
-// TODO create model
 var itemModel = new mongoose.Schema({
-    displayName: [{
-        type: String
-    }]
+    type: String,
+    geometry: {
+        type: {
+            type: String,
+            required: true,
+            enum: ['Point', 'LineString', 'Polygon'],
+            default: 'Point'
+        },
+        coordinates: {
+            type: [ Number ]
+        }
+    },
+    properties:{
+        featureTypeId: Number,
+        displayName: String,
+        description: String,
+        owner: String,
+        timestamp: Date
+    }
 });
 
 // export model
