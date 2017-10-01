@@ -9,6 +9,7 @@
   "author": "shamae",
   "license": "GPL-3.0",
   "dependencies": {
+    "body-parser": "^1.18.2",
     "express": "^4.15.4",
     "gulp": "^3.9.1",
     "gulp-mocha": "^4.3.1",
