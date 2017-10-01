@@ -29,6 +29,74 @@ function fetchAPIdata() {
 
 };
 
+function onEachFeature(feature, layer) {
+    // does this feature have a property named popupContent?
+    if (feature.properties && feature.properties.description) {
+        layer.bindPopup(feature.properties.description);
+    }
+};
+
+function getItem(map){
+
+    console.log('playing with geoJ like a boss')
+   
+    var geoJ= [{
+        "type": "Feature",
+        "properties": {"description": "Republican"},
+        "geometry": {
+            "type": "Polygon",
+            "coordinates": [[
+                [23, -85],
+                [42,  -86],
+                [67,  -145.94],
+                [40, -145.94],
+                [20, -148.99]
+            ]]
+        }
+    }, {
+        "type": "Feature",
+        "properties": {"description": "Democrat"},
+        "geometry": {
+            "type": "Polygon",
+            "coordinates": [[
+                [109.05,-41.00],
+                [102.06, -40.99],
+                [102.03, -36.99],
+                [109.04, -36.99],
+                [109.05, -41.00]
+            ]]
+        }
+    },
+
+    {
+        "type":"Feature",
+        "geometry":{
+            "type": "Point",
+            "coordinates": [78, -60],
+
+        },
+        "properties":{
+            "description": "it is so cool to put popups on the markers"
+        },
+    }
+
+];
+
+
+var myLayer = new L.LayerGroup();
+L.marker([-22, -49.80]).addTo(soybeans_sp),
+    L.marker([-23, -49.10]).addTo(soybeans_sp),
+    L.marker([-21, -49.50]).addTo(soybeans_sp);
+
+    L.geoJSON(geoJ, {
+    onEachFeature: onEachFeature
+}).addTo(map);
+
+
+
+
+};
+
 function createMenu(map) {
 
 
@@ -50,7 +118,7 @@ function createMenu(map) {
     }).then(function (data) {
 
 
-
+        getItem(map);
 
         // Sao Paulo Soybeans Plant
         var soybeans_sp = new L.LayerGroup();
@@ -109,7 +177,7 @@ function createMenu(map) {
             removable: false,
             visible: true
         }
-
+*/
         var options = {
             container_width: "300px",
             group_maxHeight: "80px",
