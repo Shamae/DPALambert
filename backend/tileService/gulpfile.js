@@ -7,7 +7,7 @@ gulp.task('default', function(){
         script: 'tileServer.js',
         ext: 'js',
         env: {
-            port: 8001
+            port: 7999
         },
         ignore: ['./node_modules/**']
     })
