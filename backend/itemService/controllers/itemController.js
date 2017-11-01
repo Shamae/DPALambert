@@ -3,8 +3,9 @@ var itemController = function(Item){
     var get = function(req, res){
         // initialize query
         var query = {};
-        if (req.query)
+        if (req.query){
             query = req.query;
+        };
 
         // get all items with featureTypeId
         Item.find(query, function(err, items){
@@ -12,7 +13,7 @@ var itemController = function(Item){
                 res.status(500);
                 res.send(err);
             }
-            else{
+            else {
                 res.status(200);
                 res.json(items);
             }
@@ -23,18 +24,21 @@ var itemController = function(Item){
     var post = function(req, res){
         // convert to model
         var item = new Item(req.body);
-        
+        if (item){
+            item.properties.timestamp = new Date();
+        };
+
         // check for missing information
-        if(!req.body.featureTypeId){
+        if(!req.body.properties.featureTypeId){
             res.status(400);
             res.send('Feature type missing');
         }
-        else{
+        else {
             // save item to db
             item.save();
             res.status(201);
             res.send(item);
-        }
+        };
     };
 
     // return functions

@@ -1,5 +1,6 @@
 var express = require('express'),
-mongoose = require('mongoose');
+mongoose = require('mongoose'),
+bodyParser = require('body-parser');
 
 // database setup
 var db;
@@ -17,6 +18,10 @@ var Item = require('./models/itemModel');
 // server setup
 var app = express();
 var port = process.env.port || 3001;
+
+// to be able to read the body
+app.use(bodyParser.urlencoded({extended:true}));
+app.use(bodyParser.json());
 
 // route setup
 var itemRouter = require('./routes/itemRoutes')(Item);

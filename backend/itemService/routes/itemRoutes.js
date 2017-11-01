@@ -20,17 +20,27 @@ var routes = function(Item){
                 res.send(err);
             }
             else if(item){
+                // put item into request
                 req.item = item;
+                // advance in pipeline
                 next();
             }
             else {
+                // item not found
                 res.status(404);
                 res.send('no item found')
             };
         });
     });
+
     // config routes with itemId
-    // TODO define
+    itemRouter.route('/:itemId')
+        .get(function(req, res){
+            // get item from req
+            var returnItem = req.item.toJSON();
+            // return item
+            res.json(returnItem);
+        });
 
     return itemRouter;
 };
