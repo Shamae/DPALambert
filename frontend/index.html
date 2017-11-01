@@ -7,12 +7,25 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet.pm@0.17.3/dist/leaflet.pm.css" />
     <link rel="stylesheet" href="https://npmcdn.com/leaflet@1.0.0-rc.3/dist/leaflet.css" />
 
+   
+
     <script src="src/SMVlib.js"></script>
     <script src="https://npmcdn.com/leaflet@1.0.0-rc.3/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet.pm@0.17.3/dist/leaflet.pm.min.js"></script>
 
     <link rel="stylesheet" href="plugins/Leaflet.StyledLayerControl/css/styledLayerControl.css" />
 	<script src="plugins/Leaflet.StyledLayerControl/src/styledLayerControl.js"></script>
+
+  <!-- Add font awesome // CDN -->
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+  
+  <!-- Add easybutton plugin // CDN -->
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css">
+  <script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
+
+  <!-- Add PM geometry plugin // sources-->
+  <link rel="stylesheet" href="plugins/Leaflet.PM/leaflet.pm.css" />
+  <script src="plugins/Leaflet.PM/leaflet.pm.min.js"></script>
 
     <script>
       var layer;
@@ -47,16 +60,43 @@
 
 createMenu(map);
 
+
+// test easybutton
+
+
+var stateChangingButton = L.easyButton({
+    states: [{
+            stateName: 'unlogged',        // name the state
+            icon:      'fa-sign-in',               // and define its properties
+            title:     'Log in',      // like its title
+            onClick: function(btn, map) {       // and its callback
+              adminMode = true;
+              alert("Admin mode : " + adminMode); 
+              //TODO: login form
+              btn.state('logged');    // change state on click!
+              refreshUI(map);
+            }
+        }, {
+            stateName: 'logged',
+            icon:      'fa-sign-out',
+            title:     'Log out',
+            onClick: function(btn, map) {
+                adminMode = false;
+                alert("Admin mode : " + adminMode);
+                
+                btn.state('unlogged');
+                refreshUI(map);
+            }
+    }]
+});
+
+stateChangingButton.addTo( map );
+
+
+
 // define toolbar options
-var options = {
-    position: 'topleft', // toolbar position, options are 'topleft', 'topright', 'bottomleft', 'bottomright'
-    drawMarker: true,  // adds button to draw markers
-    drawPolygon: true,  // adds button to draw a polygon
-    drawPolyline: true,  // adds button to draw a polyline
-    drawCircle: false,  // adds button to draw a cricle
-    editPolygon: true,  // adds button to toggle global edit mode
-    deleteLayer: true   // adds a button to delete layers
-};
+
+
 
 
 

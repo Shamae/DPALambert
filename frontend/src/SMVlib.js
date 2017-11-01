@@ -1,3 +1,58 @@
+
+function initialize(){
+
+    adminMode = false;
+
+    // set customized icons
+     playerIcon = L.icon({
+        iconUrl: 'img/playerIcon.png',
+        //shadowUrl: 'leaf-shadow.png',
+    
+        iconSize:     [32, 32], // size of the icon
+        //shadowSize:   [50, 64], // size of the shadow
+        iconAnchor:   [16, 16], // point of the icon which will correspond to marker's location
+        //shadowAnchor: [4, 62],  // the same for the shadow
+        popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+    });
+
+     nonPlayerIcon = L.icon({
+        iconUrl: 'img/nonPlayerIcon.png',
+        //shadowUrl: 'leaf-shadow.png',
+    
+        iconSize:     [32, 32], // size of the icon
+        //shadowSize:   [50, 64], // size of the shadow
+        iconAnchor:   [16, 16], // point of the icon which will correspond to marker's location
+        //shadowAnchor: [4, 62],  // the same for the shadow
+        popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+    });
+
+    // set editing UI
+
+    loggedOptions = {
+        position: 'topleft', // toolbar position, options are 'topleft', 'topright', 'bottomleft', 'bottomright'
+        drawMarker: true,  // adds button to draw markers
+        drawPolyline: true,  // adds button to draw a polyline
+        drawRectangle: true,  // adds button to draw a rectangle
+        drawPolygon: true,  // adds button to draw a polygon
+        drawCircle: true,  // adds button to draw a cricle
+        cutPolygon: true,  // adds button to cut a hole in a polygon
+        editMode: true,  // adds button to toggle edit mode for all layers
+        removalMode: true   // adds a button to remove layers
+    };
+
+    unloggedOptions = {
+        position: 'topleft', // toolbar position, options are 'topleft', 'topright', 'bottomleft', 'bottomright'
+        drawMarker: false,  // adds button to draw markers
+        drawPolyline: false,  // adds button to draw a polyline
+        drawRectangle: false,  // adds button to draw a rectangle
+        drawPolygon: false,  // adds button to draw a polygon
+        drawCircle: false,  // adds button to draw a cricle
+        cutPolygon: false,  // adds button to cut a hole in a polygon
+        editMode: false,  // adds button to toggle edit mode for all layers
+        removalMode: false   // adds a button to remove layers
+    };
+
+};
 function fetchAPIdata(url) {
 
     url = "http://localhost:8000/api/menu";
@@ -30,10 +85,31 @@ function fetchAPIdata(url) {
 };
 
 function onEachFeature(feature, layer) {
+
+    
+
     // does this feature have a property named popupContent?
     if (feature.properties && feature.properties.description) {
         layer.bindPopup(feature.properties.description);
     }
+
+    layer.bindTooltip(feature.properties.displayName);
+
+   
+
+    switch(feature.properties.featureTypeId) {
+        case 15:
+        
+        layer.setIcon (nonPlayerIcon);
+            break;
+        case 16:
+        layer.setIcon (playerIcon);
+            break;
+
+        
+      
+    };
+    
 };
 
 function getAllFeatures(map) {
@@ -140,6 +216,13 @@ function getFeatureByTYpe(map, typeId) {
 
 function createMenu(map) {
 
+    initialize();
+
+    if (adminMode){
+
+        // add leaflet.pm controls to the map
+        map.pm.addControls(options);
+    };
 
     url = "http://localhost:8000/api/menu";
 
@@ -259,5 +342,19 @@ function createMenu(map) {
         console.log("**** Failed to create content!");
         // Error :(
     });
+
+};
+
+
+function refreshUI(map) {
+
+    if (adminMode){
+        
+                // add leaflet.pm controls to the map
+                map.pm.addControls(loggedOptions);
+            } else {
+
+                map.pm.addControls(unloggedOptions)
+            };
 
 };
