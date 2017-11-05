@@ -25,14 +25,20 @@
 
   <!-- Add PM geometry plugin // sources-->
   <link rel="stylesheet" href="plugins/Leaflet.PM/leaflet.pm.css" />
-  <script src="plugins/Leaflet.PM/leaflet.pm.min.js"></script>
+  <!--<script src="plugins/Leaflet.PM/leaflet.pm.min.js"></script>-->
+  <script src="plugins/Leaflet.PM/leaflet.pm.hacked.js"></script>
+
+  <!-- MODAL -->
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
     <script>
       var layer;
       function init() {
         var mapMinZoom = 0;
         var mapMaxZoom = 4;
-        var map = L.map('map', {
+         map = L.map('map', {                       //was a local var but breaks the modal and getitem... should investiguate
           maxZoom: mapMaxZoom,
           minZoom: mapMinZoom,
           crs: L.CRS.Simple
@@ -74,6 +80,7 @@ var stateChangingButton = L.easyButton({
               alert("Admin mode : " + adminMode); 
               //TODO: login form
               btn.state('logged');    // change state on click!
+              document.getElementById('loginForm').style.display='block'; //summon the login modal
               refreshUI(map);
             }
         }, {
@@ -97,20 +104,42 @@ stateChangingButton.addTo( map );
 // define toolbar options
 
 
+map.on('contextmenu', function(e){
 
+  lat = e.latlng.lat;
+  lng = e.latlng.lng;
 
+  document.getElementById('itemForm').style.display='block';
 
+});
+ 
 map.on('click', function(e) {
     var myElement = document.getElementById("log");
     myElement.innerText = "Lon (X), Lat (Y) : " + e.latlng.lng + ", " + e.latlng.lat;
     //alert("Lat, Lon : " + e.latlng.lat + ", " + e.latlng.lng)
     console.log('dafuk?');
     //fetchAPIdata();
+
+
 });
 
 //end the fiddling
 }
 
+//extract data from form
+
+function getItem(){
+ 
+   
+
+    console.log('WE ADDED A MARKER' + document.getElementById('itDescr').value);
+
+
+    addItem(map);
+    //closes the modal
+    document.getElementById('itemForm').style.display='none';
+
+}
 
 
 </script>
@@ -122,9 +151,79 @@ map.on('click', function(e) {
   </head>
   <body onload="init()">
     <div id="map"></div>
+    <!--
     <div id="log">Nothing to say...</div>
    
     
     <input id="slider" type="range" min="0" max="1" step="0.1" value="1" oninput="layer.setOpacity(this.value)">
+    -->
+<!-- modals  -->
+
+<div class="w3-container">
+    
+       <div id="itemForm" class="w3-modal">
+         <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">
+     
+           <div class="w3-center"><br>
+             <span onclick="document.getElementById('itemForm').style.display='none'" class="w3-button w3-xlarge w3-hover-red w3-display-topright" title="Close Modal">&times;</span>
+          </div>
+     
+           <form class="w3-container" >
+             <div class="w3-section">
+                <select>
+
+                    <option value="15">Non-Player Character</option>
+                    <option value="16">Player Character</option>
+                    
+                  </select>
+               <label><b>Name</b></label>
+               <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Enter Username" name="displayname" required>
+               <label><b>Description</b></label>
+               <input class="w3-input w3-border" type="text" placeholder="Enter Password" name="Description" id="itDescr" required>
+               <button class="w3-button w3-block w3-green w3-section w3-padding" type="button" onclick="getItem()">ADD</button>
+              </div>
+           </form>
+     
+           <div class="w3-container w3-border-top w3-padding-16 w3-light-grey">
+             <button onclick="document.getElementById('itemForm').style.display='none'" type="button" class="w3-button w3-red">Cancel</button>
+            </div>
+     
+         </div>
+       </div>
+     </div>
+
+
+
+    <div class="w3-container">
+   
+      <div id="loginForm" class="w3-modal">
+        <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">
+    
+          <div class="w3-center"><br>
+            <span onclick="document.getElementById('loginForm').style.display='none'" class="w3-button w3-xlarge w3-hover-red w3-display-topright" title="Close Modal">&times;</span>
+            <img src="img_avatar4.png" alt="Avatar" style="width:30%" class="w3-circle w3-margin-top">
+          </div>
+    
+          <form class="w3-container" action="#">
+            <div class="w3-section">
+              <script>document.write("hello" + lat)</script>
+              <label><b>Username</b></label>
+              <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Enter Username" name="usrname" required>
+              <label><b>Password</b></label>
+              <input class="w3-input w3-border" type="password" placeholder="Enter Password" name="psw" required>
+              <button class="w3-button w3-block w3-green w3-section w3-padding" type="submit">Login</button>
+              <input class="w3-check w3-margin-top" type="checkbox" checked="checked"> Remember me
+            </div>
+          </form>
+    
+          <div class="w3-container w3-border-top w3-padding-16 w3-light-grey">
+            <button onclick="document.getElementById('loginForm').style.display='none'" type="button" class="w3-button w3-red">Cancel</button>
+            <span class="w3-right w3-padding w3-hide-small">Forgot <a href="#">password?</a></span>
+          </div>
+    
+        </div>
+      </div>
+    </div>
+
   </body>
 </html>

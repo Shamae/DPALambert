@@ -358,3 +358,28 @@ function refreshUI(map) {
             };
 
 };
+
+function addItem(map){
+ 
+
+    var geojsonFeature = {
+        "type": "Feature",
+        "properties": {
+            "name": "Coors Field",
+            "amenity": "Baseball Stadium",
+            "popupContent": "This is where the Rockies play!"
+        },
+        "geometry": {
+            "type": "Point",
+            "coordinates": [0, 0]
+        }
+    };
+    var myLayer = L.geoJSON().addTo(map);
+    myLayer.addData(geojsonFeature);
+
+    console.log('WE ADDED A MARKER' + document.getElementById('itDescr').value);
+
+    //closes the modal
+    document.getElementById('itemForm').style.display='none';
+
+}
