@@ -34,11 +34,14 @@
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
     <script>
+      var lat = 0;
+      var lng = 0;
+      var map;
       var layer;
       function init() {
         var mapMinZoom = 0;
         var mapMaxZoom = 4;
-         map = L.map('map', {                       //was a local var but breaks the modal and getitem... should investiguate
+          map = L.map('map', {                       //was a local var but breaks the modal and getitem... should investiguate
           maxZoom: mapMaxZoom,
           minZoom: mapMinZoom,
           crs: L.CRS.Simple
@@ -170,7 +173,7 @@ function getItem(){
      
            <form class="w3-container" >
              <div class="w3-section">
-                <select>
+                <select id="itType">
 
                     <option value="15">Non-Player Character</option>
                     <option value="16">Player Character</option>

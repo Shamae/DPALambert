@@ -84,6 +84,24 @@ function fetchAPIdata(url) {
 
 };
 
+/*
+function getFeatureTypeIcon(){
+
+    switch(feature.properties.featureTypeId) {
+        case 15:
+        
+        return nonPlayerIcon;
+            break;
+        case 16:
+        return playerIcon);
+            break;
+
+        
+      
+    };
+
+};*/
+
 function onEachFeature(feature, layer) {
 
     
@@ -361,24 +379,52 @@ function refreshUI(map) {
 
 function addItem(map){
  
+   var geojsonFeature = {};
 
-    var geojsonFeature = {
-        "type": "Feature",
-        "properties": {
-            "name": "Coors Field",
-            "amenity": "Baseball Stadium",
-            "popupContent": "This is where the Rockies play!"
-        },
-        "geometry": {
-            "type": "Point",
-            "coordinates": [0, 0]
-        }
-    };
+    geojsonFeature["type"]="Feature";
+
+    geojsonFeature["properties"]={};
+
+    var e = document.getElementById("itType");
+    var type = e.options[e.selectedIndex].value;
+
+    console.log("type ="+ type);
+
+        geojsonFeature["properties"]["featureTypeId"] = parseInt(type);
+
+        geojsonFeature["properties"]["displayName"] = "Tintin";
+
+        geojsonFeature["properties"]["description"] = "It's not the right place for him";
+    
+   
+    geojsonFeature["geometry"] = {};
+        geojsonFeature["type"]="Point";
+        geojsonFeature["coordinates"] = [lng,lat];
+
+    /*
+    geojsonFeature["geometry"]["coordinates"][0] = 0;
+    geojsonFeature["geometry"]["coordinates"][1] = 1;
+*/
+
+var myLayer = L.geoJSON(geojsonFeature, {
+    pointToLayer: function (feature, latlng) {
+        return L.marker(latlng);
+    }
+}).addTo(map);
+
+myLayer.setIcon (nonPlayerIcon);//sadly don't work
+/*
     var myLayer = L.geoJSON().addTo(map);
     myLayer.addData(geojsonFeature);
 
-    console.log('WE ADDED A MARKER' + document.getElementById('itDescr').value);
+   
 
+    function(geoJsonPoint, latlng) {
+        return L.marker(latlng);
+    }*/
+  // onEachFeature(geojsonFeature, myLayer); // not working sadly
+    console.log('WE ADDED A MARKER' + document.getElementById('itDescr').value + "at ["+lat+","+lng);
+    
     //closes the modal
     document.getElementById('itemForm').style.display='none';
 
