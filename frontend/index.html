@@ -4,6 +4,8 @@
     <title>WORLDMAP PROTO</title>
     <meta charset="utf-8"/>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
+    
+    <link rel="stylesheet" href="css/SMV.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet.pm@0.17.3/dist/leaflet.pm.css" />
     <link rel="stylesheet" href="https://npmcdn.com/leaflet@1.0.0-rc.3/dist/leaflet.css" />
 
@@ -38,6 +40,7 @@
       var lng = 0;
       var map;
       var layer;
+      
       function init() {
         var mapMinZoom = 0;
         var mapMaxZoom = 4;
@@ -180,7 +183,7 @@ function getItem(){
                     
                   </select>
                <label><b>Name</b></label>
-               <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Enter Username" name="displayname" required>
+               <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Display name..." name="displayname" id="itName" required>
                <label><b>Description</b></label>
                <input class="w3-input w3-border" type="text" placeholder="Enter Password" name="Description" id="itDescr" required>
                <button class="w3-button w3-block w3-green w3-section w3-padding" type="button" onclick="getItem()">ADD</button>
@@ -209,7 +212,7 @@ function getItem(){
     
           <form class="w3-container" action="#">
             <div class="w3-section">
-              <script>document.write("hello" + lat)</script>
+              
               <label><b>Username</b></label>
               <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Enter Username" name="usrname" required>
               <label><b>Password</b></label>

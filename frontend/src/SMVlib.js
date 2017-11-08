@@ -1,29 +1,29 @@
 
-function initialize(){
+function initialize() {
 
     adminMode = false;
 
     // set customized icons
-     playerIcon = L.icon({
+    playerIcon = L.icon({
         iconUrl: 'img/playerIcon.png',
         //shadowUrl: 'leaf-shadow.png',
-    
-        iconSize:     [32, 32], // size of the icon
+
+        iconSize: [32, 32], // size of the icon
         //shadowSize:   [50, 64], // size of the shadow
-        iconAnchor:   [16, 16], // point of the icon which will correspond to marker's location
+        iconAnchor: [16, 16], // point of the icon which will correspond to marker's location
         //shadowAnchor: [4, 62],  // the same for the shadow
-        popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+        popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
     });
 
-     nonPlayerIcon = L.icon({
+    nonPlayerIcon = L.icon({
         iconUrl: 'img/nonPlayerIcon.png',
         //shadowUrl: 'leaf-shadow.png',
-    
-        iconSize:     [32, 32], // size of the icon
+
+        iconSize: [32, 32], // size of the icon
         //shadowSize:   [50, 64], // size of the shadow
-        iconAnchor:   [16, 16], // point of the icon which will correspond to marker's location
+        iconAnchor: [16, 16], // point of the icon which will correspond to marker's location
         //shadowAnchor: [4, 62],  // the same for the shadow
-        popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+        popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
     });
 
     // set editing UI
@@ -84,27 +84,9 @@ function fetchAPIdata(url) {
 
 };
 
-/*
-function getFeatureTypeIcon(){
-
-    switch(feature.properties.featureTypeId) {
-        case 15:
-        
-        return nonPlayerIcon;
-            break;
-        case 16:
-        return playerIcon);
-            break;
-
-        
-      
-    };
-
-};*/
-
 function onEachFeature(feature, layer) {
 
-    
+
 
     // does this feature have a property named popupContent?
     if (feature.properties && feature.properties.description) {
@@ -113,21 +95,21 @@ function onEachFeature(feature, layer) {
 
     layer.bindTooltip(feature.properties.displayName);
 
-   
 
-    switch(feature.properties.featureTypeId) {
+
+    switch (feature.properties.featureTypeId) {
         case 15:
-        
-        layer.setIcon (nonPlayerIcon);
+
+            layer.setIcon(nonPlayerIcon);
             break;
         case 16:
-        layer.setIcon (playerIcon);
+            layer.setIcon(playerIcon);
             break;
 
-        
-      
+
+
     };
-    
+
 };
 
 function getAllFeatures(map) {
@@ -236,7 +218,7 @@ function createMenu(map) {
 
     initialize();
 
-    if (adminMode){
+    if (adminMode) {
 
         // add leaflet.pm controls to the map
         map.pm.addControls(options);
@@ -325,7 +307,7 @@ function createMenu(map) {
                 var typeId = subMenu[i]._id;
                 console.log("== We fetched the subcategory name: " + name + " ==");
 
-        
+
 
                 // ...we should have retrieved the markers of subcategory from itemService.
                 console.log("== We fetched the subcategory nameid: " + typeId + " ==");
@@ -351,9 +333,9 @@ function createMenu(map) {
 
 
 
-    
 
-   
+
+
 
 
     }).catch(function (err) {
@@ -366,66 +348,74 @@ function createMenu(map) {
 
 function refreshUI(map) {
 
-    if (adminMode){
-        
-                // add leaflet.pm controls to the map
-                map.pm.addControls(loggedOptions);
-            } else {
+    if (adminMode) {
 
-                map.pm.addControls(unloggedOptions)
-            };
+        // add leaflet.pm controls to the map
+        map.pm.addControls(loggedOptions);
+    } else {
+
+        map.pm.addControls(unloggedOptions)
+    };
 
 };
 
-function addItem(map){
- 
-   var geojsonFeature = {};
+function getIconByType(featureType) {
 
-    geojsonFeature["type"]="Feature";
+    switch (featureType) {
 
-    geojsonFeature["properties"]={};
+        case 15:
+            return nonPlayerIcon;
+
+        case 16:
+            return playerIcon;
+
+
+    };
+};
+
+function saveMarker(geojsonFeature){
+
+    console.log(JSON.stringify(geojsonFeature));
+  
+
+
+};
+
+function addItem(map) {
+
+    var geojsonFeature = {};
+
+    geojsonFeature["type"] = "Feature";
+
+    geojsonFeature["properties"] = {};
 
     var e = document.getElementById("itType");
     var type = e.options[e.selectedIndex].value;
 
-    console.log("type ="+ type);
+    geojsonFeature["properties"]["featureTypeId"] = parseInt(type);
 
-        geojsonFeature["properties"]["featureTypeId"] = parseInt(type);
+    geojsonFeature["properties"]["displayName"] = document.getElementById('itName').value;
 
-        geojsonFeature["properties"]["displayName"] = "Tintin";
+    geojsonFeature["properties"]["description"] = document.getElementById('itDescr').value;
 
-        geojsonFeature["properties"]["description"] = "It's not the right place for him";
-    
-   
     geojsonFeature["geometry"] = {};
-        geojsonFeature["type"]="Point";
-        geojsonFeature["coordinates"] = [lng,lat];
 
-    /*
-    geojsonFeature["geometry"]["coordinates"][0] = 0;
-    geojsonFeature["geometry"]["coordinates"][1] = 1;
-*/
+    geojsonFeature["type"] = "Point";
 
-var myLayer = L.geoJSON(geojsonFeature, {
-    pointToLayer: function (feature, latlng) {
-        return L.marker(latlng);
-    }
-}).addTo(map);
+    geojsonFeature["coordinates"] = [lng, lat];
 
-myLayer.setIcon (nonPlayerIcon);//sadly don't work
-/*
-    var myLayer = L.geoJSON().addTo(map);
-    myLayer.addData(geojsonFeature);
+    var myLayer = L.geoJSON(geojsonFeature, {
+        pointToLayer: function (feature, latlng) {
+            return L.marker(latlng, { icon: getIconByType(parseInt(type)) });
+        }
+    }).addTo(map);
 
-   
+    myLayer.bindTooltip(geojsonFeature["properties"]["displayName"]);
+    myLayer.bindPopup(geojsonFeature["properties"]["description"]);
 
-    function(geoJsonPoint, latlng) {
-        return L.marker(latlng);
-    }*/
-  // onEachFeature(geojsonFeature, myLayer); // not working sadly
-    console.log('WE ADDED A MARKER' + document.getElementById('itDescr').value + "at ["+lat+","+lng);
-    
+    saveMarker(geojsonFeature);
+
     //closes the modal
-    document.getElementById('itemForm').style.display='none';
+    document.getElementById('itemForm').style.display = 'none';
 
 }
