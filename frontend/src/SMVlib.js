@@ -271,7 +271,7 @@ function createMenu(map) {
             //container_maxHeight : "350px", 
             exclusive: false,
             collapsed: false,
-            position: 'topright'
+            position: 'bottomright'
         };
 
         var control = L.Control.styledLayerControl(baseMaps, overlays, options);
