@@ -400,9 +400,9 @@ function addItem(map) {
 
     geojsonFeature["geometry"] = {};
 
-    geojsonFeature["type"] = "Point";
+    geojsonFeature["geometry"] ["type"] = "Point";
 
-    geojsonFeature["coordinates"] = [lng, lat];
+    geojsonFeature["geometry"] ["coordinates"] = [lng, lat];
 
     var myLayer = L.geoJSON(geojsonFeature, {
         pointToLayer: function (feature, latlng) {
@@ -418,4 +418,58 @@ function addItem(map) {
     //closes the modal
     document.getElementById('itemForm').style.display = 'none';
 
-}
+};
+
+function searchItem (){
+
+    var key = document.getElementById('srchInputField').value;
+
+    console.log("**SEARCH -- we are looking for : " + key);
+
+    var results = fuse.search(key);
+     
+    console.log("We found : " + JSON.stringify(results));
+
+    generateSearchList(results);
+
+    
+
+
+};
+
+function clearSearchList(){
+    
+    document.getElementById('srchInputField').value = "";
+    document.getElementById("srchResults").innerHTML ="";
+
+};
+
+function generateSearchList(results) {
+    document.getElementById("srchResults").innerHTML ="";
+
+    for (var i = 0; i < results.length; i++) {
+
+        
+
+        var div = document.createElement("div");
+
+       
+        div.setAttribute("data-srch-index", i);
+        div.className = "srch-result-item";
+        div.innerHTML = results[i]["properties"]["displayName"];
+
+        item = results[i];
+        div.onclick =  function(){
+            var index = this.getAttribute("data-srch-index");
+            console.log("CLIQ ON : " +index+ results[index]["properties"]["displayName"] + results[index]["geometry"]["coordinates"] );
+            map.flyTo([
+                results[index]["geometry"]["coordinates"][1],
+                results[index]["geometry"]["coordinates"][0]], 
+                4);
+        }
+      
+        document.getElementById("srchResults").appendChild(div);
+
+    };
+
+};

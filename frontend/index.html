@@ -39,14 +39,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
+  <!-- ADD FUSE.JS // CDN -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.0.4/fuse.min.js"></script>
+
   <script>
     var lat = 0;
     var lng = 0;
     var map;
-    var layer;
+    var baseLayer;
+    var overlayData = []; //
+    var fuse; // Instance of fuse search engine
+
+    
 
     function init() {
 
+      // Init Leaflet canavs
       var mapMinZoom = 0;
       var mapMaxZoom = 4;
       map = L.map('map', {                       //was a local var but breaks the modal and getitem... should investiguate
@@ -65,10 +74,7 @@
         map.unproject([0, 3072], mapMaxZoom),
         map.unproject([2048, 0], mapMaxZoom));
 
-     // map.fitBounds(mapBounds);
-      //  http://localhost:7999/api/tiles
-      //  layer = L.tileLayer('sourcemap/{z}/{x}/{y}.png',
-      layer = L.tileLayer('http://localhost:7999/api/tiles/{z}/{x}/{y}', {
+      baseLayer = L.tileLayer('http://localhost:7999/api/tiles/{z}/{x}/{y}', {
         minZoom: mapMinZoom, maxZoom: mapMaxZoom,
         bounds: mapBounds,
         attribution: 'Rendered with <a href="https://www.maptiler.com/">MapTiler</a>',
@@ -79,9 +85,115 @@
 
 
 
-      // begin the fiddling 
+      // Init Map Content form backend 
 
       createMenu(map);
+
+      // Init Search Engine 
+
+      // temporary mockup data
+
+    overlayData = [{
+      "_id": "59d0bdf64b86e02c03e97972",
+      "type": "Feature",
+      "properties": {
+        "featureTypeId": 15,
+        "displayName": "First judge Archot",
+        "description": "He's old and somewhat insane.",
+        "owner": "dyingcircle",
+        "timestamp": "2017-10-01T10:05:42.535Z"
+      },
+      "geometry": {
+        "coordinates": [63, -44],
+        "type": "Point"
+      }
+    },
+
+    {
+      "_id": "59d0bdf64b86e02c03e97973",
+      "type": "Feature",
+      "properties": {
+        "featureTypeId": 16,
+        "displayName": "Scrapper Lupo",
+        "description": "A scrapper living and working in syracus.",
+        "owner": "shamae",
+        "timestamp": "2017-10-01T10:05:42.535Z"
+      },
+      "geometry": {
+        "coordinates": [79, -81],
+        "type": "Point"
+      }
+    },
+  
+    {
+      "_id": "59d0bdf64b86e02c03e97973",
+      "type": "Feature",
+      "properties": {
+        "featureTypeId": 16,
+        "displayName": "HAdock Capt.",
+        "description": "Drinking",
+        "owner": "shamae",
+        "timestamp": "2017-10-01T10:05:42.535Z"
+      },
+      "geometry": {
+        "coordinates": [160, -51],
+        "type": "Point"
+      }
+    },
+
+    {
+      "_id": "59d0bdf64b86e02c03e97973",
+      "type": "Feature",
+      "properties": {
+        "featureTypeId": 16,
+        "displayName": "A mysterious stranger",
+        "description": "lived a house",
+        "owner": "shamae",
+        "timestamp": "2017-10-01T10:05:42.535Z"
+      },
+      "geometry": {
+        "coordinates": [79, -81],
+        "type": "Point"
+      }
+    },
+
+    {
+      "_id": "59d0bdf64b86e02c03e97973",
+      "type": "Feature",
+      "properties": {
+        "featureTypeId": 16,
+        "displayName": "Anabaptist Tintin",
+        "description": "doing something",
+        "owner": "shamae",
+        "timestamp": "2017-10-01T10:05:42.535Z"
+      },
+      "geometry": {
+        "coordinates": [19, -81],
+        "type": "Point"
+      }
+    },
+  
+  ];
+    //end temp mock data
+   //TODO: actual binding
+    var options = {
+        shouldSort: true,
+        threshold: 0.6,
+        location: 0,
+        distance: 100,
+        maxPatternLength: 32,
+        minMatchCharLength: 2,
+        keys: [
+          "properties.displayName",
+          "properties.description"
+      ]
+      };
+      
+      fuse = new Fuse(overlayData, options); // "list" is the item array
+
+
+
+
 
 
       // test easybutton
@@ -130,11 +242,18 @@
 
       });
 
+      map.on("dragstart", function(e){
+
+        clearSearchList();
+      });
       map.on('click', function (e) {
-        var myElement = document.getElementById("log");
-        myElement.innerText = "Lon (X), Lat (Y) : " + e.latlng.lng + ", " + e.latlng.lat;
+        //var myElement = document.getElementById("log");
+        //myElement.innerText = "Lon (X), Lat (Y) : " + e.latlng.lng + ", " + e.latlng.lat;
         //alert("Lat, Lon : " + e.latlng.lat + ", " + e.latlng.lng)
-        console.log('dafuk?');
+        
+        console.log('[DEBUG] Check the coord?');
+        console.log("Lat, Lon : " + e.latlng.lat + ", " + e.latlng.lng);
+        console.log('X, Y =  ' + e.clientX + ", "+e.clientY);
         //fetchAPIdata();
 
 
@@ -166,10 +285,46 @@
 <body onload="init()">
   <div id="map"></div>
 
+    <!-- Searchbox -->
+
+    <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+      <symbol xmlns="http://www.w3.org/2000/svg" id="sbx-icon-search-22" viewBox="0 0 40 40">
+        <path d="M24.382 25.485c-1.704 1.413-3.898 2.263-6.292 2.263-5.42 0-9.814-4.36-9.814-9.736 0-5.377 4.394-9.736 9.814-9.736s9.815 4.36 9.815 9.736c0 2.126-.687 4.093-1.853 5.694l5.672 5.627-1.73 1.718-5.612-5.565zM20 40c11.046 0 20-8.954 20-20S31.046 0 20 0 0 8.954 0 20s8.954 20 20 20zm-1.91-14.686c4.065 0 7.36-3.27 7.36-7.302 0-4.033-3.295-7.302-7.36-7.302s-7.36 3.27-7.36 7.302c0 4.033 3.295 7.302 7.36 7.302z"
+          fill-rule="evenodd" />
+      </symbol>
+      <symbol xmlns="http://www.w3.org/2000/svg" id="sbx-icon-clear-4" viewBox="0 0 20 20">
+        <path d="M11.664 9.877l4.485 4.485-1.542 1.54-4.485-4.485-4.485 4.485-1.54-1.54 4.485-4.485-4.485-4.485 1.54-1.54 4.485 4.484 4.485-4.485 1.54 1.542-4.484 4.485zM10 20c5.523 0 10-4.477 10-10S15.523 0 10 0 0 4.477 0 10s4.477 10 10 10z"
+          fill-rule="evenodd" />
+      </symbol>
+    </svg>
+    <div class="top-left-pane">
+      <form novalidate="novalidate" onsubmit="return false;" class="searchbox sbx-custom">
+        <div role="search" class="sbx-google__wrapper">
+          <input id="srchInputField" name="search" placeholder="Search your website" autocomplete="off" required="required" class="sbx-custom__input"
+            type="search" onkeyup="searchItem()"
+            onchange="searchItem()">
+          <button type="submit" title="Submit your search query." class="sbx-custom__submit">
+            <svg role="img" aria-label="Search">
+              <use xlink:href="#sbx-icon-search-22"></use>
+            </svg>
+          </button>
+          <button type="reset" title="Clear the search query." class="sbx-custom__reset">
+            <svg role="img" aria-label="Reset">
+              <use xlink:href="#sbx-icon-clear-4"></use>
+            </svg>
+          </button>
+        </div>
+      </form>
+    
+      <div id="srchResults"></div>
+    </div>
   <div class="top-right-pane">
-    <div id="signInBtn"> <i class="fa fa-sign-in" aria-hidden="true"></i>
+    <div id="signInBtn">
+      <i class="fa fa-sign-in" aria-hidden="true"></i>
       Sign in </div>
   </div>
+
+
   <div class="w3-container">
 
     <div id="itemForm" class="w3-modal">
@@ -250,6 +405,11 @@
       </div>
     </div>
   </div>
+
+
+  <script type="text/javascript">
+    document.querySelector('.searchbox [type="reset"]').addEventListener('click', function () { this.parentNode.querySelector('input').focus(); });
+  </script>
 
 </body>
 
