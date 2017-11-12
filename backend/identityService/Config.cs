@@ -39,7 +39,7 @@ namespace identityService
                 // client credentials client
                 new Client
                 {
-                    ClientId = "client",
+                    ClientId = "worldMapClient",
                     AllowedGrantTypes = GrantTypes.ClientCredentials,
 
                     ClientSecrets = 
@@ -52,8 +52,8 @@ namespace identityService
                 // OpenID Connect implicit flow client (MVC)
                 new Client
                 {
-                    ClientId = "mvc",
-                    ClientName = "MVC Client",
+                    ClientId = "worldMapUserClient",
+                    ClientName = "World Map User Client",
                     AllowedGrantTypes = GrantTypes.Implicit,
 
                     // where to redirect to after login
@@ -65,7 +65,10 @@ namespace identityService
                     AllowedScopes =
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServerConstants.StandardScopes.Profile
+                        IdentityServerConstants.StandardScopes.Profile,
+                        "tileApi",
+                        "menuApi",
+                        "itemApi"
                     }
                 }
             };
