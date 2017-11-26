@@ -15,7 +15,7 @@ namespace identityService
 
             // add IdentityServer service
             services.AddIdentityServer()
-                    .AddDeveloperSigningCredential()
+                    .AddSigningCredential(Config.GetSigningCertificate())
                     // add resources
                     .AddInMemoryIdentityResources(Config.GetIdentityResources())
                     .AddInMemoryApiResources(Config.GetApiResources())

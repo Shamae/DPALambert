@@ -10,18 +10,20 @@
   "license": "GPL-3.0",
   "dependencies": {
     "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
     "express": "^4.15.4",
-    "gulp": "^3.9.1",
-    "gulp-mocha": "^4.3.1",
-    "gulp-nodemon": "^2.2.1",
+    "express-oidc-jwks-verify": "^0.2.0",
+    "jsonwebtoken": "^8.1.0",
     "mongodb": "^2.2.31",
-    "mongoose": "^4.11.11",
-    "should": "^13.0.1",
-    "sinon": "^3.2.1",
-    "supertest": "^3.0.0"
+    "mongoose": "^4.11.11"
   },
   "devDependencies": {
     "gulp-env": "^0.4.0",
-    "supertest": "^3.0.0"
+    "supertest": "^3.0.0",
+    "should": "^13.0.1",
+    "sinon": "^3.2.1",
+    "gulp": "^3.9.1",
+    "gulp-mocha": "^4.3.1",
+    "gulp-nodemon": "^2.2.1"
   }
 }

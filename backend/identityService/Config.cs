@@ -3,11 +3,27 @@ using IdentityServer4.Models;
 using IdentityServer4.Test;
 using System.Collections.Generic;
 using System.Security.Claims;
+using System;
+using System.IO;
+using System.Security.Cryptography.X509Certificates;
 
 namespace identityService
 {
     public class Config
     {
+        // get the signing certificate for tokens
+        internal static X509Certificate2 GetSigningCertificate()
+        {
+            var fileName = Path.Combine(Path.GetDirectoryName(Directory.GetCurrentDirectory()), "identityService/cert.pfx");
+            Console.Write(Path.GetDirectoryName(Directory.GetCurrentDirectory()));
+            var info = new DirectoryInfo(Path.GetDirectoryName(Directory.GetCurrentDirectory())).GetFiles();
+            if(!File.Exists(fileName)) {
+                throw new FileNotFoundException("Signing Certificate is missing!");
+            }
+            var cert = new X509Certificate2(fileName);
+            return cert;
+        }
+
         // scopes define the resources in your system
         public static IEnumerable<IdentityResource> GetIdentityResources()
         {
