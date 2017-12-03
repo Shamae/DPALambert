@@ -4,7 +4,4 @@ How to get this running:
 
     - execute "dotnet restore" and "dotnet run"
 
-Currently IdentityServer4 is not supportung .NET Core 2.0...
-Wait for IdentityServer4 to support .NET Core 2.0!
-
     
