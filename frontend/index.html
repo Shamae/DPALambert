@@ -15,6 +15,7 @@
 
 
   <script src="src/SMVlib.js"></script>
+  <script src="src/oidc-client.min.js"></script>
   <script src="https://npmcdn.com/leaflet@1.0.0-rc.3/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet.pm@0.17.3/dist/leaflet.pm.min.js"></script>
 
@@ -193,6 +194,32 @@
 
 
 
+// Login and stuff
+
+//document.getElementById("signInBtn").addEventListener("click", login, false);
+//document.getElementById("api").addEventListener("click", api, false);
+//document.getElementById("logout").addEventListener("click", logout, false);
+
+// init oidc-client
+
+var config = {
+    authority: "http://localhost:5000",
+    client_id: "js",
+    redirect_uri: "http://localhost:5003/callback.html",
+    response_type: "id_token token",
+    scope:" openid profile tileApi menuApi itemApi",
+    post_logout_redirect_uri : "http://localhost:5003/index.html",
+};
+var mgr = new Oidc.UserManager(config);
+
+mgr.getUser().then(function (user) {
+    if (user) {
+        console.log("User logged in", user.profile);
+    }
+    else {
+        console.log("User not logged in");
+    }
+});
 
 
 

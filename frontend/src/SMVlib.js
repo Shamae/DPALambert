@@ -483,4 +483,31 @@ function generateSearchList(results) {
 
     };
 
+
+/****   THE FOLLOWING RELATES TO IDENTIFICATION ****/
+
+function login() {
+    mgr.signinRedirect();
+};
+
+function api() {
+    mgr.getUser().then(function (user) {
+        var url = "http://localhost:5001/identity";
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", url);
+        xhr.onload = function () {
+            log(xhr.status, JSON.parse(xhr.responseText));
+        }
+        xhr.setRequestHeader("Authorization", "Bearer " + user.access_token);
+        xhr.send();
+    });
+};
+
+function logout() {
+    mgr.signoutRedirect();
+};
+
+
+
 };
