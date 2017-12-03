@@ -12588,11 +12588,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "d:\\Projects\\DPALambert\\DPALambert\\backend\\identityService\\identityService.csproj",
+      "projectUniqueName": "E:\\Eigene Dokumente\\GitHub\\DPALambert\\backend\\identityService\\identityService.csproj",
       "projectName": "identityService",
-      "projectPath": "d:\\Projects\\DPALambert\\DPALambert\\backend\\identityService\\identityService.csproj",
+      "projectPath": "E:\\Eigene Dokumente\\GitHub\\DPALambert\\backend\\identityService\\identityService.csproj",
       "packagesPath": "C:\\Users\\Alain Solheid\\.nuget\\packages\\",
-      "outputPath": "d:\\Projects\\DPALambert\\DPALambert\\backend\\identityService\\obj\\",
+      "outputPath": "E:\\Eigene Dokumente\\GitHub\\DPALambert\\backend\\identityService\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
