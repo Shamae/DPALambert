@@ -90,7 +90,18 @@ function onEachFeature(feature, layer) {
 
     // does this feature have a property named popupContent?
     if (feature.properties && feature.properties.description) {
-        layer.bindPopup(feature.properties.description);
+       
+       console.log(feature.properties.description);
+
+       var popupContent =  "<div class='txtWB'>"+ feature.properties.displayName + "</div>" + "<br>"
+                        + "<div>"+ feature.properties.description + "</div>" ;
+       
+       
+       
+        layer.bindPopup(popupContent, {
+            'maxWidth': '500',
+            'className' : 'customPopup'
+        });
     }
 
     layer.bindTooltip(feature.properties.displayName);

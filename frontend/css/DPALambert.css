@@ -289,3 +289,40 @@ html, body, #map {
     color: white;
     background-color:#e70000;
   }
+
+
+  .customPopup .leaflet-popup-tip,
+  .customPopup .leaflet-popup-content-wrapper {
+      background: #e93434;
+      color: #000000;
+
+     
+      font-family: 'Helvetica', sans-serif;
+      position: absolute;
+      margin:20px;
+      top: 0px;
+      right: 0px;
+      z-index: 20;
+      padding: 5px;
+      background: rgba(255, 255, 255, 0.95);
+      font-size: 12px;
+      line-height: 1.2;
+      -webkit-box-shadow: -2px 2px 4px rgba(0, 0, 0, 0.5);
+      -moz-box-shadow: -2px 2px 4px rgba(0, 0, 0, 0.5);
+      box-shadow: -2px 2px 4px rgba(0, 0, 0, 0.5);
+
+      -webkit-border-radius: 0 !important;
+      -moz-border-radius: 0 !important;
+       border-radius: 0 !important;
+      
+  }
+
+  .txtWB {
+    background: #000000;
+    color:#ffffff;
+    font-family: 'Helvetica', sans-serif;
+    font-size: 13px;
+    font-weight:800;
+    height:16px;
+    
+  }
