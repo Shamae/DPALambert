@@ -1,17 +1,13 @@
-var express = require('express');
+var express = require('express')
+    cors = require('cors');
     
 
 // server setup
 var app = express();
 var port = process.env.port || 3000;
 
-//bv fiddling on
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-  });
-//bv fiddling off
+// cors configuration
+app.use(cors());
 
 app.get('/api/tiles/:z/:x/:y', function (req, res) {
 

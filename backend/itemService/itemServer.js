@@ -32,11 +32,6 @@ var itemRouter = require('./routes/itemRoutes')(Item);
 
 //CORS configuration
 app.use(cors());
-// app.use(function(req, res, next) {
-//     res.header("Access-Control-Allow-Origin", "*");
-//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//     next();
-// });
 
 // set token issuer
 //app.use(oidcJwksVerify({ issuer: `http://${HOST_IP}:5000` }));

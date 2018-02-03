@@ -1,4 +1,5 @@
 var express = require('express'),
+    cors = require('cors'),
     mongoose = require('mongoose');
 
 // database setup
@@ -23,11 +24,7 @@ var port = process.env.port || 3000;
 var menuRouter = require('./routes/menuRoutes')(Category);
 
 //CORS configuration
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-});
+app.use(cors());
 
 // set routes
 app.use('/api/menu', menuRouter);
