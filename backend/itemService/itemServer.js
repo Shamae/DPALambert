@@ -1,10 +1,10 @@
 var express = require('express'),
-mongoose = require('mongoose'),
-bodyParser = require('body-parser'),
-cors = require('cors'),
-jwt = require('jsonwebtoken'),
-oidcJwksVerify = require('express-oidc-jwks-verify'),
-HOST_IP = process.env.HOST_IP;
+    mongoose = require('mongoose'),
+    bodyParser = require('body-parser'),
+    cors = require('cors'),
+    jwt = require('jsonwebtoken'),
+    oidcJwksVerify = require('express-oidc-jwks-verify'),
+    HOST_IP = process.env.HOST_IP;
 
 // database setup
 var db;
@@ -36,6 +36,8 @@ app.use(cors());
 // set token issuer
 //app.use(oidcJwksVerify({ issuer: `http://${HOST_IP}:5000` }));
 
+
+// options for access token validation (TODO ASO : testing)
 // verify token
 // app.get('/identity', (req, res) => {
 //     const header = req.header('Authorization');
@@ -43,6 +45,14 @@ app.use(cors());
   
 //     return res.status(200).send(jwt.decode(token));
 //   });
+
+// verify token
+let options = {
+    validationUri: 'https://localhost:5000/connect/introspect',
+    tokenParam: 'token'
+    // unprotected: ['/public']
+    };
+app.use(bearerTokenValidation(options));
 
 // set routes
 app.use('/api/item', itemRouter);

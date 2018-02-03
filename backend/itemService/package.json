@@ -12,6 +12,7 @@
     "body-parser": "^1.18.2",
     "cors": "^2.8.4",
     "express": "^4.15.4",
+    "express-accesstoken-validation": "^0.3.0",
     "express-oidc-jwks-verify": "^0.2.1",
     "jsonwebtoken": "^8.1.0",
     "mongodb": "^2.2.31",
