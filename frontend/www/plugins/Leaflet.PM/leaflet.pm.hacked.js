@@ -19948,7 +19948,7 @@
         _onMarkerDragEnd: function(t) {
 
 
-            console.log("DROPPED!! ");
+           
             var e = t.target,
                 n = this.findMarkerIndex(this._markers, e),
                 i = n.ringIndex,

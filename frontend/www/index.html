@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="https://npmcdn.com/leaflet@1.0.0-rc.3/dist/leaflet.css" />
 
 
-
+  <script src="src/config.js"></script>
   <script src="src/SMVlib.js"></script>
   <script src="src/oidc-client.min.js"></script>
   <script src="https://npmcdn.com/leaflet@1.0.0-rc.3/dist/leaflet.js"></script>
@@ -76,7 +76,7 @@
         map.unproject([0, 3072], mapMaxZoom),
         map.unproject([2048, 0], mapMaxZoom));
 
-      baseLayer = L.tileLayer('http://localhost:7999/api/tiles/{z}/{x}/{y}', {
+      baseLayer = L.tileLayer(apiTileServiceURL, {
         minZoom: mapMinZoom, maxZoom: mapMaxZoom,
         bounds: mapBounds,
         attribution: 'Rendered with <a href="https://www.maptiler.com/">MapTiler</a>',
@@ -91,7 +91,7 @@
 
       createMenu(map);
 
-      
+
 
 
 
@@ -193,11 +193,6 @@ mgr.getUser().then(function (user) {
     //extract data from form
 
     function getItem() {
-
-
-
-      console.log('WE ADDED A MARKER' + document.getElementById('itDescr').value);
-
 
       addItem(map);
       //closes the modal

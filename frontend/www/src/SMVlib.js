@@ -55,7 +55,7 @@ function initialize() {
 };
 function fetchAPIdata(url) {
 
-    url = "http://localhost:8000/api/menu";
+    url = apiMenuURL;
 
     fetch(url, {
         method: 'get'
@@ -67,7 +67,6 @@ function fetchAPIdata(url) {
             return;
         }
 
-        console.log("coucou");
         return response.json();
 
     }).then(function (data) {
@@ -90,17 +89,17 @@ function onEachFeature(feature, layer) {
 
     // does this feature have a property named popupContent?
     if (feature.properties && feature.properties.description) {
-       
-       console.log(feature.properties.description);
 
-       var popupContent =  "<div class='txtWB'>"+ feature.properties.displayName + "</div>" + "<br>"
-                        + "<div>"+ feature.properties.description + "</div>" ;
-       
-       
-       
+        console.log(feature.properties.description);
+
+        var popupContent = "<div class='txtWB'>" + feature.properties.displayName + "</div>" + "<br>"
+            + "<div>" + feature.properties.description + "</div>";
+
+
+
         layer.bindPopup(popupContent, {
             'maxWidth': '500',
-            'className' : 'customPopup'
+            'className': 'customPopup'
         });
     }
 
@@ -125,7 +124,7 @@ function onEachFeature(feature, layer) {
 
 function getAllFeatures(map) {
 
-    url = "http://localhost:8001/api/item";
+    url = apiItemURL;
 
     fetch(url, {
         method: 'get'
@@ -156,7 +155,7 @@ function getAllFeatures(map) {
 
 function createFeatureLayerByType(map, controlparam, typeId) {
 
-    url = "http://localhost:8001/api/item?properties.featureTypeId=" + typeId;
+    url = apiItemURL + "?properties.featureTypeId=" + typeId;
 
     var control = controlparam.base;
     var name = controlparam.name;
@@ -196,7 +195,8 @@ function createFeatureLayerByType(map, controlparam, typeId) {
 
 function getFeatureByTYpe(map, typeId) {
 
-    url = "http://localhost:8001/api/item?properties.featureTypeId=" + typeId;
+    url = apiItemURL + "?properties.featureTypeId=" + typeId;
+
 
     fetch(url, {
         method: 'get'
@@ -235,7 +235,7 @@ function createMenu(map) {
         map.pm.addControls(options);
     };
 
-    url = "http://localhost:8000/api/menu"; //TODO : config file not haarcoded
+    url = apiMenuURL;
 
     fetch(url, {
         method: 'get'
@@ -255,7 +255,7 @@ function createMenu(map) {
         // getAllFeatures(map);
         // getFeatureByTYpe(map, 15);
 
-      
+
 
 
         var baseMaps = [
@@ -344,23 +344,23 @@ function createMenu(map) {
 
         // Init Search Engine 
 
-      // temporary mockup data
+        // temporary mockup data
 
-      overlayData = [];
-     
-      var options = {
-          shouldSort: true,
-          threshold: 0.6,
-          location: 0,
-          distance: 100,
-          maxPatternLength: 32,
-          minMatchCharLength: 2,
-          keys: [
-            "properties.displayName",
-            "properties.description"
-        ]
+        overlayData = [];
+
+        var options = {
+            shouldSort: true,
+            threshold: 0.6,
+            location: 0,
+            distance: 100,
+            maxPatternLength: 32,
+            minMatchCharLength: 2,
+            keys: [
+                "properties.displayName",
+                "properties.description"
+            ]
         };
-        
+
         fuse = new Fuse(overlayData, options); // "list" is the item array
 
 
@@ -405,23 +405,23 @@ function getIconByType(featureType) {
     };
 };
 
-function saveMarker(geojsonFeature){
+function saveMarker(geojsonFeature) {
 
-    var url = 'http://localhost:8001/api/saveitem'; //TODO : to config file
+    var url = apiSaveItemURL;
     var data = geojsonFeature;
 
-    console.log("Marker saved : " , geojsonFeature);
-    
+    console.log("Marker saved : ", geojsonFeature);
+
     // contacts backend to store new feature
     fetch(url, {
-      method: 'POST',
-      body: JSON.stringify(data), 
-      headers: new Headers({
-        'Content-Type': 'application/json'
-      })
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: new Headers({
+            'Content-Type': 'application/json'
+        })
     }).then(res => res.json())
-    .catch(error => console.error('Error :', error))
-    .then(response => console.log('Successfully added item:', response));
+        .catch(error => console.error('Error :', error))
+        .then(response => console.log('Successfully added item:', response));
 
     //updates searchlist in live memory
     overlayData.push(geojsonFeature);
@@ -446,9 +446,9 @@ function addItem(map) {
 
     geojsonFeature["geometry"] = {};
 
-    geojsonFeature["geometry"] ["type"] = "Point";
+    geojsonFeature["geometry"]["type"] = "Point";
 
-    geojsonFeature["geometry"] ["coordinates"] = [lng, lat];
+    geojsonFeature["geometry"]["coordinates"] = [lng, lat];
 
     var myLayer = L.geoJSON(geojsonFeature, {
         pointToLayer: function (feature, latlng) {
@@ -457,7 +457,15 @@ function addItem(map) {
     }).addTo(map);
 
     myLayer.bindTooltip(geojsonFeature["properties"]["displayName"]);
-    myLayer.bindPopup(geojsonFeature["properties"]["description"]);
+
+    var popupContent = "<div class='txtWB'>" + geojsonFeature["properties"]["displayName"] + "</div>" + "<br>"
+        + "<div>" + geojsonFeature["properties"]["description"] + "</div>";
+
+
+    myLayer.bindPopup(popupContent, {
+        'maxWidth': '500',
+        'className': 'customPopup'
+    });
 
     saveMarker(geojsonFeature);
 
@@ -466,95 +474,100 @@ function addItem(map) {
 
 };
 
-function searchItem (){
+function searchItem() {
 
     var key = document.getElementById('srchInputField').value;
 
     console.log("**SEARCH -- we are looking for : " + key);
 
     var results = fuse.search(key);
-     
+
     console.log("We found : " + JSON.stringify(results));
 
     generateSearchList(results);
 
-    
+
 
 
 };
 
-function clearSearchList(){
-    
+function clearSearchList() {
+
     document.getElementById('srchInputField').value = "";
-    document.getElementById("srchResults").innerHTML ="";
+    document.getElementById("srchResults").innerHTML = "";
 
 };
 
 function generateSearchList(results) {
-    document.getElementById("srchResults").innerHTML ="";
+    document.getElementById("srchResults").innerHTML = "";
 
     for (var i = 0; i < results.length; i++) {
 
-        
+
 
         var div = document.createElement("div");
 
-       
+
         div.setAttribute("data-srch-index", i);
         div.className = "srch-result-item";
         div.innerHTML = results[i]["properties"]["displayName"];
 
         item = results[i];
-        div.onclick =  function(){
+        div.onclick = function () {
             var index = this.getAttribute("data-srch-index");
-            console.log("CLIQ ON : " +index+ results[index]["properties"]["displayName"] + results[index]["geometry"]["coordinates"] );
+
             map.flyTo([
                 results[index]["geometry"]["coordinates"][1],
-                results[index]["geometry"]["coordinates"][0]], 
+                results[index]["geometry"]["coordinates"][0]],
                 4);
-                var popup = L.popup()
-                .setLatLng(L.latLng(results[index]["geometry"]["coordinates"][1], results[index]["geometry"]["coordinates"][0])) 
+
+            var popupOptions = {
+
+                'maxWidth': '500',
+                'className': 'customPopup'
+
+            };
+
+            var popup = L.popup(popupOptions)
+                .setLatLng(L.latLng(results[index]["geometry"]["coordinates"][1], results[index]["geometry"]["coordinates"][0]))
                 .setContent(
-                    
-                    "<div class='txtWB'>"+ results[index]["properties"]["displayName"] + "</div>" + "<br>"
-                    + "<div>"+ results[index]["properties"]["description"] + "</div>"
-                );
-                popup.className = 'customPopup';
-                popup.maxWidth= 500;
-                popup.openOn(map);
-               
+                "<div class='txtWB'>" + results[index]["properties"]["displayName"] + "</div>" + "<br>"
+                + "<div>" + results[index]["properties"]["description"] + "</div>"
+
+                ).openOn(map);
+
 
 
         }
-      
+
         document.getElementById("srchResults").appendChild(div);
 
     };
 
 
-/****   THE FOLLOWING RELATES TO IDENTIFICATION ****/
+    /****   THE FOLLOWING RELATES TO IDENTIFICATION ****/
 
-function login() {
-    mgr.signinRedirect();
-};
+    function login() {
+        mgr.signinRedirect();
+    };
 
-function api() {
-    mgr.getUser().then(function (user) {
-        var url = "http://localhost:5001/identity";
+    function api() {
+        mgr.getUser().then(function (user) {
+            var url = apiIdentityURL;
 
-        var xhr = new XMLHttpRequest();
-        xhr.open("GET", url);
-        xhr.onload = function () {
-            log(xhr.status, JSON.parse(xhr.responseText));
-        }
-        xhr.setRequestHeader("Authorization", "Bearer " + user.access_token);
-        xhr.send();
-    });
-};
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", url);
+            xhr.onload = function () {
+                log(xhr.status, JSON.parse(xhr.responseText));
+            }
+            xhr.setRequestHeader("Authorization", "Bearer " + user.access_token);
+            xhr.send();
+        });
+    };
 
-function logout() {
-    mgr.signoutRedirect();
-};
+    function logout() {
+        mgr.signoutRedirect();
+    };
 
 
 

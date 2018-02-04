@@ -11,7 +11,7 @@ app.use(cors());
 
 app.get('/api/tiles/:z/:x/:y', function (req, res) {
 
-    console.log("Accessing tile:" + JSON.stringify(req.params));
+    //console.log("Accessing tile:" + JSON.stringify(req.params));
     
     res.sendFile(__dirname +
                  '/sourcemap/'+ req.params.z +

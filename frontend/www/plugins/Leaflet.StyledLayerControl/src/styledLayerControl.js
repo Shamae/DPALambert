@@ -15,7 +15,7 @@ L.Control.StyledLayerControl = L.Control.Layers.extend({
         var i,
             j;
         L.Util.setOptions(this, options);
-console.log("plugin up");
+
         this._layers = {};
         this._lastZIndex = 0;
         this._handlingClick = false;
