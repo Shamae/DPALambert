@@ -3,6 +3,7 @@ var express = require('express'),
     bodyParser = require('body-parser'),
     cors = require('cors'),
     jwt = require('jsonwebtoken'),
+    bearerTokenValidation = require('express-accesstoken-validation'),
     oidcJwksVerify = require('express-oidc-jwks-verify'),
     HOST_IP = process.env.HOST_IP;
 
@@ -23,36 +24,34 @@ var Item = require('./models/itemModel');
 var app = express();
 var port = process.env.port || 3001;
 
+//CORS configuration
+app.use(cors());
+
+// options for access token validation 
+// set token issuer
+//app.use(oidcJwksVerify({ issuer: `http://${HOST_IP}:5000` }));
+
+// verify token
+// app.get('/identity', (req, res) => {
+//     const header = req.header('Authorization');
+//     const token = header.replace(/Bearer /, '');
+//     return res.status(200).send(jwt.decode(token));
+//   });
+
+// verify token
+let options = {
+    validationUri: 'http://${HOST_IP}:5000/connect/introspect',
+    tokenParam: 'token'
+    // unprotected: ['/public']
+    };
+app.use(bearerTokenValidation(options));
+
 // to be able to read the body
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 
 // route setup
 var itemRouter = require('./routes/itemRoutes')(Item);
-
-//CORS configuration
-app.use(cors());
-
-// set token issuer
-//app.use(oidcJwksVerify({ issuer: `http://${HOST_IP}:5000` }));
-
-
-// options for access token validation (TODO ASO : testing)
-// verify token
-// app.get('/identity', (req, res) => {
-//     const header = req.header('Authorization');
-//     const token = header.replace(/Bearer /, '');
-  
-//     return res.status(200).send(jwt.decode(token));
-//   });
-
-// verify token
-let options = {
-    validationUri: 'https://localhost:5000/connect/introspect',
-    tokenParam: 'token'
-    // unprotected: ['/public']
-    };
-app.use(bearerTokenValidation(options));
 
 // set routes
 app.use('/api/item', itemRouter);
