@@ -49,7 +49,7 @@ namespace identityService
         // clients want to access resources (aka scopes)
         public static IEnumerable<Client> GetClients()
         {
-            // client credentials client
+            // client list
             return new List<Client>
             {
                 // client credentials client
