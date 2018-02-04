@@ -9,8 +9,7 @@ var routes = function(Item){
 
     // config routes
     itemRouter.route('/')
-        .get(itemController.get)
-        .post(itemController.post);
+        .get(itemController.get);
 
     // routes with itemId
     itemRouter.use('/:itemId', function(req, res, next){
