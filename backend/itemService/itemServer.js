@@ -42,7 +42,7 @@ app.use(cors());
 let options = {
     validationUri: 'http://${HOST_IP}:5000/connect/introspect',
     tokenParam: 'token'
-    // unprotected: ['/public']
+    // unprotected: ['/.well-known/openid-configuration']
     };
 app.use(bearerTokenValidation(options));
 
