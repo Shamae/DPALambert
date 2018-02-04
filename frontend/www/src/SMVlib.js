@@ -86,7 +86,7 @@ function fetchAPIdata(url) {
 
 function onEachFeature(feature, layer) {
 
-
+    overlayData.push(feature);
 
     // does this feature have a property named popupContent?
     if (feature.properties && feature.properties.description) {
@@ -235,7 +235,7 @@ function createMenu(map) {
         map.pm.addControls(options);
     };
 
-    url = "http://localhost:8000/api/menu";
+    url = "http://localhost:8000/api/menu"; //TODO : config file not haarcoded
 
     fetch(url, {
         method: 'get'
@@ -255,7 +255,7 @@ function createMenu(map) {
         // getAllFeatures(map);
         // getFeatureByTYpe(map, 15);
 
-
+      
 
 
         var baseMaps = [
@@ -342,6 +342,27 @@ function createMenu(map) {
 
         };
 
+        // Init Search Engine 
+
+      // temporary mockup data
+
+      overlayData = [];
+     
+      var options = {
+          shouldSort: true,
+          threshold: 0.6,
+          location: 0,
+          distance: 100,
+          maxPatternLength: 32,
+          minMatchCharLength: 2,
+          keys: [
+            "properties.displayName",
+            "properties.description"
+        ]
+        };
+        
+        fuse = new Fuse(overlayData, options); // "list" is the item array
+
 
 
 
@@ -386,10 +407,24 @@ function getIconByType(featureType) {
 
 function saveMarker(geojsonFeature){
 
-    console.log(JSON.stringify(geojsonFeature));
-  
+    var url = 'http://localhost:8001/api/saveitem'; //TODO : to config file
+    var data = geojsonFeature;
 
+    console.log("Marker saved : " , geojsonFeature);
+    
+    // contacts backend to store new feature
+    fetch(url, {
+      method: 'POST',
+      body: JSON.stringify(data), 
+      headers: new Headers({
+        'Content-Type': 'application/json'
+      })
+    }).then(res => res.json())
+    .catch(error => console.error('Error :', error))
+    .then(response => console.log('Successfully added item:', response));
 
+    //updates searchlist in live memory
+    overlayData.push(geojsonFeature);
 };
 
 function addItem(map) {
@@ -477,6 +512,19 @@ function generateSearchList(results) {
                 results[index]["geometry"]["coordinates"][1],
                 results[index]["geometry"]["coordinates"][0]], 
                 4);
+                var popup = L.popup()
+                .setLatLng(L.latLng(results[index]["geometry"]["coordinates"][1], results[index]["geometry"]["coordinates"][0])) 
+                .setContent(
+                    
+                    "<div class='txtWB'>"+ results[index]["properties"]["displayName"] + "</div>" + "<br>"
+                    + "<div>"+ results[index]["properties"]["description"] + "</div>"
+                );
+                popup.className = 'customPopup';
+                popup.maxWidth= 500;
+                popup.openOn(map);
+               
+
+
         }
       
         document.getElementById("srchResults").appendChild(div);
