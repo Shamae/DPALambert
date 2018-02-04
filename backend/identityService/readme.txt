@@ -4,4 +4,6 @@ How to get this running:
 
     - execute "dotnet restore" and "dotnet run"
 
+    - start via command line with dotnet .\bin\Debug\netcoreapp2.0\identityService.dll
+
     

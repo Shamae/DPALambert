@@ -1,0 +1,15 @@
+{
+  "name": "frontend",
+  "version": "1.0.0",
+  "description": "Frontend for SMV WorldMap",
+  "main": "server.js",
+  "scripts": {
+    "test": "test",
+    "start": "node server.js"
+  },
+  "author": "dyingcircle",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.2"
+  }
+}
