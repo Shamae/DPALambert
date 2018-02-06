@@ -17,7 +17,7 @@ db.category.insert([
 db.createCollection('featureType');
 db.featureType.insert([
     { '_id' : 1, 'displayName' : 'Regions/territories', 'categoryId' : 1, 'geometryType' : 'polygon' },
-    { '_id' : 2, 'displayName' : 'Cities and settlements', 'categoryId' : 1, 'geometryType' : 'polygon' },
+    { '_id' : 2, 'displayName' : 'Cities and settlements', 'categoryId' : 1, 'geometryType' : 'point' },
     { '_id' : 3, 'displayName' : 'Points of interest', 'categoryId' : 1, 'geometryType' : 'point' },
     { '_id' : 4, 'displayName' : 'Mayor roads/passages', 'categoryId' : 1, 'geometryType' : 'point' },
     { '_id' : 5, 'displayName' : 'Mayor trade routes', 'categoryId' : 1, 'geometryType' : 'point' },
