@@ -27,7 +27,7 @@ db.item.insert([
         'type': 'Feature',
         'geometry': {
             'type': 'Point',
-            'coordinates': [-57, 69]
+            'coordinates': [69, -57]
         },
         'properties': {
             'featureTypeId': 2,
@@ -41,7 +41,7 @@ db.item.insert([
         'type': 'Feature',
         'geometry': {
             'type': 'Point',
-            'coordinates': [-65, 61]
+            'coordinates': [61, -69]
         },
         'properties': {
             'featureTypeId': 2,
@@ -55,7 +55,7 @@ db.item.insert([
         'type': 'Feature',
         'geometry': {
             'type': 'Point',
-            'coordinates': [-59, 69]
+            'coordinates': [69, -59]
         },
         'properties': {
             'featureTypeId': 2,
@@ -69,7 +69,7 @@ db.item.insert([
         'type': 'Feature',
         'geometry': {
             'type': 'Point',
-            'coordinates': [-89, 76]
+            'coordinates': [76, -89]
         },
         'properties': {
             'featureTypeId': 2,
@@ -98,7 +98,7 @@ db.item.insert([
         'type': 'Feature',
         'geometry': {
             'type': 'Point',
-            'coordinates': [-67, 80]
+            'coordinates': [80, -67]
         },
         'properties': {
             'featureTypeId': 15,
@@ -112,7 +112,7 @@ db.item.insert([
         'type': 'Feature',
         'geometry': {
             'type': 'Point',
-            'coordinates': [-43, 69]
+            'coordinates': [69, -43]
         },
         'properties': {
             'featureTypeId': 15,
@@ -140,7 +140,7 @@ db.item.insert([
         'type': 'Feature',
         'geometry': {
             'type': 'Point',
-            'coordinates': [-79, 38]
+            'coordinates': [38, -79]
         },
         'properties': {
             'featureTypeId': 15,
@@ -169,7 +169,7 @@ db.item.insert([
         'type': 'Feature',
         'geometry': {
             'type': 'Point',
-            'coordinates': [-56, 68]
+            'coordinates': [68, -59]
         },
         'properties': {
             'featureTypeId': 16,
@@ -183,7 +183,7 @@ db.item.insert([
         'type': 'Feature',
         'geometry': {
             'type': 'Point',
-            'coordinates': [-52, 68]
+            'coordinates': [68, -52]
         },
         'properties': {
             'featureTypeId': 16,
@@ -197,7 +197,7 @@ db.item.insert([
         'type': 'Feature',
         'geometry': {
             'type': 'Point',
-            'coordinates': [-78, 58]
+            'coordinates': [58, -78]
         },
         'properties': {
             'featureTypeId': 16,
@@ -211,7 +211,7 @@ db.item.insert([
         'type': 'Feature',
         'geometry': {
             'type': 'Point',
-            'coordinates': [-100, 78]
+            'coordinates': [78, -100]
         },
         'properties': {
             'featureTypeId': 16,
