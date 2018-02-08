@@ -8,7 +8,7 @@ function initialize() {
         iconUrl: 'img/playerIcon.png',
         //shadowUrl: 'leaf-shadow.png',
 
-        iconSize: [32, 32], // size of the icon
+        iconSize: [16, 16], // size of the icon
         //shadowSize:   [50, 64], // size of the shadow
         iconAnchor: [16, 16], // point of the icon which will correspond to marker's location
         //shadowAnchor: [4, 62],  // the same for the shadow
@@ -17,6 +17,17 @@ function initialize() {
 
     nonPlayerIcon = L.icon({
         iconUrl: 'img/nonPlayerIcon.png',
+        //shadowUrl: 'leaf-shadow.png',
+
+        iconSize: [16, 16], // size of the icon
+        //shadowSize:   [50, 64], // size of the shadow
+        iconAnchor: [16, 16], // point of the icon which will correspond to marker's location
+        //shadowAnchor: [4, 62],  // the same for the shadow
+        popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
+    });
+
+    cityIcon = L.icon({
+        iconUrl: 'img/cityIcon.png',
         //shadowUrl: 'leaf-shadow.png',
 
         iconSize: [32, 32], // size of the icon
@@ -108,6 +119,12 @@ function onEachFeature(feature, layer) {
 
 
     switch (feature.properties.featureTypeId) {
+        
+        case 2:
+
+            layer.setIcon(cityIcon);
+            break;
+
         case 15:
 
             layer.setIcon(nonPlayerIcon);
@@ -513,12 +530,14 @@ function generateSearchList(results) {
         div.innerHTML = results[i]["properties"]["displayName"];
 
         item = results[i];
+
+        console.log("fly to: " + JSON.stringify(results[i]));
         div.onclick = function () {
             var index = this.getAttribute("data-srch-index");
 
             map.flyTo([
-                results[index]["geometry"]["coordinates"][1],
-                results[index]["geometry"]["coordinates"][0]],
+                results[index]["geometry"]["coordinates"][1][0],
+                results[index]["geometry"]["coordinates"][0][0]],
                 4);
 
             var popupOptions = {
@@ -529,7 +548,7 @@ function generateSearchList(results) {
             };
 
             var popup = L.popup(popupOptions)
-                .setLatLng(L.latLng(results[index]["geometry"]["coordinates"][1], results[index]["geometry"]["coordinates"][0]))
+                .setLatLng(L.latLng(results[index]["geometry"]["coordinates"][1][0], results[index]["geometry"]["coordinates"][0][0]))
                 .setContent(
                 "<div class='txtWB'>" + results[index]["properties"]["displayName"] + "</div>" + "<br>"
                 + "<div>" + results[index]["properties"]["description"] + "</div>"

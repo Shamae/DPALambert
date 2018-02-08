@@ -11,7 +11,7 @@ var itemModel = new mongoose.Schema({
             default: 'Point'
         },
         coordinates: {
-            type: [ Number ]
+            type: [ Array ]
         }
     },
     properties:{
