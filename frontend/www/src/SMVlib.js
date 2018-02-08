@@ -242,7 +242,7 @@ function getFeatureByTYpe(map, typeId) {
 
 };
 
-function createMenu(map) {
+function initializeWorldMapContent(map) {
 
     initialize();
 
@@ -491,6 +491,37 @@ function addItem(map) {
 
 };
 
+function getItemCoord(item){
+
+    var coord = {};
+    coord.lng = 0;
+    coord.lat = 0;
+
+    switch (item["properties"]["featureTypeId"]) {
+        
+        case 10:
+
+        coord.lng = item["geometry"]["coordinates"][0][0][0];
+        coord.lat = item["geometry"]["coordinates"][0][0][1];
+            break;
+
+        default:
+        
+        coord.lat = item["geometry"]["coordinates"][1][0];
+        coord.lng = item["geometry"]["coordinates"][0][0];
+        
+
+            break;
+
+
+
+    };
+    
+
+
+    return coord;
+};
+
 function searchItem() {
 
     var key = document.getElementById('srchInputField').value;
@@ -531,13 +562,18 @@ function generateSearchList(results) {
 
         item = results[i];
 
-        console.log("fly to: " + JSON.stringify(results[i]));
+        
+
+
+        
+        //console.log("fly to: " + " ( "+coord.lng + " , " + coord.lat+")" + JSON.stringify(results[i]));
         div.onclick = function () {
             var index = this.getAttribute("data-srch-index");
+            coord = getItemCoord(results[index]);
 
             map.flyTo([
-                results[index]["geometry"]["coordinates"][1][0],
-                results[index]["geometry"]["coordinates"][0][0]],
+                coord.lat,
+                coord.lng],
                 4);
 
             var popupOptions = {
@@ -548,7 +584,7 @@ function generateSearchList(results) {
             };
 
             var popup = L.popup(popupOptions)
-                .setLatLng(L.latLng(results[index]["geometry"]["coordinates"][1][0], results[index]["geometry"]["coordinates"][0][0]))
+                .setLatLng(L.latLng(coord.lat, coord.lng))
                 .setContent(
                 "<div class='txtWB'>" + results[index]["properties"]["displayName"] + "</div>" + "<br>"
                 + "<div>" + results[index]["properties"]["description"] + "</div>"
