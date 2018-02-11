@@ -11,7 +11,7 @@ var routes = function(Item){
     itemRouter.route('/')
         .get(itemController.get);
 
-    // routes with itemId
+    // routes with itemId (middleware)
     itemRouter.use('/:itemId', function(req, res, next){
         Item.findById(req.params.itemId, function (err, item){
             if(err) {

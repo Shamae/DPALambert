@@ -7,6 +7,27 @@ var routes = function(Item){
     // get controller
     var itemController = require('../controllers/itemController')(Item)
 
+    // routes with itemId (middleware)
+    itemRouter.use('/:itemId', function(req, res, next){
+        Item.findById(req.params.itemId, function (err, item){
+            if(err) {
+                res.status(500);
+                res.send(err);
+            }
+            else if(item){
+                // put item into request
+                req.item = item;
+                // advance in pipeline
+                next();
+            }
+            else {
+                // item not found
+                res.status(404);
+                res.send('no item found')
+            };
+        });
+    });
+
     // config routes with itemId
     itemRouter.route('/:itemId')
         .put(function(req,res){

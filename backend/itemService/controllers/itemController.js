@@ -7,7 +7,7 @@ var itemController = function(Item){
             query = req.query;
         };
 
-        // get all items with featureTypeId
+        // query items
         Item.find(query, function(err, items){
             if (err){ 
                 res.status(500);
