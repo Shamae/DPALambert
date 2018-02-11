@@ -19,8 +19,9 @@ db.item.insert([
             'featureTypeId': 2,
             'displayName': 'Justitian',
             'description': 'The righteous.',
-            'zoomlevel': 1,
-            'owner' : 'shamae',
+            'zoomlevel': 0,
+            'visibility': 'public',
+            'owner': 'shamae',
             'timestamp' : new Date()
         }
     },
@@ -34,6 +35,8 @@ db.item.insert([
             'featureTypeId': 2,
             'displayName': 'Hellvetics stronghold',
             'description': 'A fortress in the alps.',
+            'zoomlevel': 2,
+            'visibility': 'public',
             'owner' : 'dyingcircle',
             'timestamp' : new Date()
         }
@@ -48,6 +51,8 @@ db.item.insert([
             'featureTypeId': 2,
             'displayName': 'Toulon',
             'description': 'Setting of The Killing Game.',
+            'zoomlevel': 1,
+            'visibility': 'public',
             'owner' : 'dyingcircle',
             'timestamp' : new Date()
         }
@@ -62,6 +67,8 @@ db.item.insert([
             'featureTypeId': 2,
             'displayName': 'Lucatore',
             'description': 'Setting of In Thy Blood.',
+            'zoomlevel': 1,
+            'visibility': 'public',
             'owner' : 'shamae',
             'timestamp' : new Date()
         }
@@ -76,6 +83,8 @@ db.item.insert([
             'featureTypeId': 2,
             'displayName': 'Tripol',
             'description': 'The hub of the world.',
+            'zoomlevel': 0,
+            'visibility': 'public',
             'owner' : 'shamae',
             'timestamp' : new Date()
         }
@@ -91,6 +100,8 @@ db.item.insert([
             'featureTypeId': 15,
             'displayName': 'First judge Archot',
             'description': 'He\'s old and somewhat insane.',
+            'zoomlevel': 2,
+            'visibility': 'public',
             'owner' : 'dyingcircle',
             'timestamp' : new Date()
         }
@@ -105,6 +116,8 @@ db.item.insert([
             'featureTypeId': 15,
             'displayName': 'Dr. Hernandez Vasco',
             'description': 'He\'s legion.',
+            'zoomlevel': 2,
+            'visibility': 'public',
             'owner' : 'shamae',
             'timestamp' : new Date()
         }
@@ -119,6 +132,8 @@ db.item.insert([
             'featureTypeId': 15,
             'displayName': 'Eject',
             'description': 'A needle in east Borca.',
+            'zoomlevel': 2,
+            'visibility': 'public',
             'owner' : 'shamae',
             'timestamp' : new Date()
         }
@@ -133,6 +148,8 @@ db.item.insert([
             'featureTypeId': 15,
             'displayName': 'Rutgar',
             'description': 'The old wolf.',
+            'zoomlevel': 2,
+            'visibility': 'public',
             'owner' : 'dyingcircle',
             'timestamp' : new Date()
         }
@@ -147,6 +164,8 @@ db.item.insert([
             'featureTypeId': 15,
             'displayName': 'Ezenwa the Hogon',
             'description': 'Anubian.',
+            'zoomlevel': 2,
+            'visibility': 'public',
             'owner' : 'dyingcircle',
             'timestamp' : new Date()
         }
@@ -162,6 +181,8 @@ db.item.insert([
             'featureTypeId': 16,
             'displayName': 'Scrapper Lupo',
             'description': 'A scrapper living and working in syracus.',
+            'zoomlevel': 3,
+            'visibility': 'owner',
             'owner' : 'shamae',
             'timestamp' : new Date()
         }
@@ -176,6 +197,8 @@ db.item.insert([
             'featureTypeId': 16,
             'displayName': 'Corporal Gruber',
             'description': 'Corlonel of Territorial Region II.',
+            'zoomlevel': 3,
+            'visibility': 'owner',
             'owner' : 'shamae',
             'timestamp' : new Date()
         }
@@ -190,6 +213,8 @@ db.item.insert([
             'featureTypeId': 16,
             'displayName': 'Luren',
             'description': 'A pneumancer.',
+            'zoomlevel': 3,
+            'visibility': 'owner',
             'owner' : 'dyingcircle',
             'timestamp' : new Date()
         }
@@ -204,7 +229,9 @@ db.item.insert([
             'featureTypeId': 16,
             'displayName': 'Ukmena',
             'description': 'A neolybian (seafarer).',
-            'owner' : 'shamae',
+            'zoomlevel': 3,
+            'visibility': 'public',
+            'owner' : 'owner',
             'timestamp' : new Date()
         }
     },
@@ -218,6 +245,8 @@ db.item.insert([
             'featureTypeId': 16,
             'displayName': 'Agu',
             'description': 'A kifo.',
+            'zoomlevel': 3,
+            'visibility': 'owner',
             'owner' : 'dyingcircle',
             'timestamp' : new Date()
         }
@@ -238,6 +267,8 @@ db.item.insert([
              'featureTypeId': 10,
              'displayName': 'Symbol',
              'description': 'Just to show off.',
+             'zoomlevel': 0,
+             'visibility': 'public',
              'owner' : 'shamae',
              'timestamp' : new Date()
          }       
