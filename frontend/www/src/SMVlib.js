@@ -8,7 +8,7 @@ function initialize() {
         iconUrl: 'img/playerIcon.png',
         //shadowUrl: 'leaf-shadow.png',
 
-        iconSize: [16, 16], // size of the icon
+        iconSize: [24, 24], // size of the icon
         //shadowSize:   [50, 64], // size of the shadow
         iconAnchor: [16, 16], // point of the icon which will correspond to marker's location
         //shadowAnchor: [4, 62],  // the same for the shadow
@@ -19,7 +19,7 @@ function initialize() {
         iconUrl: 'img/nonPlayerIcon.png',
         //shadowUrl: 'leaf-shadow.png',
 
-        iconSize: [16, 16], // size of the icon
+        iconSize: [24, 24], // size of the icon
         //shadowSize:   [50, 64], // size of the shadow
         iconAnchor: [16, 16], // point of the icon which will correspond to marker's location
         //shadowAnchor: [4, 62],  // the same for the shadow
@@ -507,8 +507,8 @@ function getItemCoord(item){
 
         default:
         
-        coord.lat = item["geometry"]["coordinates"][1][0];
-        coord.lng = item["geometry"]["coordinates"][0][0];
+        coord.lat = item["geometry"]["coordinates"][1];
+        coord.lng = item["geometry"]["coordinates"][0];
         
 
             break;
