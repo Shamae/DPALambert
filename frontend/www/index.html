@@ -115,6 +115,7 @@
       mgr.getUser().then(function (user) {
         if (user) {
           console.log("User logged in", user.profile);
+
         }
         else {
           console.log("User not logged in");
@@ -153,6 +154,7 @@
       }
 
       function logout() {
+        console.log("We did try to logout...")
         mgr.signoutRedirect();
       }
 
@@ -194,8 +196,8 @@
         });
       });
 
-      document.querySelector(".call").addEventListener("click", callApi, false);
-      document.querySelector(".revoke").addEventListener("click", revoke, false);
+     document.querySelector(".call").addEventListener("click", callApi, false);
+     document.querySelector(".revoke").addEventListener("click", revoke, false);
       document.querySelector(".logout").addEventListener("click", logout, false);
 
 
@@ -323,7 +325,7 @@
 
         console.log('[DEBUG] Check the coord?');
         console.log("Lat, Lon : " + e.latlng.lat + ", " + e.latlng.lng);
-        console.log('X, Y =  ' + e.clientX + ", " + e.clientY);
+        console.log("Current user:" + mgr.getUser());
         //fetchAPIdata();
 
 
@@ -391,6 +393,10 @@
       <i class="fa fa-sign-in" aria-hidden="true"></i>
       Sign in</button>
 
+      <button id="x2" class="logout">
+      <i class="fa fa-sign-out" aria-hidden="true"></i>
+      Sign out</button>
+
   </div>
 
 
@@ -435,8 +441,71 @@
     </div>
   </div>
 
+<!-- start meddling with oidc-->
 
+   <div class="container">
+        <header class="page-header">
+            <h1>JavaScript Oidc Client</h1>
+        </header>
 
+        <div class="row">
+            <ul class="list-unstyled list-inline">
+                <li><a class="btn btn-primary" href="index.html">Home</a></li>
+                <li><button class="btn btn-default request" data-scope='openid' data-type='id_token'>Login Only</button></li>
+                <li><button class="btn btn-default request" data-scope='openid profile email' data-type='id_token'>Profile</button></li>
+                <li><button class="btn btn-default request" data-scope='openid profile email api1 api2.read_only' data-type='id_token token'>Profile and API Access</button></li>
+                <li><button class="btn btn-default request" data-scope='api1 api2.read_only' data-type='token'>API Access Only</button></li>
+                <li><button class="btn btn-primary call">Call Service</button></li>
+                <li><button class="btn btn-info revoke">Revoke Access Token</button></li>
+                <li><button class="btn btn-info logout">Logout</button></li>
+            </ul>
+        </div>
+
+        <div class="row">
+            <ul class="list-unstyled list-inline">
+            </ul>
+        </div>
+
+        <div class="row">
+            <div class="panel panel-default">
+                <div class="panel-heading">Message</div>
+                <div class="panel-body">
+                    <pre id="response"></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Current User</div>
+                    <div class="panel-body">
+                        <pre id="id-token"></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!--<div class="col-sm-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Access Token</div>
+                    <div class="panel-body">
+                        <pre id="access-token"></pre>
+                    </div>
+                </div>
+            </div>-->
+
+            <div class="col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Ajax Result</div>
+                    <div class="panel-body">
+                        <pre id="ajax-result"></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+<!-- stop meddling -->
+<!--
   <div class="w3-container">
 
     <div id="loginForm" class="w3-modal">
@@ -475,7 +544,7 @@
       </div>
     </div>
   </div>
-
+-->
 
   <script type="text/javascript">
     document.querySelector('.searchbox [type="reset"]').addEventListener('click', function () { this.parentNode.querySelector('input').focus(); });
