@@ -19,6 +19,7 @@ db.item.insert([
             'featureTypeId': 2,
             'displayName': 'Justitian',
             'description': 'The righteous.',
+            'zoomlevel': 1,
             'owner' : 'shamae',
             'timestamp' : new Date()
         }

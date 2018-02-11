@@ -13,7 +13,7 @@ namespace identityService
             // configure CORS
             services.AddCors(options =>
             {
-                options.AddPolicy("AllowSpecificOrigin",
+                options.AddPolicy("AllowAll",
                     builder => builder
                         .AllowAnyOrigin()
                         .AllowAnyHeader()
@@ -46,7 +46,7 @@ namespace identityService
             }
 
             // use CORS
-            app.UseCorss("AllowSpecificOrigin");
+            app.UseCors("AllowAll");
 
             // add IdentityServer to the pipeline
             app.UseIdentityServer();
