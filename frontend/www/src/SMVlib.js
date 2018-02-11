@@ -264,7 +264,7 @@ function initializeWorldMapContent(map) {
             return;
         }
 
-        console.log("coucou");
+       
         return response.json();
 
     }).then(function (data) {
