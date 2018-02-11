@@ -434,7 +434,8 @@ function saveMarker(geojsonFeature) {
         method: 'POST',
         body: JSON.stringify(data),
         headers: new Headers({
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+ token
         })
     }).then(res => res.json())
         .catch(error => console.error('Error :', error))
@@ -623,6 +624,9 @@ function generateSearchList(results) {
     function logout() {
         mgr.signoutRedirect();
     };
+
+
+    
 
 
 

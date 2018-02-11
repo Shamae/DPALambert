@@ -26,7 +26,7 @@ var port = process.env.port || 3001;
 //CORS configuration
 app.use(cors());
 
-/* meddling with security
+
 // verify token
 let options = {
     validationUri: 'http://${HOST_IP}:5000/connect/introspect',
@@ -34,7 +34,7 @@ let options = {
     unprotected: ['/api/item']
     };
 app.use(bearerTokenValidation(options));
-*/
+
 // to be able to read the body
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
