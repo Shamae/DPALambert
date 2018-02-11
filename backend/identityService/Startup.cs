@@ -10,6 +10,18 @@ namespace identityService
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            // configure CORS
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowSpecificOrigin",
+                    builder => builder
+                        .WithOrigins("http://localhost:8080")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials()
+                    );
+            });
+
             // for MVC UI
             services.AddMvc();
 
@@ -32,6 +44,9 @@ namespace identityService
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            // use CORS
+            app.UseCorss("AllowSpecificOrigin");
 
             // add IdentityServer to the pipeline
             app.UseIdentityServer();
