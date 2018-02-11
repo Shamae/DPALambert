@@ -52,7 +52,7 @@
     var overlayData = []; //
     var fuse; // Instance of fuse search engine
 
-    
+
 
     function init() {
 
@@ -84,25 +84,7 @@
         tms: false
       }).addTo(map);
 
-    // shamae 07/02/2018 : this works... now get it from the item server ;)
-   /* var geoPrimer = {
-                      "type": "Feature",
-                      "geometry": {
-                          "type": "Polygon",
-                          "coordinates": [[
-                              [35,-97],[35,-95],[33,-95],[33,-93],[36,-90],[36,-91],[34,-93],[34,-94],[35,-94],[35,-93],[36,-92],[36,-94],[37,-94],[37,-95],[36,-95],[36,-97],
-                              [38,-97],[38,-95],[40,-95],[43,-98],[42,-98],[40,-96],[39,-96],[39,-97],[40,-97],[41,-98],[39,-98],[39,-99],[38,-99],[38,-98],[36,-98],
-                              [36,-100],[38,-100],[38,-102],[35,-105],[35,-104],[37,-102],[37,-101],[36,-101],[36,-102],[35,-103],[35,-101],[34,-101],[34,-100],[35,-100],[35,-98],
-                              [33,-98],[33,-100],[31,-100],[28,-97],[29,-97],[31,-99],[32,-99],[32,-98],[31,-98],[30,-97],[32,-97],[32,-96],[33,-96],[33,-97],[35,-97]
-                          ]]
-                      },
-                      "properties": {
-                          "featureTypeId": 10,
-                          "displayName": "Symbol",
-                          "description": "Just to show off."
-                      }       
-                    }
-    L.geoJSON(geoPrimer).addTo(map)*/
+
 
       // Init Map Content form backend 
 
@@ -112,33 +94,176 @@
 
 
 
-// Login and stuff
+      // Login and stuff
 
-//document.getElementById("signInBtn").addEventListener("click", login, false);
-//document.getElementById("api").addEventListener("click", api, false);
-//document.getElementById("logout").addEventListener("click", logout, false);
+      document.getElementById("signInBtn").addEventListener("click", login, false);
+      //document.getElementById("api").addEventListener("click", api, false);
+      //document.getElementById("logout").addEventListener("click", logout, false);
 
-// init oidc-client
+      // init oidc-client
 
-var config = {
-    authority: "http://localhost:5000",
-    client_id: "js",
-    redirect_uri: "http://localhost:5003/callback.html",
-    response_type: "id_token token",
-    scope:" openid profile tileApi menuApi itemApi",
-    post_logout_redirect_uri : "http://localhost:5003/index.html",
-};
-var mgr = new Oidc.UserManager(config);
+      var config = {
+        authority: "http://localhost:5000",
+        client_id: "worldMapUserClient",
+        redirect_uri: "http://localhost:8080/callback.html",
+        response_type: "id_token token",
+        scope: " openid profile tileApi menuApi itemApi",
+        post_logout_redirect_uri: "http://localhost:8080/index.html",
+      };
+      var mgr = new Oidc.UserManager(config);
 
-mgr.getUser().then(function (user) {
-    if (user) {
-        console.log("User logged in", user.profile);
-    }
-    else {
-        console.log("User not logged in");
-    }
-});
+      mgr.getUser().then(function (user) {
+        if (user) {
+          console.log("User logged in", user.profile);
+        }
+        else {
+          console.log("User not logged in");
+        }
+      });
 
+
+      mgr.events.addUserLoaded(function (user) {
+        log("User loaded");
+        showTokens();
+      });
+      mgr.events.addUserUnloaded(function () {
+        log("User logged out locally");
+        showTokens();
+      });
+      mgr.events.addAccessTokenExpiring(function () {
+        log("Access token expiring...");
+      });
+      mgr.events.addSilentRenewError(function (err) {
+        log("Silent renew error: " + err.message);
+      });
+      mgr.events.addUserSignedOut(function () {
+        log("User signed out of OP");
+      });
+
+      function login(scope, response_type) {
+        var use_popup = false;
+        if (!use_popup) {
+          mgr.signinRedirect({ scope: scope, response_type: response_type });
+        }
+        else {
+          mgr.signinPopup({ scope: scope, response_type: response_type }).then(function () {
+            log("Logged In");
+          });
+        }
+      }
+
+      function logout() {
+        mgr.signoutRedirect();
+      }
+
+      function revoke() {
+        mgr.revokeAccessToken();
+      }
+
+      function callApi() {
+        mgr.getUser().then(function (user) {
+          var xhr = new XMLHttpRequest();
+          xhr.onload = function (e) {
+            if (xhr.status >= 400) {
+              display("#ajax-result", {
+                status: xhr.status,
+                statusText: xhr.statusText,
+                wwwAuthenticate: xhr.getResponseHeader("WWW-Authenticate")
+              });
+            }
+            else {
+              display("#ajax-result", xhr.response);
+            }
+          };
+          xhr.open("GET", "http://localhost:3721/identity", true);
+          xhr.setRequestHeader("Authorization", "Bearer " + user.access_token);
+          xhr.send();
+        });
+      }
+
+      if (window.location.hash) {
+        handleCallback();
+      }
+
+      [].forEach.call(document.querySelectorAll(".request"), function (button) {
+        button.addEventListener("click", function () {
+          login(this.dataset["scope"], this.dataset["type"]);
+        });
+      });
+
+      document.querySelector(".call").addEventListener("click", callApi, false);
+      document.querySelector(".revoke").addEventListener("click", revoke, false);
+      document.querySelector(".logout").addEventListener("click", logout, false);
+
+
+      function log(data) {
+        document.getElementById('response').innerText = '';
+
+        Array.prototype.forEach.call(arguments, function (msg) {
+          if (msg instanceof Error) {
+            msg = "Error: " + msg.message;
+          }
+          else if (typeof msg !== 'string') {
+            msg = JSON.stringify(msg, null, 2);
+          }
+          document.getElementById('response').innerHTML += msg + '\r\n';
+        });
+      }
+
+      function display(selector, data) {
+        if (data && typeof data === 'string') {
+          try {
+            data = JSON.parse(data);
+          }
+          catch (e) { }
+        }
+        if (data && typeof data !== 'string') {
+          data = JSON.stringify(data, null, 2);
+        }
+        document.querySelector(selector).textContent = data;
+      }
+
+      function showTokens() {
+        mgr.getUser().then(function (user) {
+          if (user) {
+            display("#id-token", user);
+          }
+          else {
+            log("Not logged in");
+          }
+        });
+      }
+      showTokens();
+
+      function handleCallback() {
+        mgr.signinRedirectCallback().then(function (user) {
+          var hash = window.location.hash.substr(1);
+          var result = hash.split('&').reduce(function (result, item) {
+            var parts = item.split('=');
+            result[parts[0]] = parts[1];
+            return result;
+          }, {});
+
+          log(result);
+          showTokens();
+
+          window.history.replaceState({},
+            window.document.title,
+            window.location.origin + window.location.pathname);
+
+        }, function (error) {
+          log(error);
+        });
+      }
+
+      // OIDC-client code off
+
+      // bind sign in button to login
+
+      document.getElementById("signInBtn").addEventListener("click", function () {
+
+        console.log("let's try signing in");
+      });
 
 
       // test easybutton
@@ -182,12 +307,12 @@ mgr.getUser().then(function (user) {
 
         lat = e.latlng.lat;
         lng = e.latlng.lng;
-console.log("wtf?");
+        console.log("wtf?");
         document.getElementById('itemForm').style.display = 'block';
 
       });
 
-      map.on("dragstart", function(e){
+      map.on("dragstart", function (e) {
 
         clearSearchList();
       });
@@ -195,10 +320,10 @@ console.log("wtf?");
         //var myElement = document.getElementById("log");
         //myElement.innerText = "Lon (X), Lat (Y) : " + e.latlng.lng + ", " + e.latlng.lat;
         //alert("Lat, Lon : " + e.latlng.lat + ", " + e.latlng.lng)
-        
+
         console.log('[DEBUG] Check the coord?');
         console.log("Lat, Lon : " + e.latlng.lat + ", " + e.latlng.lng);
-        console.log('X, Y =  ' + e.clientX + ", "+e.clientY);
+        console.log('X, Y =  ' + e.clientX + ", " + e.clientY);
         //fetchAPIdata();
 
 
@@ -225,39 +350,38 @@ console.log("wtf?");
 <body onload="init()">
   <div id="map"></div>
 
-    <!-- Searchbox -->
+  <!-- Searchbox -->
 
-    <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
-      <symbol xmlns="http://www.w3.org/2000/svg" id="sbx-icon-search-22" viewBox="0 0 40 40">
-        <path d="M24.382 25.485c-1.704 1.413-3.898 2.263-6.292 2.263-5.42 0-9.814-4.36-9.814-9.736 0-5.377 4.394-9.736 9.814-9.736s9.815 4.36 9.815 9.736c0 2.126-.687 4.093-1.853 5.694l5.672 5.627-1.73 1.718-5.612-5.565zM20 40c11.046 0 20-8.954 20-20S31.046 0 20 0 0 8.954 0 20s8.954 20 20 20zm-1.91-14.686c4.065 0 7.36-3.27 7.36-7.302 0-4.033-3.295-7.302-7.36-7.302s-7.36 3.27-7.36 7.302c0 4.033 3.295 7.302 7.36 7.302z"
-          fill-rule="evenodd" />
-      </symbol>
-      <symbol xmlns="http://www.w3.org/2000/svg" id="sbx-icon-clear-4" viewBox="0 0 20 20">
-        <path d="M11.664 9.877l4.485 4.485-1.542 1.54-4.485-4.485-4.485 4.485-1.54-1.54 4.485-4.485-4.485-4.485 1.54-1.54 4.485 4.484 4.485-4.485 1.54 1.542-4.484 4.485zM10 20c5.523 0 10-4.477 10-10S15.523 0 10 0 0 4.477 0 10s4.477 10 10 10z"
-          fill-rule="evenodd" />
-      </symbol>
-    </svg>
-    <div class="top-left-pane">
-      <form novalidate="novalidate" onsubmit="return false;" class="searchbox sbx-custom">
-        <div role="search" class="sbx-google__wrapper">
-          <input id="srchInputField" name="search" placeholder="Search your website" autocomplete="off" required="required" class="sbx-custom__input"
-            type="search" onkeyup="searchItem()"
-            onchange="searchItem()">
-          <button type="submit" title="Submit your search query." class="sbx-custom__submit">
-            <svg role="img" aria-label="Search">
-              <use xlink:href="#sbx-icon-search-22"></use>
-            </svg>
-          </button>
-          <button type="reset" title="Clear the search query." class="sbx-custom__reset">
-            <svg role="img" aria-label="Reset">
-              <use xlink:href="#sbx-icon-clear-4"></use>
-            </svg>
-          </button>
-        </div>
-      </form>
-    
-      <div id="srchResults"></div>
-    </div>
+  <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+    <symbol xmlns="http://www.w3.org/2000/svg" id="sbx-icon-search-22" viewBox="0 0 40 40">
+      <path d="M24.382 25.485c-1.704 1.413-3.898 2.263-6.292 2.263-5.42 0-9.814-4.36-9.814-9.736 0-5.377 4.394-9.736 9.814-9.736s9.815 4.36 9.815 9.736c0 2.126-.687 4.093-1.853 5.694l5.672 5.627-1.73 1.718-5.612-5.565zM20 40c11.046 0 20-8.954 20-20S31.046 0 20 0 0 8.954 0 20s8.954 20 20 20zm-1.91-14.686c4.065 0 7.36-3.27 7.36-7.302 0-4.033-3.295-7.302-7.36-7.302s-7.36 3.27-7.36 7.302c0 4.033 3.295 7.302 7.36 7.302z"
+        fill-rule="evenodd" />
+    </symbol>
+    <symbol xmlns="http://www.w3.org/2000/svg" id="sbx-icon-clear-4" viewBox="0 0 20 20">
+      <path d="M11.664 9.877l4.485 4.485-1.542 1.54-4.485-4.485-4.485 4.485-1.54-1.54 4.485-4.485-4.485-4.485 1.54-1.54 4.485 4.484 4.485-4.485 1.54 1.542-4.484 4.485zM10 20c5.523 0 10-4.477 10-10S15.523 0 10 0 0 4.477 0 10s4.477 10 10 10z"
+        fill-rule="evenodd" />
+    </symbol>
+  </svg>
+  <div class="top-left-pane">
+    <form novalidate="novalidate" onsubmit="return false;" class="searchbox sbx-custom">
+      <div role="search" class="sbx-google__wrapper">
+        <input id="srchInputField" name="search" placeholder="Search your website" autocomplete="off" required="required" class="sbx-custom__input"
+          type="search" onkeyup="searchItem()" onchange="searchItem()">
+        <button type="submit" title="Submit your search query." class="sbx-custom__submit">
+          <svg role="img" aria-label="Search">
+            <use xlink:href="#sbx-icon-search-22"></use>
+          </svg>
+        </button>
+        <button type="reset" title="Clear the search query." class="sbx-custom__reset">
+          <svg role="img" aria-label="Reset">
+            <use xlink:href="#sbx-icon-clear-4"></use>
+          </svg>
+        </button>
+      </div>
+    </form>
+
+    <div id="srchResults"></div>
+  </div>
   <div class="top-right-pane">
     <div id="signInBtn">
       <i class="fa fa-sign-in" aria-hidden="true"></i>
