@@ -96,7 +96,7 @@
 
       // Login and stuff
 
-      document.getElementById("signInBtn").addEventListener("click", login, false);
+      //document.getElementById("signInBtn").addEventListener("click", login, false);
       //document.getElementById("api").addEventListener("click", api, false);
       //document.getElementById("logout").addEventListener("click", logout, false);
 
@@ -187,6 +187,9 @@
 
       [].forEach.call(document.querySelectorAll(".request"), function (button) {
         button.addEventListener("click", function () {
+          console.log("we tried to log in with : \n" + 
+          "SCOPE = "+this.dataset["scope"]+"\n"+
+          "TYPE = " + this.dataset["type"]);
           login(this.dataset["scope"], this.dataset["type"]);
         });
       });
@@ -380,9 +383,14 @@
     <div id="srchResults"></div>
   </div>
   <div class="top-right-pane">
-    <div id="signInBtn">
+  
+
+      <button id="x" class="request"
+      data-scope='openid profile tileApi menuApi itemApi' 
+      data-type='id_token token'>
       <i class="fa fa-sign-in" aria-hidden="true"></i>
-      Sign in </div>
+      Sign in</button>
+
   </div>
 
 
