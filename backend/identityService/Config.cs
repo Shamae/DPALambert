@@ -71,12 +71,16 @@ namespace identityService
                     ClientId = "worldMapUserClient",
                     ClientName = "World Map User Client",
                     AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowAccessTokensViaBrowser = true,
 
                     // where to redirect to after login
                     RedirectUris = { "http://localhost:8080/callback.html" },
 
                     // where to redirect to after logout
                     PostLogoutRedirectUris = { "http://localhost:8080/index.html" },
+
+                    // CORS origins
+                    // AllowedCorsOrigins = { "http://localhost:8080" },
 
                     AllowedScopes =
                     {

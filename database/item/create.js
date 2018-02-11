@@ -21,7 +21,7 @@ db.item.insert([
             'description': 'The righteous.',
             'zoomlevel': 0,
             'visibility': 'public',
-            'owner': 'shamae',
+            'owner': 'alice',
             'timestamp' : new Date()
         }
     },
@@ -37,7 +37,7 @@ db.item.insert([
             'description': 'A fortress in the alps.',
             'zoomlevel': 2,
             'visibility': 'public',
-            'owner' : 'dyingcircle',
+            'owner' : 'bob',
             'timestamp' : new Date()
         }
     },
@@ -53,7 +53,7 @@ db.item.insert([
             'description': 'Setting of The Killing Game.',
             'zoomlevel': 1,
             'visibility': 'public',
-            'owner' : 'dyingcircle',
+            'owner' : 'bob',
             'timestamp' : new Date()
         }
     },
@@ -69,7 +69,7 @@ db.item.insert([
             'description': 'Setting of In Thy Blood.',
             'zoomlevel': 1,
             'visibility': 'public',
-            'owner' : 'shamae',
+            'owner' : 'alice',
             'timestamp' : new Date()
         }
     },
@@ -85,7 +85,7 @@ db.item.insert([
             'description': 'The hub of the world.',
             'zoomlevel': 0,
             'visibility': 'public',
-            'owner' : 'shamae',
+            'owner' : 'alice',
             'timestamp' : new Date()
         }
     },
@@ -102,7 +102,7 @@ db.item.insert([
             'description': 'He\'s old and somewhat insane.',
             'zoomlevel': 2,
             'visibility': 'public',
-            'owner' : 'dyingcircle',
+            'owner' : 'bob',
             'timestamp' : new Date()
         }
     },
@@ -118,7 +118,7 @@ db.item.insert([
             'description': 'He\'s legion.',
             'zoomlevel': 2,
             'visibility': 'public',
-            'owner' : 'shamae',
+            'owner' : 'alice',
             'timestamp' : new Date()
         }
     },
@@ -134,7 +134,7 @@ db.item.insert([
             'description': 'A needle in east Borca.',
             'zoomlevel': 2,
             'visibility': 'public',
-            'owner' : 'shamae',
+            'owner' : 'alice',
             'timestamp' : new Date()
         }
     },
@@ -150,7 +150,7 @@ db.item.insert([
             'description': 'The old wolf.',
             'zoomlevel': 2,
             'visibility': 'public',
-            'owner' : 'dyingcircle',
+            'owner' : 'bob',
             'timestamp' : new Date()
         }
     },
@@ -166,7 +166,7 @@ db.item.insert([
             'description': 'Anubian.',
             'zoomlevel': 2,
             'visibility': 'public',
-            'owner' : 'dyingcircle',
+            'owner' : 'bob',
             'timestamp' : new Date()
         }
     },
@@ -183,7 +183,7 @@ db.item.insert([
             'description': 'A scrapper living and working in syracus.',
             'zoomlevel': 3,
             'visibility': 'owner',
-            'owner' : 'shamae',
+            'owner' : 'alice',
             'timestamp' : new Date()
         }
     },
@@ -199,7 +199,7 @@ db.item.insert([
             'description': 'Corlonel of Territorial Region II.',
             'zoomlevel': 3,
             'visibility': 'owner',
-            'owner' : 'shamae',
+            'owner' : 'alice',
             'timestamp' : new Date()
         }
     },
@@ -215,7 +215,7 @@ db.item.insert([
             'description': 'A pneumancer.',
             'zoomlevel': 3,
             'visibility': 'owner',
-            'owner' : 'dyingcircle',
+            'owner' : 'bob',
             'timestamp' : new Date()
         }
     },
@@ -247,11 +247,11 @@ db.item.insert([
             'description': 'A kifo.',
             'zoomlevel': 3,
             'visibility': 'owner',
-            'owner' : 'dyingcircle',
+            'owner' : 'bob',
             'timestamp' : new Date()
         }
     },
-// Primer (shamae 07/02/2018 : Polygons can't be fetched yet)
+// Primer (alice 07/02/2018 : Polygons can't be fetched yet)
      {
          'type': 'Feature',
          'geometry': {
@@ -269,7 +269,7 @@ db.item.insert([
              'description': 'Just to show off.',
              'zoomlevel': 0,
              'visibility': 'public',
-             'owner' : 'shamae',
+             'owner' : 'alice',
              'timestamp' : new Date()
          }       
      }
