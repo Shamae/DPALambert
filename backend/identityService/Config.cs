@@ -40,9 +40,34 @@ namespace identityService
             // for resource token
             return new List<ApiResource>
             {
-                new ApiResource("tileApi", "Tile Servier API"),
+                new ApiResource("tileApi", "Tile Service API"),
                 new ApiResource("menuApi", "Menu Service API"),
-                new ApiResource("itemApi", "Item Service API")
+                new ApiResource
+                {
+                    Name = "itemApi",
+                    DisplayName = "Item Service API",
+
+                    // secret for using introspection endpoint
+                    ApiSecrets =
+                    {
+                        new Secret("itemsecret".Sha256())
+                    },
+
+                    // defining scopes
+                    Scopes =
+                    {
+                        new Scope()
+                        {
+                            Name = "itemApi.admint_access",
+                            DisplayName = "Full admin access to itemApi",
+                        },
+                        new Scope
+                        {
+                            Name = "itemApi",
+                            DisplayName = "Standard user access to itemApi"
+                        }
+                    }
+                }
             };
         }
 

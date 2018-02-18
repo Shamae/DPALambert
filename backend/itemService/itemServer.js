@@ -1,8 +1,7 @@
 var express = require('express'),
     mongoose = require('mongoose'),
     bodyParser = require('body-parser'),
-    cors = require('cors'),
-    bearerTokenValidation = require('express-accesstoken-validation');
+    cors = require('cors');
 
 const HOST_IP = process.env.HOST_IP;
 
@@ -28,11 +27,19 @@ app.use(cors());
 
 // verify token
 let options = {
-    validationUri: 'http://${HOST_IP}:5000/connect/introspect',
+    validationUri: 'http://localhost:5000/connect/introspect/',
     tokenParam: 'token',
     unprotected: ['/api/item']
     };
+var bearerTokenValidation = require('./validation/bearerTokenValidation');
 app.use(bearerTokenValidation(options));
+
+// small logger
+const logRequestStart = (req, res, next) => {
+    console.info(`${req.method} ${req.originalUrl}`)
+    next()
+}
+app.use(logRequestStart)
 
 // to be able to read the body
 app.use(bodyParser.urlencoded({extended:true}));
