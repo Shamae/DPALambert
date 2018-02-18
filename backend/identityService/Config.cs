@@ -79,6 +79,7 @@ namespace identityService
                     // where to redirect to after login
                     RedirectUris = { 
                         "http://localhost:8080/callback.html",
+                        "http://localhost:8080/popup.html",
                         "http://localhost:8080/index.html"
                          },
 

@@ -108,6 +108,10 @@
       response_type: "id_token token",
       scope: " openid profile tileApi menuApi itemApi",
       post_logout_redirect_uri: "http://localhost:8080/index.html",
+
+      // Config popup
+      popup_redirect_uri: "http://localhost:8080/popup.html",
+popupWindowFeatures: "menubar=yes,location=yes,toolbar=yes,width=1200,height=800,left=100,top=100;resizable=yes",
     };
     var mgr = new Oidc.UserManager(config);
 
@@ -136,13 +140,16 @@
     });
 
     function login(scope, response_type) {
-      var use_popup = false;
+      var use_popup = true;
       if (!use_popup) {
         mgr.signinRedirect({ scope: scope, response_type: response_type });
       }
       else {
         mgr.signinPopup({ scope: scope, response_type: response_type }).then(function () {
-          log("Logged In");
+
+          checkSigninStatus(mgr);
+          console.log("Logged In");
+
         });
       }
     }
