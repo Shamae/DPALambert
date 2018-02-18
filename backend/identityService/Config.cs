@@ -73,8 +73,14 @@ namespace identityService
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
 
+                    // only reference token
+                    AccessTokenType = AccessTokenType.Reference,
+
                     // where to redirect to after login
-                    RedirectUris = { "http://localhost:8080/callback.html" },
+                    RedirectUris = { 
+                        "http://localhost:8080/callback.html",
+                        "http://localhost:8080/index.html"
+                         },
 
                     // where to redirect to after logout
                     PostLogoutRedirectUris = { "http://localhost:8080/index.html" },
@@ -89,7 +95,10 @@ namespace identityService
                         "tileApi",
                         "menuApi",
                         "itemApi"
-                    }
+                    },
+
+                    // Consent
+                    RequireConsent = false
                 }
             };
         }

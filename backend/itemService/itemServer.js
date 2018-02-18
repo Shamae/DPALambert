@@ -26,7 +26,6 @@ var port = process.env.port || 3001;
 //CORS configuration
 app.use(cors());
 
-
 // verify token
 let options = {
     validationUri: 'http://${HOST_IP}:5000/connect/introspect',

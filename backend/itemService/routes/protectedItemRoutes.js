@@ -7,6 +7,10 @@ var routes = function(Item){
     // get controller
     var itemController = require('../controllers/itemController')(Item)
 
+    // config routes
+    itemRouter.route('/')
+        .post(itemController.post);
+        
     // routes with itemId (middleware)
     itemRouter.use('/:itemId', function(req, res, next){
         Item.findById(req.params.itemId, function (err, item){
@@ -42,11 +46,7 @@ var routes = function(Item){
                     res.json(req.item);
                 }
             });
-        })
-
-    // config routes
-    itemRouter.route('/')
-        .post(itemController.post);
+        });
 
     return itemRouter;
 };
