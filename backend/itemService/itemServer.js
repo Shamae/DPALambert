@@ -1,3 +1,6 @@
+
+'use strict';
+
 var express = require('express'),
     mongoose = require('mongoose'),
     bodyParser = require('body-parser'),
@@ -25,20 +28,20 @@ var port = process.env.port || 3001;
 //CORS configuration
 app.use(cors());
 
-// verify token
+// token validation
 let options = {
     validationUri: 'http://localhost:5000/connect/introspect/',
     tokenParam: 'token',
     unprotected: ['/api/item']
     };
-var bearerTokenValidation = require('./validation/bearerTokenValidation');
+var bearerTokenValidation = require('./security/bearerTokenValidation');
 app.use(bearerTokenValidation(options));
 
 // small logger
 const logRequestStart = (req, res, next) => {
-    console.info(`${req.method} ${req.originalUrl}`)
-    next()
-}
+    console.info(`${req.method} ${req.originalUrl}`);
+    next();
+    }
 app.use(logRequestStart)
 
 // to be able to read the body
@@ -55,12 +58,12 @@ app.use('/api/saveitem', protectedItemRouter);
 
 // default
 app.get('/', function(req, res){
-res.send('Welcome to the WorldMap Item API!');
-});
+    res.send('Welcome to the WorldMap Item API!');
+    });
 
 // console output
 app.listen(port, function(){
-console.log('Running WorldMap Item API on port: ' + port);
-});
+    console.log('Running WorldMap Item API on port: ' + port);
+    });
 
 module.exports = app;

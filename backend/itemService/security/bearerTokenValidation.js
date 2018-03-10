@@ -3,6 +3,8 @@ const _ = require('lodash');
 const request = require('request');
 const urlJoin = require('url-join');
 
+// validates if token is valid
+// TODO find a package that does this loacally!
 function authorization(options) {
   if (!options) {
     throw new Error('Options are missing.')
@@ -24,9 +26,11 @@ function authorization(options) {
     }
 
     if (req.headers.authorization) {
+      // get bearer token
       let bearerToken = req.headers.authorization.substr(7);
       let tokenParam = `?${options.tokenParam}=${bearerToken}`;
       var uri = urlJoin(options.validationUri, tokenParam);
+      // set post options to introspection endpoint for token validation
       var postOptions = {
         url: uri,
         headers: {
@@ -36,6 +40,7 @@ function authorization(options) {
         },
         body : 'token=' + bearerToken
       };
+      // token validation via identityserver
       request.post(postOptions, function (err, validationResponse, validationBody) {
         if (err) {
           // failed to get validation response
@@ -44,7 +49,8 @@ function authorization(options) {
         if (validationResponse.statusCode === 200) {
             // TODO check if needed
             //if (JSON.parse(validationBody).active) {
-                return next();
+              // validation successful
+              return next();
             //}
         }
         return res.status(401).send()

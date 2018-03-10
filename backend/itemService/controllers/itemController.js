@@ -1,3 +1,5 @@
+'use strict';
+
 var itemController = function(Item){
     // get function
     var get = function(req, res){

@@ -11,11 +11,10 @@ namespace identityService
 {
     public class Config
     {
-        // get the signing certificate for tokens
+        // get the signing certificate
         internal static X509Certificate2 GetSigningCertificate()
         {
             var fileName = Path.Combine(Path.GetDirectoryName(Directory.GetCurrentDirectory()), "identityService/cert.pfx");
-            Console.Write(Path.GetDirectoryName(Directory.GetCurrentDirectory()));
             var info = new DirectoryInfo(Path.GetDirectoryName(Directory.GetCurrentDirectory())).GetFiles();
             if(!File.Exists(fileName)) {
                 throw new FileNotFoundException("Signing Certificate is missing!");
@@ -32,6 +31,11 @@ namespace identityService
             {
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
+                new IdentityResources.Email(),
+                new IdentityResource {
+                    Name = "role",
+                    UserClaims = new List<string> {"role"}
+                }
             };
         }
 
@@ -53,17 +57,20 @@ namespace identityService
                         new Secret("itemsecret".Sha256())
                     },
 
+                    // include the following using claims in access token (in addition to subject id)
+                    UserClaims = { "role" },
+
                     // defining scopes
                     Scopes =
                     {
                         new Scope()
                         {
-                            Name = "itemApi.admint_access",
+                            Name = "itemApi.admin_access",
                             DisplayName = "Full admin access to itemApi",
                         },
                         new Scope
                         {
-                            Name = "itemApi",
+                            Name = "itemApi.standard_access",
                             DisplayName = "Standard user access to itemApi"
                         }
                     }
@@ -77,19 +84,6 @@ namespace identityService
             // client list
             return new List<Client>
             {
-                // client credentials client
-                new Client
-                {
-                    ClientId = "worldMapClient",
-                    AllowedGrantTypes = GrantTypes.ClientCredentials,
-
-                    ClientSecrets = 
-                    {
-                        new Secret("secret".Sha256())
-                    },
-                    AllowedScopes = { "tileApi", "menuApi", "itemApi" }
-                },
-
                 // OpenID Connect implicit flow client (MVC)
                 new Client
                 {
@@ -99,29 +93,32 @@ namespace identityService
                     AllowAccessTokensViaBrowser = true,
 
                     // only reference token
-                    AccessTokenType = AccessTokenType.Reference,
+                    AccessTokenType = AccessTokenType.Jwt,
 
                     // where to redirect to after login
                     RedirectUris = { 
                         "http://localhost:8080/callback.html",
                         "http://localhost:8080/popup.html",
                         "http://localhost:8080/index.html"
-                         },
+                        },
 
                     // where to redirect to after logout
-                    PostLogoutRedirectUris = { "http://localhost:8080/index.html" },
+                    PostLogoutRedirectUris = { 
+                        "http://localhost:8080/index.html" 
+                        },
 
-                    // CORS origins
+                    // CORS origins TODO
                     // AllowedCorsOrigins = { "http://localhost:8080" },
 
-                    AllowedScopes =
-                    {
+                    // set scopes that are allowed for this client
+                    AllowedScopes = {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
                         "tileApi",
                         "menuApi",
-                        "itemApi"
-                    },
+                        "itemApi.admin_access",
+                        "itemApi.standard_access"
+                        },
 
                     // Consent
                     RequireConsent = false
@@ -143,7 +140,8 @@ namespace identityService
                     Claims = new List<Claim>
                     {
                         new Claim("name", "Alice"),
-                        new Claim("website", "https://alice.com")
+                        new Claim("role", "user"),
+                        new Claim("role", "admin")
                     }
                 },
                 new TestUser
@@ -155,7 +153,7 @@ namespace identityService
                     Claims = new List<Claim>
                     {
                         new Claim("name", "Bob"),
-                        new Claim("website", "https://bob.com")
+                        new Claim("role", "user")
                     }
                 }
             };
