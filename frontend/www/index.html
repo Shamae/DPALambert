@@ -43,312 +43,323 @@
   <!-- ADD FUSE.JS // CDN -->
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.0.4/fuse.min.js"></script>
-<script>
-  var lat = 0;
-  var lng = 0;
-  var map;
-  var baseLayer;
-  var overlayData = []; //
-  var fuse; // Instance of fuse search engine
-  var token; //not nice must refine
+  <script>
+    var lat = 0;
+    var lng = 0;
+    var map;
+    var baseLayer;
+    var overlayData = []; //
+    var fuse; // Instance of fuse search engine
+    var token; //not nice must refine
 
 
-  function init() {
-
-    // 
-    // Init Leaflet canavs
-    var mapMinZoom = 3;
-    var mapMaxZoom = 6;
-    map = L.map('map', {                       //was a local var but breaks the modal and getitem... should investiguate
-      zoomControl: false,
-      maxZoom: mapMaxZoom,
-      minZoom: mapMinZoom,
-      crs: L.CRS.Simple
-    }).setView([-39, 96], 4);
+    function init() {
 
 
-    L.control.zoom({
-      position: 'bottomright'
-    }).addTo(map);
+      // Init Leaflet canavs
+      var mapMinZoom = 3;
+      var mapMaxZoom = 6;
 
-    var mapBounds = new L.LatLngBounds(
-      map.unproject([0, 30000], mapMaxZoom),
-      map.unproject([23910, 0], mapMaxZoom));
+      map = L.map('map', {
+        zoomControl: false,
+        maxZoom: mapMaxZoom,
+        minZoom: mapMinZoom,
+        crs: L.CRS.Simple
+      }).setView([-75, 196], 4);
 
+      var southWest = map.unproject([0, 30000], map.getMaxZoom());
+      var northEast = map.unproject([23910, 0], map.getMaxZoom());
 
+      var mapBounds = new L.LatLngBounds(
+        southWest,
+        northEast);
 
-    baseLayer = L.tileLayer(apiTileServiceURL, {
-      minZoom: mapMinZoom, maxZoom: mapMaxZoom,
-      bounds: mapBounds,
-      attribution: 'Rendered with <a href="https://www.maptiler.com/">MapTiler</a>',
-      noWrap: true,
-      tms: false
-    }).addTo(map);
+      map.setMaxBounds(mapBounds);
 
-
-
-    // Init Map Content form backend 
-
-    initializeWorldMapContent(map);
-
-
-
-
-
-    // Login and stuff
-
-    //document.getElementById("signInBtn").addEventListener("click", login, false);
-    //document.getElementById("api").addEventListener("click", api, false);
-    //document.getElementById("logout").addEventListener("click", logout, false);
-
-    // init oidc-client
-
-    var config = {
-      authority: "http://localhost:5000",
-      client_id: "worldMapUserClient",
-      redirect_uri: "http://localhost:8080/callback.html",
-      response_type: "id_token token",
-      scope: " openid profile tileApi menuApi itemApi",
-      post_logout_redirect_uri: "http://localhost:8080/index.html",
-
-      // Config popup
-      popup_redirect_uri: "http://localhost:8080/popup.html",
-popupWindowFeatures: "menubar=yes,location=yes,toolbar=yes,width=1200,height=800,left=100,top=100;resizable=yes",
-    };
-    var mgr = new Oidc.UserManager(config);
-
-    checkSigninStatus(mgr);
-
-
-
-
-
-    mgr.events.addUserLoaded(function (user) {
-      log("User loaded");
-      showTokens();
-    });
-    mgr.events.addUserUnloaded(function () {
-      log("User logged out locally");
-      showTokens();
-    });
-    mgr.events.addAccessTokenExpiring(function () {
-      log("Access token expiring...");
-    });
-    mgr.events.addSilentRenewError(function (err) {
-      log("Silent renew error: " + err.message);
-    });
-    mgr.events.addUserSignedOut(function () {
-      log("User signed out of OP");
-    });
-
-    function login(scope, response_type) {
-      var use_popup = true;
-      if (!use_popup) {
-        mgr.signinRedirect({ scope: scope, response_type: response_type });
-      }
-      else {
-        mgr.signinPopup({ scope: scope, response_type: response_type }).then(function () {
-
-          checkSigninStatus(mgr);
-          console.log("Logged In");
-
-        });
-      }
-    }
-
-    function logout() {
-      console.log("We did try to logout...")
-      mgr.signoutRedirect();
-    }
-
-    function revoke() {
-      mgr.revokeAccessToken();
-    }
-
-    function callApi() {
-      mgr.getUser().then(function (user) {
-        var xhr = new XMLHttpRequest();
-        xhr.onload = function (e) {
-          if (xhr.status >= 400) {
-            display("#ajax-result", {
-              status: xhr.status,
-              statusText: xhr.statusText,
-              wwwAuthenticate: xhr.getResponseHeader("WWW-Authenticate")
-            });
-          }
-          else {
-            display("#ajax-result", xhr.response);
-          }
-        };
-        xhr.open("GET", "http://localhost:3721/identity", true);
-        xhr.setRequestHeader("Authorization", "Bearer " + user.access_token);
-        xhr.send();
+      map.on('drag', function () {
+        map.panInsideBounds(mapBounds, { animate: false });
       });
-    }
+      
 
-    if (window.location.hash) {
-      handleCallback();
-    }
 
-    [].forEach.call(document.querySelectorAll(".request"), function (button) {
-      button.addEventListener("click", function () {
-        console.log("we tried to log in with : \n" +
-          "SCOPE = " + this.dataset["scope"] + "\n" +
-          "TYPE = " + this.dataset["type"]);
-        login(this.dataset["scope"], this.dataset["type"]);
+      baseLayer = L.tileLayer(apiTileServiceURL, {
+        minZoom: mapMinZoom, maxZoom: mapMaxZoom,
+        bounds: mapBounds,
+        attribution: 'Rendered with <a href="https://www.maptiler.com/">MapTiler</a>',
+        noWrap: true,
+        tms: false,
+        tileSize: 512
+
+      }).addTo(map);
+
+      //Add map controls 
+
+      L.control.zoom({
+        position: 'bottomright'
+      }).addTo(map);
+
+      // Init Map Content form backend 
+
+      initializeWorldMapContent(map);
+
+
+
+
+
+      // Login and stuff
+
+      //document.getElementById("signInBtn").addEventListener("click", login, false);
+      //document.getElementById("api").addEventListener("click", api, false);
+      //document.getElementById("logout").addEventListener("click", logout, false);
+
+      // init oidc-client
+
+      var config = {
+        authority: "http://localhost:5000",
+        client_id: "worldMapUserClient",
+        redirect_uri: "http://localhost:8080/callback.html",
+        response_type: "id_token token",
+        scope: " openid profile tileApi menuApi itemApi",
+        post_logout_redirect_uri: "http://localhost:8080/index.html",
+
+        // Config popup
+        popup_redirect_uri: "http://localhost:8080/popup.html",
+        popupWindowFeatures: "menubar=yes,location=yes,toolbar=yes,width=1200,height=800,left=100,top=100;resizable=yes",
+      };
+      var mgr = new Oidc.UserManager(config);
+
+      checkSigninStatus(mgr);
+
+
+
+
+
+      mgr.events.addUserLoaded(function (user) {
+        log("User loaded");
+        showTokens();
       });
-    });
-
-    document.querySelector(".call").addEventListener("click", callApi, false);
-    document.querySelector(".revoke").addEventListener("click", revoke, false);
-    document.querySelector(".logout").addEventListener("click", logout, false);
-
-
-    function log(data) {
-      document.getElementById('response').innerText = '';
-
-      Array.prototype.forEach.call(arguments, function (msg) {
-        if (msg instanceof Error) {
-          msg = "Error: " + msg.message;
-        }
-        else if (typeof msg !== 'string') {
-          msg = JSON.stringify(msg, null, 2);
-        }
-        document.getElementById('response').innerHTML += msg + '\r\n';
+      mgr.events.addUserUnloaded(function () {
+        log("User logged out locally");
+        showTokens();
       });
-    }
+      mgr.events.addAccessTokenExpiring(function () {
+        log("Access token expiring...");
+      });
+      mgr.events.addSilentRenewError(function (err) {
+        log("Silent renew error: " + err.message);
+      });
+      mgr.events.addUserSignedOut(function () {
+        log("User signed out of OP");
+      });
 
-    function display(selector, data) {
-      if (data && typeof data === 'string') {
-        try {
-          data = JSON.parse(data);
-        }
-        catch (e) { }
-      }
-      if (data && typeof data !== 'string') {
-        data = JSON.stringify(data, null, 2);
-      }
-      document.querySelector(selector).textContent = data;
-    }
-
-    function showTokens() {
-      mgr.getUser().then(function (user) {
-        if (user) {
-          display("#id-token", user);
+      function login(scope, response_type) {
+        var use_popup = true;
+        if (!use_popup) {
+          mgr.signinRedirect({ scope: scope, response_type: response_type });
         }
         else {
-          log("Not logged in");
-        }
-      });
-    }
-    showTokens();
+          mgr.signinPopup({ scope: scope, response_type: response_type }).then(function () {
 
-    function handleCallback() {
-      mgr.signinRedirectCallback().then(function (user) {
-        var hash = window.location.hash.substr(1);
-        var result = hash.split('&').reduce(function (result, item) {
-          var parts = item.split('=');
-          result[parts[0]] = parts[1];
-          return result;
-        }, {});
+            checkSigninStatus(mgr);
+            console.log("Logged In");
 
-        log(result);
-        showTokens();
-
-        window.history.replaceState({},
-          window.document.title,
-          window.location.origin + window.location.pathname);
-
-      }, function (error) {
-        log(error);
-      });
-    }
-
-    // OIDC-client code off
-
-
-
-
-
-
-    // test easybutton
-
-    /*
-          var stateChangingButton = L.easyButton({
-            states: [{
-              stateName: 'unlogged',        // name the state
-              icon: 'fa-sign-in',               // and define its properties
-              title: 'Log in',      // like its title
-              onClick: function (btn, map) {       // and its callback
-                adminMode = true;
-                alert("Admin mode : " + adminMode);
-                //TODO: login form
-                btn.state('logged');    // change state on click!
-                document.getElementById('loginForm').style.display = 'block'; //summon the login modal
-                refreshUI(map);
-              }
-            }, {
-              stateName: 'logged',
-              icon: 'fa-sign-out',
-              title: 'Log out',
-              onClick: function (btn, map) {
-                adminMode = false;
-                alert("Admin mode : " + adminMode);
-    
-                btn.state('unlogged');
-                refreshUI(map);
-              }
-            }]
           });
-    
-          stateChangingButton.addTo(map);
-    
-    */
+        }
+      }
 
-    // define toolbar options
+      function logout() {
+        console.log("We did try to logout...")
+        mgr.signoutRedirect();
+      }
+
+      function revoke() {
+        mgr.revokeAccessToken();
+      }
+
+      function callApi() {
+        mgr.getUser().then(function (user) {
+          var xhr = new XMLHttpRequest();
+          xhr.onload = function (e) {
+            if (xhr.status >= 400) {
+              display("#ajax-result", {
+                status: xhr.status,
+                statusText: xhr.statusText,
+                wwwAuthenticate: xhr.getResponseHeader("WWW-Authenticate")
+              });
+            }
+            else {
+              display("#ajax-result", xhr.response);
+            }
+          };
+          xhr.open("GET", "http://localhost:3721/identity", true);
+          xhr.setRequestHeader("Authorization", "Bearer " + user.access_token);
+          xhr.send();
+        });
+      }
+
+      if (window.location.hash) {
+        handleCallback();
+      }
+
+      [].forEach.call(document.querySelectorAll(".request"), function (button) {
+        button.addEventListener("click", function () {
+          console.log("we tried to log in with : \n" +
+            "SCOPE = " + this.dataset["scope"] + "\n" +
+            "TYPE = " + this.dataset["type"]);
+          login(this.dataset["scope"], this.dataset["type"]);
+        });
+      });
+/*
+      document.querySelector(".call").addEventListener("click", callApi, false);
+      document.querySelector(".revoke").addEventListener("click", revoke, false);
+      document.querySelector(".logout").addEventListener("click", logout, false);
+*/
+
+      function log(data) {
+        document.getElementById('response').innerText = '';
+
+        Array.prototype.forEach.call(arguments, function (msg) {
+          if (msg instanceof Error) {
+            msg = "Error: " + msg.message;
+          }
+          else if (typeof msg !== 'string') {
+            msg = JSON.stringify(msg, null, 2);
+          }
+          document.getElementById('response').innerHTML += msg + '\r\n';
+        });
+      }
+
+      function display(selector, data) {
+        if (data && typeof data === 'string') {
+          try {
+            data = JSON.parse(data);
+          }
+          catch (e) { }
+        }
+        if (data && typeof data !== 'string') {
+          data = JSON.stringify(data, null, 2);
+        }
+        document.querySelector(selector).textContent = data;
+      }
+
+      function showTokens() {
+        mgr.getUser().then(function (user) {
+          if (user) {
+            display("#id-token", user);
+          }
+          else {
+            log("Not logged in");
+          }
+        });
+      }
+      showTokens();
+
+      function handleCallback() {
+        mgr.signinRedirectCallback().then(function (user) {
+          var hash = window.location.hash.substr(1);
+          var result = hash.split('&').reduce(function (result, item) {
+            var parts = item.split('=');
+            result[parts[0]] = parts[1];
+            return result;
+          }, {});
+
+          log(result);
+          showTokens();
+
+          window.history.replaceState({},
+            window.document.title,
+            window.location.origin + window.location.pathname);
+
+        }, function (error) {
+          log(error);
+        });
+      }
+
+      // OIDC-client code off
 
 
-    map.on('contextmenu', function (e) {
-
-      lat = e.latlng.lat;
-      lng = e.latlng.lng;
-      console.log("wtf?");
-      document.getElementById('itemForm').style.display = 'block';
-
-    });
-
-    map.on("dragstart", function (e) {
-
-      clearSearchList();
-    });
-    map.on('click', function (e) {
-      //var myElement = document.getElementById("log");
-      //myElement.innerText = "Lon (X), Lat (Y) : " + e.latlng.lng + ", " + e.latlng.lat;
-      //alert("Lat, Lon : " + e.latlng.lat + ", " + e.latlng.lng)
-
-      console.log('[DEBUG] Check the coord?');
-      console.log("Lat, Lon : " + e.latlng.lat + ", " + e.latlng.lng);
-      console.log("Current user_access_token:" + token);
-
-      //fetchAPIdata();
 
 
-    });
 
-    //end the fiddling
-  }
 
-  //extract data from form
+      // test easybutton
 
-  function getItem() {
+      /*
+            var stateChangingButton = L.easyButton({
+              states: [{
+                stateName: 'unlogged',        // name the state
+                icon: 'fa-sign-in',               // and define its properties
+                title: 'Log in',      // like its title
+                onClick: function (btn, map) {       // and its callback
+                  adminMode = true;
+                  alert("Admin mode : " + adminMode);
+                  //TODO: login form
+                  btn.state('logged');    // change state on click!
+                  document.getElementById('loginForm').style.display = 'block'; //summon the login modal
+                  refreshUI(map);
+                }
+              }, {
+                stateName: 'logged',
+                icon: 'fa-sign-out',
+                title: 'Log out',
+                onClick: function (btn, map) {
+                  adminMode = false;
+                  alert("Admin mode : " + adminMode);
+      
+                  btn.state('unlogged');
+                  refreshUI(map);
+                }
+              }]
+            });
+      
+            stateChangingButton.addTo(map);
+      
+      */
 
-    addItem(map);
-    //closes the modal
-    document.getElementById('itemForm').style.display = 'none';
+      // define toolbar options
 
-  }
 
-  function checkSigninStatus(mgr) {
+      map.on('contextmenu', function (e) {
+
+        lat = e.latlng.lat;
+        lng = e.latlng.lng;
+        console.log("wtf?");
+        document.getElementById('itemForm').style.display = 'block';
+
+      });
+
+      map.on("dragstart", function (e) {
+
+        clearSearchList();
+      });
+      map.on('click', function (e) {
+        //var myElement = document.getElementById("log");
+        //myElement.innerText = "Lon (X), Lat (Y) : " + e.latlng.lng + ", " + e.latlng.lat;
+        //alert("Lat, Lon : " + e.latlng.lat + ", " + e.latlng.lng)
+
+        console.log('[DEBUG] Check the coord?');
+        console.log("Lat, Lon : " + e.latlng.lat + ", " + e.latlng.lng);
+        console.log("Current user_access_token:" + token);
+
+        //fetchAPIdata();
+
+
+      });
+
+      //end the fiddling
+    }
+
+    //extract data from form
+
+    function getItem() {
+
+      addItem(map);
+      //closes the modal
+      document.getElementById('itemForm').style.display = 'none';
+
+    }
+
+    function checkSigninStatus(mgr) {
       mgr.getUser().then(function (user) {
         if (user) {
           console.log("User logged in", user.profile);
@@ -368,9 +379,9 @@ popupWindowFeatures: "menubar=yes,location=yes,toolbar=yes,width=1200,height=800
         }
       });
 
-    }; 
+    };
 
-</script>
+  </script>
 
 </head>
 
@@ -410,15 +421,13 @@ popupWindowFeatures: "menubar=yes,location=yes,toolbar=yes,width=1200,height=800
     <div id="srchResults"></div>
   </div>
   <div class="top-right-pane">
-  
-      <div id="userPrompt" class="txtWB">No user</div>
-      <button id="sgnInBtn" class="request"
-      data-scope='openid profile tileApi menuApi itemApi' 
-      data-type='id_token token'>
+
+    <div id="userPrompt" class="txtWB">No user</div>
+    <button id="sgnInBtn" class="request" data-scope='openid profile tileApi menuApi itemApi' data-type='id_token token'>
       <i class="fa fa-sign-in" aria-hidden="true"></i>
       Sign in</button>
 
-      <button id="sgnOffBtn" class="logout">
+    <button id="sgnOffBtn" class="logout">
       <i class="fa fa-sign-out" aria-hidden="true"></i>
       Sign out</button>
 
@@ -466,7 +475,7 @@ popupWindowFeatures: "menubar=yes,location=yes,toolbar=yes,width=1200,height=800
     </div>
   </div>
 
-<!-- start meddling with oidc-->
+  <!-- start meddling with oidc
 
    <div class="container">
         <header class="page-header">
@@ -510,14 +519,14 @@ popupWindowFeatures: "menubar=yes,location=yes,toolbar=yes,width=1200,height=800
                 </div>
             </div>
 
-            <!--<div class="col-sm-4">
+            <div class="col-sm-4">
                 <div class="panel panel-default">
                     <div class="panel-heading">Access Token</div>
                     <div class="panel-body">
                         <pre id="access-token"></pre>
                     </div>
                 </div>
-            </div>-->
+            </div>
 
             <div class="col-sm-6">
                 <div class="panel panel-default">
@@ -529,8 +538,8 @@ popupWindowFeatures: "menubar=yes,location=yes,toolbar=yes,width=1200,height=800
             </div>
         </div>
 </div>
-<!-- stop meddling -->
-<!--
+ stop meddling -->
+  <!--
   <div class="w3-container">
 
     <div id="loginForm" class="w3-modal">

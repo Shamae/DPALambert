@@ -1,0 +1,4 @@
+Before starting the server for the first time, the sourcemap folder should be added manually in the main tileService folder.
+
+Should assets be updated, you must update the latter folder manually.
+
