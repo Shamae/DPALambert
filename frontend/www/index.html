@@ -57,14 +57,14 @@
 
     // 
     // Init Leaflet canavs
-    var mapMinZoom = 0;
-    var mapMaxZoom = 4;
+    var mapMinZoom = 3;
+    var mapMaxZoom = 6;
     map = L.map('map', {                       //was a local var but breaks the modal and getitem... should investiguate
       zoomControl: false,
       maxZoom: mapMaxZoom,
       minZoom: mapMinZoom,
       crs: L.CRS.Simple
-    }).setView([-38, 60], mapMaxZoom);
+    }).setView([-39, 96], 4);
 
 
     L.control.zoom({
@@ -72,8 +72,10 @@
     }).addTo(map);
 
     var mapBounds = new L.LatLngBounds(
-      map.unproject([0, 3072], mapMaxZoom),
-      map.unproject([2048, 0], mapMaxZoom));
+      map.unproject([0, 30000], mapMaxZoom),
+      map.unproject([23910, 0], mapMaxZoom));
+
+
 
     baseLayer = L.tileLayer(apiTileServiceURL, {
       minZoom: mapMinZoom, maxZoom: mapMaxZoom,
