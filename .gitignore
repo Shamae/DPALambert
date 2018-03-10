@@ -7,3 +7,5 @@
 **/obj/
 
 **/package-lock.json
+
+**/sourcemap/
