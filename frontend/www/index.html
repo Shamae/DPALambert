@@ -95,7 +95,7 @@
         client_id: "worldMapUserClient",
         redirect_uri: "http://localhost:8080/callback.html",
         response_type: "id_token token",
-        scope: " openid profile tileApi menuApi itemApi",
+        scope: " openid profile tileApi menuApi itemApi.standard_access",
         post_logout_redirect_uri: "http://localhost:8080/index.html",
         // Config popup
         popup_redirect_uri: "http://localhost:8080/popup.html",
@@ -347,7 +347,7 @@
   <div class="top-right-pane">
 
     <div id="userPrompt" class="txtWB">No user</div>
-    <button id="sgnInBtn" class="request" data-scope='openid profile tileApi menuApi itemApi' data-type='id_token token'>
+    <button id="sgnInBtn" class="request" data-scope='openid profile tileApi menuApi itemApi.standard_access' data-type='id_token token'>
       <i class="fa fa-sign-in" aria-hidden="true"></i>
       Sign in</button>
 
