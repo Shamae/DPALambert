@@ -288,7 +288,6 @@ L.Control.StyledLayerControl = L.Control.Layers.extend({
             overlaysPresent = overlaysPresent || obj.overlay;
             baseLayersPresent = baseLayersPresent || !obj.overlay;
         }
-
     },
 
     _onLayerChange: function(e) {
@@ -377,7 +376,7 @@ L.Control.StyledLayerControl = L.Control.Layers.extend({
         L.DomEvent.on(input, 'click', this._onInputClick, this);
 
         var name = document.createElement('label');
-        name.innerHTML = '<label for="' + id + '">' + obj.name + '</label>';
+        name.innerHTML = ' <label for="' + id + '">' + obj.name + '</label>';
 
         label.appendChild(input);
         label.appendChild(name);

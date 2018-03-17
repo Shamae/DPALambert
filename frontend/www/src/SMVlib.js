@@ -119,7 +119,7 @@ function onEachFeature(feature, layer) {
 
 
     switch (feature.properties.featureTypeId) {
-        
+
         case 2:
 
             layer.setIcon(cityIcon);
@@ -264,7 +264,7 @@ function initializeWorldMapContent(map) {
             return;
         }
 
-       
+
         return response.json();
 
     }).then(function (data) {
@@ -286,7 +286,7 @@ function initializeWorldMapContent(map) {
                     removable: true,
                     visible: false
                 }
-        
+
                 // configure the visible attribute with true to corn_bh
                 corn_bh.StyledLayerControl = {
                     removable: false,
@@ -295,11 +295,11 @@ function initializeWorldMapContent(map) {
 
         var options = {
             container_width: "300px",
-            group_maxHeight: "80px",
-            //container_maxHeight : "350px", 
+            //group_maxHeight: "80px",
+            //container_maxHeight : "350px",
             exclusive: false,
-            collapsed: false,
-            position: 'bottomright'
+            collapsed: true,
+            position: 'topright'
         };
 
         var control = L.Control.styledLayerControl(baseMaps, overlays, options);
@@ -359,7 +359,7 @@ function initializeWorldMapContent(map) {
 
         };
 
-        // Init Search Engine 
+        // Init Search Engine
 
         // temporary mockup data
 
@@ -499,7 +499,7 @@ function getItemCoord(item){
     coord.lat = 0;
 
     switch (item["properties"]["featureTypeId"]) {
-        
+
         case 10:
 
         coord.lng = item["geometry"]["coordinates"][0][0][0];
@@ -507,17 +507,17 @@ function getItemCoord(item){
             break;
 
         default:
-        
+
         coord.lat = item["geometry"]["coordinates"][1];
         coord.lng = item["geometry"]["coordinates"][0];
-        
+
 
             break;
 
 
 
     };
-    
+
 
 
     return coord;
@@ -563,10 +563,10 @@ function generateSearchList(results) {
 
         item = results[i];
 
-        
 
 
-        
+
+
         //console.log("fly to: " + " ( "+coord.lng + " , " + coord.lat+")" + JSON.stringify(results[i]));
         div.onclick = function () {
             var index = this.getAttribute("data-srch-index");
@@ -626,7 +626,7 @@ function generateSearchList(results) {
     };
 
 
-    
+
 
 
 
