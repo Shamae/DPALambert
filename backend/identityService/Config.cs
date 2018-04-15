@@ -50,23 +50,22 @@ namespace identityService
                 {
                     Name = "itemApi",
                     DisplayName = "Item Service API",
+                    Description = "Item Service API Access",
 
                     // secret for using introspection endpoint
-                    ApiSecrets =
-                    {
+                    ApiSecrets = {
                         new Secret("itemsecret".Sha256())
                     },
 
                     // include the following using claims in access token (in addition to subject id)
-                    UserClaims = { "role" },
+                    UserClaims = {"role"},
 
                     // defining scopes
-                    Scopes =
-                    {
+                    Scopes = {
                         new Scope()
                         {
                             Name = "itemApi.admin_access",
-                            DisplayName = "Full admin access to itemApi",
+                            DisplayName = "Full admin access to itemApi"
                         },
                         new Scope
                         {
@@ -84,7 +83,7 @@ namespace identityService
             // client list
             return new List<Client>
             {
-                // OpenID Connect implicit flow client (MVC)
+                // OpenID Connect implicit flow standard user client
                 new Client
                 {
                     ClientId = "worldMapUserClient",
@@ -114,10 +113,50 @@ namespace identityService
                     AllowedScopes = {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
+                        "role",
                         "tileApi",
                         "menuApi",
-                        "itemApi.admin_access",
                         "itemApi.standard_access"
+                        },
+
+                    // Consent
+                    RequireConsent = false
+                },
+
+                // OpenID Connect implicit flow admin user client
+                new Client
+                {
+                    ClientId = "worldMapAdminClient",
+                    ClientName = "World Map Admin Client",
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowAccessTokensViaBrowser = true,
+
+                    // only reference token
+                    AccessTokenType = AccessTokenType.Jwt,
+
+                    // where to redirect to after login
+                    RedirectUris = { 
+                        "http://localhost:8080/callback.html",
+                        "http://localhost:8080/popup.html",
+                        "http://localhost:8080/index.html"
+                        },
+
+                    // where to redirect to after logout
+                    PostLogoutRedirectUris = { 
+                        "http://localhost:8080/index.html" 
+                        },
+
+                    // CORS origins TODO
+                    // AllowedCorsOrigins = { "http://localhost:8080" },
+
+                    // set scopes that are allowed for this client
+                    AllowedScopes = {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        "role",
+                        "tileApi",
+                        "menuApi",
+                        "itemApi.admin_access"
                         },
 
                     // Consent
