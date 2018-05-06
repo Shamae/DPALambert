@@ -39,7 +39,6 @@ var routes = function(Item){
         .put(function(req,res){
             if(req.item.properties.featureTypeId = 16 || req.session.userInfo.role == 'admin')
             {
-                console.log(req.item.properties.featureTypeId + ' ' + req.session.userInfo.role);
                 req.item.properties.displayName = req.body.properties.displayName;
                 req.item.properties.description = req.body.properties.description;
                 req.item.geometry.coordinates = req.body.geometry.coordinates;
