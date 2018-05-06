@@ -94,7 +94,7 @@
         client_id: "worldMapUserClient",
         redirect_uri: "http://localhost:8080/callback.html",
         response_type: "id_token token",
-        scope: " openid profile tileApi menuApi itemApi.standard_access",
+        scope: " openid profile tileApi menuApi itemApi.standard_access role",
         post_logout_redirect_uri: "http://localhost:8080/index.html",
         // Config popup
         popup_redirect_uri: "http://localhost:8080/popup.html",
@@ -311,7 +311,7 @@
   <div class="bottom-left-pane">
 
     <div id="userPrompt" class="txtWB">No user</div>
-    <button id="sgnInBtn" class="request" data-scope='openid profile tileApi menuApi itemApi.standard_access' data-type='id_token token'>
+    <button id="sgnInBtn" class="request" data-scope='openid profile tileApi menuApi itemApi.standard_access role' data-type='id_token token'>
       <i class="fa fa-sign-in" aria-hidden="true"></i>
       Sign in</button>
 
@@ -362,100 +362,6 @@
       </div>
     </div>
   </div>
-
-  <!-- start meddling with oidc
-   <div class="container">
-        <header class="page-header">
-            <h1>JavaScript Oidc Client</h1>
-        </header>
-        <div class="row">
-            <ul class="list-unstyled list-inline">
-                <li><a class="btn btn-primary" href="index.html">Home</a></li>
-                <li><button class="btn btn-default request" data-scope='openid' data-type='id_token'>Login Only</button></li>
-                <li><button class="btn btn-default request" data-scope='openid profile email' data-type='id_token'>Profile</button></li>
-                <li><button class="btn btn-default request" data-scope='openid profile email api1 api2.read_only' data-type='id_token token'>Profile and API Access</button></li>
-                <li><button class="btn btn-default request" data-scope='api1 api2.read_only' data-type='token'>API Access Only</button></li>
-                <li><button class="btn btn-primary call">Call Service</button></li>
-                <li><button class="btn btn-info revoke">Revoke Access Token</button></li>
-                <li><button class="btn btn-info logout">Logout</button></li>
-            </ul>
-        </div>
-        <div class="row">
-            <ul class="list-unstyled list-inline">
-            </ul>
-        </div>
-        <div class="row">
-            <div class="panel panel-default">
-                <div class="panel-heading">Message</div>
-                <div class="panel-body">
-                    <pre id="response"></pre>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-6">
-                <div class="panel panel-default">
-                    <div class="panel-heading">Current User</div>
-                    <div class="panel-body">
-                        <pre id="id-token"></pre>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-4">
-                <div class="panel panel-default">
-                    <div class="panel-heading">Access Token</div>
-                    <div class="panel-body">
-                        <pre id="access-token"></pre>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6">
-                <div class="panel panel-default">
-                    <div class="panel-heading">Ajax Result</div>
-                    <div class="panel-body">
-                        <pre id="ajax-result"></pre>
-                    </div>
-                </div>
-            </div>
-        </div>
-</div>
- stop meddling -->
-  <!--
-  <div class="w3-container">
-    <div id="loginForm" class="w3-modal">
-      <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">
-        <div class="w3-center">
-          <br>
-          <span onclick="document.getElementById('loginForm').style.display='none'" class="w3-button w3-xlarge w3-hover-red w3-display-topright"
-            title="Close Modal">&times;</span>
-          <img src="img_avatar4.png" alt="Avatar" style="width:30%" class="w3-circle w3-margin-top">
-        </div>
-        <form class="w3-container" action="#">
-          <div class="w3-section">
-            <label>
-              <b>Username</b>
-            </label>
-            <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Enter Username" name="usrname" required>
-            <label>
-              <b>Password</b>
-            </label>
-            <input class="w3-input w3-border" type="password" placeholder="Enter Password" name="psw" required>
-            <button class="w3-button w3-block w3-green w3-section w3-padding" type="submit">Login</button>
-            <input class="w3-check w3-margin-top" type="checkbox" checked="checked"> Remember me
-          </div>
-        </form>
-        <div class="w3-container w3-border-top w3-padding-16 w3-light-grey">
-          <button onclick="document.getElementById('loginForm').style.display='none'" type="button" class="w3-button w3-red">Cancel</button>
-          <span class="w3-right w3-padding w3-hide-small">Forgot
-            <a href="#">password?</a>
-          </span>
-        </div>
-      </div>
-    </div>
-  </div>
--->
-
-
 
   <script type="text/javascript">
     document.querySelector('.searchbox [type="reset"]').addEventListener('click', function () { this.parentNode.querySelector('input').focus(); });
