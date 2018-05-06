@@ -115,7 +115,8 @@ namespace identityService
                         IdentityServerConstants.StandardScopes.Profile,
                         "tileApi",
                         "menuApi",
-                        "itemApi.standard_access"
+                        "itemApi.standard_access",
+                        "itemApi.admin_access"
                         },
 
                     // Consent

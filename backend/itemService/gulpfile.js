@@ -6,6 +6,9 @@ supertest = require('supertest');
 
 // starts server and restarts on code change
 gulp.task('default', function(){
+    // setup test environement
+    env({vars: {ENV: 'Developpment'}});
+    
     nodemon({
         script: 'itemServer.js',
         ext: 'js',

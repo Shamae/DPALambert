@@ -36,10 +36,17 @@ var itemController = function(Item){
             res.send('Feature type missing');
         }
         else {
-            // save item to db
-            item.save();
-            res.status(201);
-            res.send(item);
+            if(req.body.properties.featureTypeId == 16 || req.session.userInfo.role == 'admin') {
+                // save item to db
+                item.save();
+                res.status(201);
+                res.send(item);
+            }
+            else {
+                // user rights limited
+                res.status(403);
+                res.send('not allowed');
+            };
         };
     };
 

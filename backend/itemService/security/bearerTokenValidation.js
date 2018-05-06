@@ -29,10 +29,10 @@ function authorization(options) {
       // get bearer token
       let bearerToken = req.headers.authorization.substr(7);
       let tokenParam = `?${options.tokenParam}=${bearerToken}`;
-      var uri = urlJoin(options.validationUri, tokenParam);
+      var uriIntrospect = urlJoin(options.validationUri, tokenParam);
       // set post options to introspection endpoint for token validation
       var postOptions = {
-        url: uri,
+        url: uriIntrospect,
         headers: {
             'Authorization': 'Basic aXRlbUFwaTppdGVtc2VjcmV0',
             'Content-Type': 'application/x-www-form-urlencoded',
@@ -41,17 +41,19 @@ function authorization(options) {
         body : 'token=' + bearerToken
       };
       // token validation via identityserver
-      request.post(postOptions, function (err, validationResponse, validationBody) {
+      request.post(postOptions, function (err, validationResponse, body) {
         if (err) {
           // failed to get validation response
           return res.status(500).send();
         }
         if (validationResponse.statusCode === 200) {
-            // TODO check if needed
-            //if (JSON.parse(validationBody).active) {
+            // check if active
+            if (JSON.parse(body).active) {
+              // set userInfo
+              req.session.userInfo = JSON.parse(body);
               // validation successful
               return next();
-            //}
+            }
         }
         return res.status(401).send()
       });

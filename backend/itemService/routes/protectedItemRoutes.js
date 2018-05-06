@@ -29,7 +29,7 @@ var routes = function(Item){
             else {
                 // item not found
                 res.status(404);
-                res.send('no item found')
+                res.send('no item found');
             };
         });
     });
@@ -37,17 +37,26 @@ var routes = function(Item){
     // config routes with itemId
     itemRouter.route('/:itemId')
         .put(function(req,res){
-            req.item.properties.displayName = req.body.properties.displayName;
-            req.item.properties.description = req.body.properties.description;
-            req.item.geometry.coordinates = req.body.geometry.coordinates;
-            req.item.save(function(err){
-                if(err)
-                    res.status(500).send(err);
-                else{
-                    // return item
-                    res.json(req.item);
-                }
-            });
+            if(req.item.properties.featureTypeId = 16 || req.session.userInfo.role == 'admin')
+            {
+                console.log(req.item.properties.featureTypeId + ' ' + req.session.userInfo.role);
+                req.item.properties.displayName = req.body.properties.displayName;
+                req.item.properties.description = req.body.properties.description;
+                req.item.geometry.coordinates = req.body.geometry.coordinates;
+                req.item.save(function(err){
+                    if(err)
+                        res.status(500).send(err);
+                    else{
+                        // return item
+                        res.json(req.item);
+                    }
+                });
+            }
+            else {
+                // user rights limited
+                res.status(403);
+                res.send('not allowed');
+                };
         });
 
     return itemRouter;

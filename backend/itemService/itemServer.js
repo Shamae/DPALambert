@@ -1,7 +1,6 @@
-
 'use strict';
-
 var express = require('express'),
+    session = require('express-session'),
     mongoose = require('mongoose'),
     bodyParser = require('body-parser'),
     cors = require('cors');
@@ -28,6 +27,19 @@ var port = process.env.port || 3001;
 //CORS configuration
 app.use(cors());
 
+// initialise session
+var sess = {
+  secret: 'W0r!dM4p$ecr3t',
+  cookie: { maxAge: 120000 },
+  resave: false,
+  saveUninitialized: false
+};
+if (app.get('env') === 'production') {
+  app.set('trust proxy', 1) // trust first proxy
+  sess.cookie.secure = true // serve secure cookies
+};
+app.use(session(sess));
+
 // token validation
 let options = {
     validationUri: 'http://localhost:5000/connect/introspect/',
@@ -40,9 +52,13 @@ app.use(bearerTokenValidation(options));
 // small logger
 const logRequestStart = (req, res, next) => {
     console.info(`${req.method} ${req.originalUrl}`);
+    if (req.session.userInfo) {
+        // check for authentication
+        console.info("called by " + req.session.userInfo.role)
+    }
     next();
     }
-app.use(logRequestStart)
+app.use(logRequestStart);
 
 // to be able to read the body
 app.use(bodyParser.urlencoded({extended:true}));
