@@ -120,7 +120,7 @@
         log("User signed out of OP");
       });
       function login(scope, response_type) {
-        var use_popup = true;
+        var use_popup = false;
         if (!use_popup) {
           mgr.signinRedirect({ scope: scope, response_type: response_type });
         }
@@ -132,8 +132,10 @@
         }
       }
       function logout() {
-        console.log("We did try to logout...")
-        mgr.signoutRedirect();
+        console.log("We did try to logout...");        
+        ///mgr.signoutRedirect();
+        mgr.removeUser();
+        checkSigninStatus(mgr);
       }
       function revoke() {
         mgr.revokeAccessToken();
@@ -171,11 +173,11 @@
       });
 /*
       document.querySelector(".call").addEventListener("click", callApi, false);
-      document.querySelector(".revoke").addEventListener("click", revoke, false);
+      document.querySelector(".revoke").addEventListener("click", revoke, false);*/
       document.querySelector(".logout").addEventListener("click", logout, false);
-*/
+
       function log(data) {
-        document.getElementById('response').innerText = '';
+        //document.getElementById('response').innerText = '';
         Array.prototype.forEach.call(arguments, function (msg) {
           if (msg instanceof Error) {
             msg = "Error: " + msg.message;
@@ -183,7 +185,8 @@
           else if (typeof msg !== 'string') {
             msg = JSON.stringify(msg, null, 2);
           }
-          document.getElementById('response').innerHTML += msg + '\r\n';
+          //document.getElementById('response').innerHTML += msg + '\r\n';
+          console.log("[OIDC-client says:] "+msg);
         });
       }
       function display(selector, data) {
@@ -227,38 +230,7 @@
         });
       }
       // OIDC-client code off
-      // test easybutton
-      /*
-            var stateChangingButton = L.easyButton({
-              states: [{
-                stateName: 'unlogged',        // name the state
-                icon: 'fa-sign-in',               // and define its properties
-                title: 'Log in',      // like its title
-                onClick: function (btn, map) {       // and its callback
-                  adminMode = true;
-                  alert("Admin mode : " + adminMode);
-                  //TODO: login form
-                  btn.state('logged');    // change state on click!
-                  document.getElementById('loginForm').style.display = 'block'; //summon the login modal
-                  refreshUI(map);
-                }
-              }, {
-                stateName: 'logged',
-                icon: 'fa-sign-out',
-                title: 'Log out',
-                onClick: function (btn, map) {
-                  adminMode = false;
-                  alert("Admin mode : " + adminMode);
-
-                  btn.state('unlogged');
-                  refreshUI(map);
-                }
-              }]
-            });
-
-            stateChangingButton.addTo(map);
-
-      */
+     
       // define toolbar options
       map.on('contextmenu', function (e) {
         lat = e.latlng.lat;
@@ -482,6 +454,8 @@
     </div>
   </div>
 -->
+
+
 
   <script type="text/javascript">
     document.querySelector('.searchbox [type="reset"]').addEventListener('click', function () { this.parentNode.querySelector('input').focus(); });
