@@ -90,6 +90,9 @@ namespace identityService
                     ClientName = "World Map User Client",
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
+                    
+                    // include claims in id token
+                    AlwaysIncludeUserClaimsInIdToken = true, 
 
                     // only reference token
                     AccessTokenType = AccessTokenType.Jwt,
@@ -113,6 +116,7 @@ namespace identityService
                     AllowedScopes = {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
+                        "role",
                         "tileApi",
                         "menuApi",
                         "itemApi.standard_access",
