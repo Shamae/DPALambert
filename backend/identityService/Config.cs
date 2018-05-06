@@ -113,50 +113,9 @@ namespace identityService
                     AllowedScopes = {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
-                        "role",
                         "tileApi",
                         "menuApi",
                         "itemApi.standard_access"
-                        },
-
-                    // Consent
-                    RequireConsent = false
-                },
-
-                // OpenID Connect implicit flow admin user client
-                new Client
-                {
-                    ClientId = "worldMapAdminClient",
-                    ClientName = "World Map Admin Client",
-                    AllowedGrantTypes = GrantTypes.Implicit,
-                    AllowAccessTokensViaBrowser = true,
-
-                    // only reference token
-                    AccessTokenType = AccessTokenType.Jwt,
-
-                    // where to redirect to after login
-                    RedirectUris = { 
-                        "http://localhost:8080/callback.html",
-                        "http://localhost:8080/popup.html",
-                        "http://localhost:8080/index.html"
-                        },
-
-                    // where to redirect to after logout
-                    PostLogoutRedirectUris = { 
-                        "http://localhost:8080/index.html" 
-                        },
-
-                    // CORS origins TODO
-                    // AllowedCorsOrigins = { "http://localhost:8080" },
-
-                    // set scopes that are allowed for this client
-                    AllowedScopes = {
-                        IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServerConstants.StandardScopes.Profile,
-                        "role",
-                        "tileApi",
-                        "menuApi",
-                        "itemApi.admin_access"
                         },
 
                     // Consent
@@ -179,7 +138,6 @@ namespace identityService
                     Claims = new List<Claim>
                     {
                         new Claim("name", "Alice"),
-                        new Claim("role", "user"),
                         new Claim("role", "admin")
                     }
                 },
