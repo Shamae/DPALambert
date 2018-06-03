@@ -70,7 +70,7 @@
       map.on('drag', function () {
         map.panInsideBounds(mapBounds, { animate: false });
       });
-
+      //Add the base layer 
       baseLayer = L.tileLayer(apiTileServiceURL, {
         minZoom: mapMinZoom, maxZoom: mapMaxZoom,
         bounds: mapBounds,
@@ -78,6 +78,73 @@
         tms: false,
         tileSize: 512
       }).addTo(map);
+
+      //EXPERIMENTAL : add a tiled layer by name
+
+      var layers=[];
+      var layerLvl = 1;
+      var name = 'troll';
+      var apiTileServiceOverlayURL = 'http://localhost:7999/api/tiledOverlay/'+name+'/{z}/{x}/{y}';
+
+      
+     layers[layerLvl] = L.tileLayer(apiTileServiceOverlayURL, {
+        minZoom: mapMinZoom, maxZoom: mapMaxZoom,
+        bounds: mapBounds,
+        noWrap: true,
+        tms: false,
+        zIndex: 1,
+        tileSize: 512
+      }).addTo(map);
+
+      //EXPERIMENTAL -- link to button 
+
+      L.easyButton('fa-globe', function (btn, map) {
+        
+        if (map.hasLayer(layers[1])) {
+
+              map.removeLayer(layers[1]);
+        } 
+        else {
+
+          layers[1].addTo(map);
+        }
+        
+      }).addTo(map);
+
+      //EXPERIMENTAL add a second transparent layer 
+
+     
+      var layerLvl = 2;
+      var name = 'alone';
+      var apiTileServiceOverlayURL = 'http://localhost:7999/api/tiledOverlay/'+name+'/{z}/{x}/{y}';
+
+      
+     layers[layerLvl] = L.tileLayer(apiTileServiceOverlayURL, {
+        minZoom: mapMinZoom, maxZoom: mapMaxZoom,
+        bounds: mapBounds,
+        noWrap: true,
+        tms: false,
+        zIndex: 2,
+        tileSize: 512
+      }).addTo(map);
+
+      //EXPERIMENTAL -- link to button 
+
+      L.easyButton('fa-map-o', function (btn, map) {
+        
+        if (map.hasLayer(layers[2])) {
+
+              map.removeLayer(layers[2]);
+        } 
+        else {
+
+          layers[2].addTo(map);
+        }
+        
+      }).addTo(map);
+
+      //EXPERIMENTAL END. 
+
       //Add map controls
       L.control.zoom({
         position: 'bottomright'

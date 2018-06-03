@@ -18,9 +18,25 @@ app.get('/api/tiles/:z/:x/:y', function (req, res) {
                  '/' + req.params.x +
                  '/' + req.params.y + 
                  '.png');
+  });
+
+  app.get('/api/tiledOverlay/:name/:z/:x/:y', function (req, res) {
+
+    //console.log("Accessing tile:" + JSON.stringify(req.params));
+    
+    res.sendFile(__dirname +
+                 '/overlays/'+ req.params.name + 
+                 '/' + req.params.z +
+                 '/' + req.params.x +
+                 '/' + req.params.y + 
+                 '.png');
   })
 
-// console output
+
+
+
+
+  // console output
 app.listen(port, function(){
     console.log('Running Tile Server API on port: ' + port);
 });
