@@ -21,6 +21,8 @@ var itemModel = new mongoose.Schema({
         displayName: String,
         description: String,
         owner: String,
+        visibility: String,
+        zoomlevel: Number,
         timestamp: Date
     }
 });

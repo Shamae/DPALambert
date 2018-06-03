@@ -28,6 +28,15 @@ var itemController = function(Item){
         var item = new Item(req.body);
         if (item){
             item.properties.timestamp = new Date();
+            item.properties.owner = req.session.userInfo.sub
+            if(req.session.userInfo.role == 'admin') {
+                item.properties.visibility = "public"
+                item.properties.zoomlevel = 1
+            }
+            else {                
+                item.properties.visibility = "private"
+                item.properties.zoomlevel = 3
+            }
         };
 
         // check for missing information

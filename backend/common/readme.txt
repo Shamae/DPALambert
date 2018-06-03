@@ -24,19 +24,6 @@ For each service (execute the NPM comands via powershell/cmd in the folder of th
     npm install cors --save
         for cors
 
-NodeJS API identity server middleware
-
-    open administrative powershell
-        install Python for Visual Studio Code
-            https://www.python.org/downloads/release/python-2714/
-        set python path
-            npm config set python d:\Python27\python.exe
-        install openSSL
-            https://slproweb.com/products/Win32OpenSSL.html
-    on the API service project
-        npm install express-oidc-jwks-verify --save
-        if not working include in package.json and "npm rebuild"
-
 Additional modules
     mongoose
         for MongoDB acces
@@ -50,3 +37,18 @@ make a certificate for identity server
         https://slproweb.com/products/Win32OpenSSL.html
         openssl req -x509 -days 365 -newkey rsa:4096 -keyout key.pem -out cert.pem
         openssl pkcs12 -export -in cert.pem -inkey key.pem -out cert.pfx
+
+how to make the project run
+
+requirements
+    NodeJS
+    .NET Core 2.0 (for identityService)
+
+globally
+    npm install gulp -g
+
+for each service
+    npm install (in the basefolder)
+
+create DBs
+    .\mongo.exe "[insert folder here]\create.js"

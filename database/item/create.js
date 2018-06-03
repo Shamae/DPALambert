@@ -25,70 +25,6 @@ db.item.insert([
             'timestamp' : new Date()
         }
     },
-    {
-        'type': 'Feature',
-        'geometry': {
-            'type': 'Point',
-            'coordinates': [69, -57]
-        },
-        'properties': {
-            'featureTypeId': 2,
-            'displayName': 'Hellvetics stronghold',
-            'description': 'A fortress in the alps.',
-            'zoomlevel': 2,
-            'visibility': 'public',
-            'owner' : 'bob',
-            'timestamp' : new Date()
-        }
-    },
-    {
-        'type': 'Feature',
-        'geometry': {
-            'type': 'Point',
-            'coordinates': [61, -69]
-        },
-        'properties': {
-            'featureTypeId': 2,
-            'displayName': 'Toulon',
-            'description': 'Setting of The Killing Game.',
-            'zoomlevel': 1,
-            'visibility': 'public',
-            'owner' : 'bob',
-            'timestamp' : new Date()
-        }
-    },
-    {
-        'type': 'Feature',
-        'geometry': {
-            'type': 'Point',
-            'coordinates': [69, -59]
-        },
-        'properties': {
-            'featureTypeId': 2,
-            'displayName': 'Lucatore',
-            'description': 'Setting of In Thy Blood.',
-            'zoomlevel': 1,
-            'visibility': 'public',
-            'owner' : 'alice',
-            'timestamp' : new Date()
-        }
-    },
-    {
-        'type': 'Feature',
-        'geometry': {
-            'type': 'Point',
-            'coordinates': [76, -89]
-        },
-        'properties': {
-            'featureTypeId': 2,
-            'displayName': 'Tripol',
-            'description': 'The hub of the world.',
-            'zoomlevel': 0,
-            'visibility': 'public',
-            'owner' : 'alice',
-            'timestamp' : new Date()
-        }
-    },
     // NPC
     {
         'type': 'Feature',
@@ -100,70 +36,6 @@ db.item.insert([
             'featureTypeId': 15,
             'displayName': 'First judge Archot',
             'description': 'He\'s old and somewhat insane.',
-            'zoomlevel': 2,
-            'visibility': 'public',
-            'owner' : 'bob',
-            'timestamp' : new Date()
-        }
-    },
-    {
-        'type': 'Feature',
-        'geometry': {
-            'type': 'Point',
-            'coordinates': [80, -67]
-        },
-        'properties': {
-            'featureTypeId': 15,
-            'displayName': 'Dr. Hernandez Vasco',
-            'description': 'He\'s legion.',
-            'zoomlevel': 2,
-            'visibility': 'public',
-            'owner' : 'alice',
-            'timestamp' : new Date()
-        }
-    },
-    {
-        'type': 'Feature',
-        'geometry': {
-            'type': 'Point',
-            'coordinates': [69, -43]
-        },
-        'properties': {
-            'featureTypeId': 15,
-            'displayName': 'Eject',
-            'description': 'A needle in east Borca.',
-            'zoomlevel': 2,
-            'visibility': 'public',
-            'owner' : 'alice',
-            'timestamp' : new Date()
-        }
-    },
-    {
-        'type': 'Feature',
-        'geometry': {
-            'type': 'Point',
-            'coordinates': [64, -45]
-        },
-        'properties': {
-            'featureTypeId': 15,
-            'displayName': 'Rutgar',
-            'description': 'The old wolf.',
-            'zoomlevel': 2,
-            'visibility': 'public',
-            'owner' : 'bob',
-            'timestamp' : new Date()
-        }
-    },
-    {
-        'type': 'Feature',
-        'geometry': {
-            'type': 'Point',
-            'coordinates': [38, -79]
-        },
-        'properties': {
-            'featureTypeId': 15,
-            'displayName': 'Ezenwa the Hogon',
-            'description': 'Anubian.',
             'zoomlevel': 2,
             'visibility': 'public',
             'owner' : 'bob',
@@ -182,72 +54,8 @@ db.item.insert([
             'displayName': 'Scrapper Lupo',
             'description': 'A scrapper living and working in syracus.',
             'zoomlevel': 3,
-            'visibility': 'owner',
+            'visibility': 'private',
             'owner' : 'alice',
-            'timestamp' : new Date()
-        }
-    },
-    {
-        'type': 'Feature',
-        'geometry': {
-            'type': 'Point',
-            'coordinates': [68, -59]
-        },
-        'properties': {
-            'featureTypeId': 16,
-            'displayName': 'Corporal Gruber',
-            'description': 'Corlonel of Territorial Region II.',
-            'zoomlevel': 3,
-            'visibility': 'owner',
-            'owner' : 'alice',
-            'timestamp' : new Date()
-        }
-    },
-    {
-        'type': 'Feature',
-        'geometry': {
-            'type': 'Point',
-            'coordinates': [68, -52]
-        },
-        'properties': {
-            'featureTypeId': 16,
-            'displayName': 'Luren',
-            'description': 'A pneumancer.',
-            'zoomlevel': 3,
-            'visibility': 'owner',
-            'owner' : 'bob',
-            'timestamp' : new Date()
-        }
-    },
-    {
-        'type': 'Feature',
-        'geometry': {
-            'type': 'Point',
-            'coordinates': [58, -78]
-        },
-        'properties': {
-            'featureTypeId': 16,
-            'displayName': 'Ukmena',
-            'description': 'A neolybian (seafarer).',
-            'zoomlevel': 3,
-            'visibility': 'public',
-            'owner' : 'owner',
-            'timestamp' : new Date()
-        }
-    },
-    {
-        'type': 'Feature',
-        'geometry': {
-            'type': 'Point',
-            'coordinates': [78, -100]
-        },
-        'properties': {
-            'featureTypeId': 16,
-            'displayName': 'Agu',
-            'description': 'A kifo.',
-            'zoomlevel': 3,
-            'visibility': 'owner',
-            'owner' : 'bob',
             'timestamp' : new Date()
         }
     },
