@@ -195,11 +195,45 @@ function createFeatureLayerByType(map, controlparam, typeId) {
         console.log("**** Items are: " + JSON.stringify(data));
         console.log("**** Putting items of typeId (" + typeId + ") on the map");
 
-        var geoMarkers = L.geoJSON(data, {
-            onEachFeature: onEachFeature
-        }).addTo(map);
+        // Add features on the map based on type (overlay || geomarkers)
+        switch (typeId) {
 
-        control.addOverlay(geoMarkers, name, group);
+            case 4:
+                
+                var layerLvl = 2;
+                var tileId = 'feature4';
+                var apiTileServiceOverlayURL = 'http://localhost:7999/api/tiledOverlay/' + tileId + '/{z}/{x}/{y}';
+
+                
+                layers[layerLvl] = L.tileLayer(apiTileServiceOverlayURL, {
+                    minZoom: mapMinZoom, maxZoom: mapMaxZoom,
+                    bounds: mapBounds,
+                    noWrap: true,
+                    tms: false,
+                    zIndex: 2,
+                    tileSize: 512
+                }).addTo(map);
+
+                control.addOverlay(layers[layerLvl], name, group);
+                alert();
+                break;
+
+            default:
+                //Default is geoMarker
+                var geoMarkers = L.geoJSON(data, {
+                    onEachFeature: onEachFeature
+                }).addTo(map);
+
+                control.addOverlay(geoMarkers, name, group);
+
+                break;
+
+
+
+        };
+
+        
+      
 
         console.log("**** Putting items of typeId (" + typeId + ") the map - done!")
 
@@ -246,12 +280,14 @@ function initializeWorldMapContent(map) {
 
     initialize();
 
+    //EXPERIMENTAL
     if (adminMode) {
 
         // add leaflet.pm controls to the map
         map.pm.addControls(options);
     };
 
+    // Retrieve the feature categories and names from MenuService --> create the Menu
     url = apiMenuURL;
 
     fetch(url, {
@@ -263,7 +299,6 @@ function initializeWorldMapContent(map) {
                 response.status);
             return;
         }
-
 
         return response.json();
 

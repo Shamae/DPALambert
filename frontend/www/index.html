@@ -53,8 +53,8 @@
     var token; //not nice must refine
     function init() {
       // Init Leaflet canavs
-      var mapMinZoom = 3;
-      var mapMaxZoom = 6;
+      mapMinZoom = 3; // made global for createFeatureLayerByType
+      mapMaxZoom = 6; // made global for createFeatureLayerByType
       map = L.map('map', {
         zoomControl: false,
         maxZoom: mapMaxZoom,
@@ -63,9 +63,9 @@
       }).setView([-75, 196], 4);
       var southWest = map.unproject([0, 30000], map.getMaxZoom());
       var northEast = map.unproject([23910, 0], map.getMaxZoom());
-      var mapBounds = new L.LatLngBounds(
+      mapBounds = new L.LatLngBounds(
         southWest,
-        northEast);
+        northEast); // made global for createFeatureLayerByType
       map.setMaxBounds(mapBounds);
       map.on('drag', function () {
         map.panInsideBounds(mapBounds, { animate: false });
@@ -81,7 +81,7 @@
 
       //EXPERIMENTAL : add a tiled layer by name
 
-      var layers=[];
+      layers=[];// made global for createFeatureLayerByType
       var layerLvl = 1;
       var name = 'troll';
       var apiTileServiceOverlayURL = 'http://localhost:7999/api/tiledOverlay/'+name+'/{z}/{x}/{y}';
@@ -113,9 +113,9 @@
 
       //EXPERIMENTAL add a second transparent layer 
 
-     
+     /*
       var layerLvl = 2;
-      var name = 'alone';
+      var name = 'feature4';
       var apiTileServiceOverlayURL = 'http://localhost:7999/api/tiledOverlay/'+name+'/{z}/{x}/{y}';
 
       
@@ -125,6 +125,25 @@
         noWrap: true,
         tms: false,
         zIndex: 2,
+        tileSize: 512
+      }).addTo(map);
+
+      
+      */
+       //EXPERIMENTAL add a 4th transparent layer 
+
+     
+     var layerLvl = 4;
+      var name = 'feature10';
+      var apiTileServiceOverlayURL = 'http://localhost:7999/api/tiledOverlay/'+name+'/{z}/{x}/{y}';
+
+      
+     layers[layerLvl] = L.tileLayer(apiTileServiceOverlayURL, {
+        minZoom: mapMinZoom, maxZoom: mapMaxZoom,
+        bounds: mapBounds,
+        noWrap: true,
+        tms: false,
+        zIndex: 4,
         tileSize: 512
       }).addTo(map);
 
