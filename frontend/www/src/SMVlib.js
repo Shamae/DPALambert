@@ -63,6 +63,9 @@ function initialize() {
         removalMode: false   // adds a button to remove layers
     };
 
+    //Intitiazes the array containing tiled overlay
+    layers=[]; // made global for createFeatureLayerByType
+
 };
 function fetchAPIdata(url) {
 
@@ -170,6 +173,19 @@ function getAllFeatures(map) {
 
 };
 
+function toggleTiledLayer(){
+
+    if (map.hasLayer(layers[featureId])) {
+
+        map.removeLayer(layers[featureId]);
+  } 
+  else {
+
+    layers[featureId].addTo(map);
+  }
+  
+};
+
 function createFeatureLayerByType(map, controlparam, typeId) {
 
     url = apiItemURL + "?properties.featureTypeId=" + typeId;
@@ -196,12 +212,13 @@ function createFeatureLayerByType(map, controlparam, typeId) {
         console.log("**** Putting items of typeId (" + typeId + ") on the map");
 
         // Add features on the map based on type (overlay || geomarkers)
-        switch (typeId) {
 
-            case 4:
+        switch (config.featureIdLayerStyle[typeId]) {
+
+            case 'tiledOverlay':
                 
-                var layerLvl = 2;
-                var tileId = 'feature4';
+                var layerLvl = typeId;
+                var tileId = 'feature' + typeId;
                 var apiTileServiceOverlayURL = 'http://localhost:7999/api/tiledOverlay/' + tileId + '/{z}/{x}/{y}';
 
                 
@@ -210,7 +227,7 @@ function createFeatureLayerByType(map, controlparam, typeId) {
                     bounds: mapBounds,
                     noWrap: true,
                     tms: false,
-                    zIndex: 2,
+                    zIndex: typeId,
                     tileSize: 512
                 }).addTo(map);
 
