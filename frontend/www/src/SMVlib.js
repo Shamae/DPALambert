@@ -232,7 +232,7 @@ function createFeatureLayerByType(map, controlparam, typeId) {
                 }).addTo(map);
 
                 control.addOverlay(layers[layerLvl], name, group);
-                alert();
+                
                 break;
 
             case 'geoMarker':
