@@ -64,7 +64,7 @@ function initialize() {
     };
 
     //Intitiazes the array containing tiled overlay
-    layers=[]; // made global for createFeatureLayerByType
+    layers = []; // made global for createFeatureLayerByType
 
 };
 function fetchAPIdata(url) {
@@ -173,17 +173,17 @@ function getAllFeatures(map) {
 
 };
 
-function toggleTiledLayer(){
+function toggleTiledLayer() {
 
     if (map.hasLayer(layers[featureId])) {
 
         map.removeLayer(layers[featureId]);
-  } 
-  else {
+    }
+    else {
 
-    layers[featureId].addTo(map);
-  }
-  
+        layers[featureId].addTo(map);
+    }
+
 };
 
 function createFeatureLayerByType(map, controlparam, typeId) {
@@ -216,12 +216,12 @@ function createFeatureLayerByType(map, controlparam, typeId) {
         switch (config.featureIdLayerStyle[typeId]) {
 
             case 'tiledOverlay':
-                
-                var layerLvl = typeId;
+
+
                 var tileId = 'feature' + typeId;
                 var apiTileServiceOverlayURL = 'http://localhost:7999/api/tiledOverlay/' + tileId + '/{z}/{x}/{y}';
 
-                
+                var layerLvl = config.featureIdLayerOrdering[typeId]; //Retrieve ordering of the overlay based on config object
                 layers[layerLvl] = L.tileLayer(apiTileServiceOverlayURL, {
                     minZoom: mapMinZoom, maxZoom: mapMaxZoom,
                     bounds: mapBounds,
@@ -235,7 +235,7 @@ function createFeatureLayerByType(map, controlparam, typeId) {
                 alert();
                 break;
 
-            default:
+            case 'geoMarker':
                 //Default is geoMarker
                 var geoMarkers = L.geoJSON(data, {
                     onEachFeature: onEachFeature
@@ -249,8 +249,8 @@ function createFeatureLayerByType(map, controlparam, typeId) {
 
         };
 
-        
-      
+
+
 
         console.log("**** Putting items of typeId (" + typeId + ") the map - done!")
 
@@ -487,7 +487,7 @@ function saveMarker(geojsonFeature) {
         body: JSON.stringify(data),
         headers: new Headers({
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer '+ token
+            'Authorization': 'Bearer ' + token
         })
     }).then(res => res.json())
         .catch(error => console.error('Error :', error))
@@ -544,7 +544,7 @@ function addItem(map) {
 
 };
 
-function getItemCoord(item){
+function getItemCoord(item) {
 
     var coord = {};
     coord.lng = 0;
@@ -554,14 +554,14 @@ function getItemCoord(item){
 
         case 10:
 
-        coord.lng = item["geometry"]["coordinates"][0][0][0];
-        coord.lat = item["geometry"]["coordinates"][0][0][1];
+            coord.lng = item["geometry"]["coordinates"][0][0][0];
+            coord.lat = item["geometry"]["coordinates"][0][0][1];
             break;
 
         default:
 
-        coord.lat = item["geometry"]["coordinates"][1];
-        coord.lng = item["geometry"]["coordinates"][0];
+            coord.lat = item["geometry"]["coordinates"][1];
+            coord.lng = item["geometry"]["coordinates"][0];
 
 
             break;
@@ -598,6 +598,9 @@ function clearSearchList() {
     document.getElementById("srchResults").innerHTML = "";
 
 };
+
+
+
 
 function generateSearchList(results) {
     document.getElementById("srchResults").innerHTML = "";
@@ -639,8 +642,8 @@ function generateSearchList(results) {
             var popup = L.popup(popupOptions)
                 .setLatLng(L.latLng(coord.lat, coord.lng))
                 .setContent(
-                "<div class='txtWB'>" + results[index]["properties"]["displayName"] + "</div>" + "<br>"
-                + "<div>" + results[index]["properties"]["description"] + "</div>"
+                    "<div class='txtWB'>" + results[index]["properties"]["displayName"] + "</div>" + "<br>"
+                    + "<div>" + results[index]["properties"]["description"] + "</div>"
 
                 ).openOn(map);
 
@@ -653,29 +656,6 @@ function generateSearchList(results) {
     };
 
 
-    /****   THE FOLLOWING RELATES TO IDENTIFICATION ****/
-
-    function login() {
-        mgr.signinRedirect();
-    };
-
-    function api() {
-        mgr.getUser().then(function (user) {
-            var url = apiIdentityURL;
-
-            var xhr = new XMLHttpRequest();
-            xhr.open("GET", url);
-            xhr.onload = function () {
-                log(xhr.status, JSON.parse(xhr.responseText));
-            }
-            xhr.setRequestHeader("Authorization", "Bearer " + user.access_token);
-            xhr.send();
-        });
-    };
-
-    function logout() {
-        mgr.signoutRedirect();
-    };
 
 
 
@@ -683,3 +663,29 @@ function generateSearchList(results) {
 
 
 };
+
+
+/****   THE FOLLOWING RELATES TO IDENTIFICATION ****/
+
+function login() {
+    mgr.signinRedirect();
+};
+
+function api() {
+    mgr.getUser().then(function (user) {
+        var url = apiIdentityURL;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", url);
+        xhr.onload = function () {
+            log(xhr.status, JSON.parse(xhr.responseText));
+        }
+        xhr.setRequestHeader("Authorization", "Bearer " + user.access_token);
+        xhr.send();
+    });
+};
+
+function logout() {
+    mgr.signoutRedirect();
+};
+

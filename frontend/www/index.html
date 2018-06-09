@@ -70,7 +70,7 @@
       map.on('drag', function () {
         map.panInsideBounds(mapBounds, { animate: false });
       });
-      
+
       //Adds the base layer 
       baseLayer = L.tileLayer(apiTileServiceURL, {
         minZoom: mapMinZoom, maxZoom: mapMaxZoom,
@@ -80,7 +80,7 @@
         tileSize: 512
       }).addTo(map);
 
-      
+
 
       //Adds map controls
       L.control.zoom({
@@ -90,7 +90,7 @@
       // Init Map Content form backend
       initializeWorldMapContent(map);
 
-      
+
       // Login and stuff
       //document.getElementById("signInBtn").addEventListener("click", login, false);
       //document.getElementById("api").addEventListener("click", api, false);
@@ -139,7 +139,7 @@
         }
       }
       function logout() {
-        console.log("We did try to logout...");        
+        console.log("We did try to logout...");
         ///mgr.signoutRedirect();
         mgr.removeUser();
         checkSigninStatus(mgr);
@@ -178,9 +178,9 @@
           login(this.dataset["scope"], this.dataset["type"]);
         });
       });
-/*
-      document.querySelector(".call").addEventListener("click", callApi, false);
-      document.querySelector(".revoke").addEventListener("click", revoke, false);*/
+      /*
+            document.querySelector(".call").addEventListener("click", callApi, false);
+            document.querySelector(".revoke").addEventListener("click", revoke, false);*/
       document.querySelector(".logout").addEventListener("click", logout, false);
 
       function log(data) {
@@ -193,7 +193,7 @@
             msg = JSON.stringify(msg, null, 2);
           }
           //document.getElementById('response').innerHTML += msg + '\r\n';
-          console.log("[OIDC-client says:] "+msg);
+          console.log("[OIDC-client says:] " + msg);
         });
       }
       function display(selector, data) {
@@ -237,7 +237,7 @@
         });
       }
       // OIDC-client code off
-     
+
       // define toolbar options
       map.on('contextmenu', function (e) {
         lat = e.latlng.lat;
@@ -302,7 +302,8 @@
   <div class="top-left-pane">
     <form novalidate="novalidate" onsubmit="return false;" class="searchbox sbx-custom">
       <div role="search" class="search-bar">
-        <input id="srchInputField" name="search" placeholder="Search..." autocomplete="off" required="required" class="sbx-custom__input" type="search" onkeyup="searchItem()" onchange="searchItem()">
+        <input id="srchInputField" name="search" placeholder="Search..." autocomplete="off" required="required" class="sbx-custom__input"
+          type="search" onkeyup="searchItem()" onchange="searchItem()">
         <button type="reset" title="Clear the search query" class="sbx-custom__reset">
           <svg role="img" aria-label="Reset">
             <use xlink:href="#sbx-icon-clear-4"></use>
@@ -373,9 +374,136 @@
   <script type="text/javascript">
     document.querySelector('.searchbox [type="reset"]').addEventListener('click', function () { this.parentNode.querySelector('input').focus(); });
     document.querySelector('.searchbox [type="reset"]').addEventListener('mouseout', function () { this.parentNode.querySelector('input').focus(); });
-    document.querySelector('.searchbox [type="reset"]').addEventListener('click', function (e) {clearSearchList(); });
+    document.querySelector('.searchbox [type="reset"]').addEventListener('click', function (e) { clearSearchList(); });
   </script>
-
+<!--
+  <section class="ac-container leaflet-control-layers-list" style="width: 300px; max-height: 231px;">
+    <form class="">
+      <div class="leaflet-control-layers-base"></div>
+      <div class="leaflet-control-layers-overlays">
+        <div id="leaflet-control-accordion-layers-0">
+          <input id="ac0" name="accordion-1" class="menu" checked="true" type="checkbox">
+          <label for="ac0">Civilization</label>
+          <article class="ac-large">
+            <div class="menu-item-checkbox">
+              <input type="checkbox" class="leaflet-control-layers-selector" checked="" id="ac_layer_input_54">
+              <label>
+                <label for="ac_layer_input_54">Regions/territories</label>
+              </label>
+            </div>
+            <div class="menu-item-checkbox">
+              <input type="checkbox" class="leaflet-control-layers-selector" checked="" id="ac_layer_input_56">
+              <label>
+                <label for="ac_layer_input_56">Points of interest</label>
+              </label>
+            </div>
+            <div class="menu-item-checkbox">
+              <input type="checkbox" class="leaflet-control-layers-selector" checked="" id="ac_layer_input_57">
+              <label>
+                <label for="ac_layer_input_57">Mayor roads/passages</label>
+              </label>
+            </div>
+            <div class="menu-item-checkbox">
+              <input type="checkbox" class="leaflet-control-layers-selector" checked="" id="ac_layer_input_83">
+              <label>
+                <label for="ac_layer_input_83">Cities and settlements</label>
+              </label>
+            </div>
+            <div class="menu-item-checkbox">
+              <input type="checkbox" class="leaflet-control-layers-selector" checked="" id="ac_layer_input_93">
+              <label>
+                <label for="ac_layer_input_93">Mayor trade routes</label>
+              </label>
+            </div>
+          </article>
+        </div>
+        <div id="leaflet-control-accordion-layers-1">
+          <input id="ac1" name="accordion-1" class="menu" checked="true" type="checkbox">
+          <label for="ac1">Geography</label>
+          <article class="ac-large">
+            <div class="menu-item-checkbox">
+              <input type="checkbox" class="leaflet-control-layers-selector" checked="" id="ac_layer_input_94">
+              <label>
+                <label for="ac_layer_input_94">Bodies of water</label>
+              </label>
+            </div>
+            <div class="menu-item-checkbox">
+              <input type="checkbox" class="leaflet-control-layers-selector" checked="" id="ac_layer_input_95">
+              <label>
+                <label for="ac_layer_input_95">Rivers</label>
+              </label>
+            </div>
+            <div class="menu-item-checkbox">
+              <input type="checkbox" class="leaflet-control-layers-selector" checked="" id="ac_layer_input_96">
+              <label>
+                <label for="ac_layer_input_96">Climate zones</label>
+              </label>
+            </div>
+            <div class="menu-item-checkbox">
+              <input type="checkbox" class="leaflet-control-layers-selector" checked="" id="ac_layer_input_97">
+              <label>
+                <label for="ac_layer_input_97">Mountain ranges</label>
+              </label>
+            </div>
+            <div class="menu-item-checkbox">
+              <input type="checkbox" class="leaflet-control-layers-selector" checked="" id="ac_layer_input_123">
+              <label>
+                <label for="ac_layer_input_123">Primer</label>
+              </label>
+            </div>
+          </article>
+        </div>
+        <div id="leaflet-control-accordion-layers-2">
+          <input id="ac2" name="accordion-1" class="menu" checked="true" type="checkbox">
+          <label for="ac2">Information</label>
+          <article class="ac-large">
+            <div class="menu-item-checkbox">
+              <input type="checkbox" class="leaflet-control-layers-selector" checked="" id="ac_layer_input_122">
+              <label>
+                <label for="ac_layer_input_122">Rainfall</label>
+              </label>
+            </div>
+            <div class="menu-item-checkbox">
+              <input type="checkbox" class="leaflet-control-layers-selector" checked="" id="ac_layer_input_163">
+              <label>
+                <label for="ac_layer_input_163">Temperature</label>
+              </label>
+            </div>
+            <div class="menu-item-checkbox">
+              <input type="checkbox" class="leaflet-control-layers-selector" checked="" id="ac_layer_input_164">
+              <label>
+                <label for="ac_layer_input_164">Population</label>
+              </label>
+            </div>
+            <div class="menu-item-checkbox">
+              <input type="checkbox" class="leaflet-control-layers-selector" checked="" id="ac_layer_input_165">
+              <label>
+                <label for="ac_layer_input_165">Cult influence</label>
+              </label>
+            </div>
+          </article>
+        </div>
+        <div id="leaflet-control-accordion-layers-3">
+          <input id="ac3" name="accordion-1" class="menu" checked="true" type="checkbox">
+          <label for="ac3">Characters</label>
+          <article class="ac-large">
+            <div class="menu-item-checkbox">
+              <input type="checkbox" class="leaflet-control-layers-selector" checked="" id="ac_layer_input_149">
+              <label>
+                <label for="ac_layer_input_149">Non-player characters</label>
+              </label>
+            </div>
+            <div class="menu-item-checkbox">
+              <input type="checkbox" class="leaflet-control-layers-selector" checked="" id="ac_layer_input_167">
+              <label>
+                <label for="ac_layer_input_167">Player characters</label>
+              </label>
+            </div>
+          </article>
+        </div>
+      </div>
+    </form>
+  </section>-->
 </body>
 
 </html>
