@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>Degenesis Worldmap</title>
+  <title>Degenesis World Map</title>
   <link rel="icon" href="img/favicon.png">
   <meta charset="utf-8" />
   <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
@@ -71,7 +71,7 @@
         map.panInsideBounds(mapBounds, { animate: false });
       });
 
-      //Adds the base layer 
+      //Adds the base layer
       baseLayer = L.tileLayer(apiTileServiceURL, {
         minZoom: mapMinZoom, maxZoom: mapMaxZoom,
         bounds: mapBounds,
@@ -271,13 +271,13 @@
           console.log("User logged in", user.profile);
           token = user.access_token;
           console.log("Token:" + user.access_token);
-          document.getElementById("userPrompt").innerHTML = "> Welcome, " + user.profile.name + " <";
+          document.getElementById("userPrompt").innerHTML = "Welcome, " + user.profile.name + "";
           document.getElementById("sgnInBtn").style.display = 'none';
           document.getElementById("sgnOffBtn").style.display = 'block';
         }
         else {
           console.log("User not logged in");
-          document.getElementById("userPrompt").innerHTML = "> Welcome, Stranger...  <";
+          document.getElementById("userPrompt").innerHTML = "Welcome, Stranger...";
           document.getElementById("sgnInBtn").style.display = 'block';
           document.getElementById("sgnOffBtn").style.display = 'none';
         }
@@ -317,18 +317,17 @@
   <!-- End Searchbox -->
 
   <div class="bottom-left-pane">
+    <div class="userbox">
+      <div id="userPrompt" class="txtWB">No user</div>
+      <button id="sgnInBtn" class="request w3-button w3-block w3-black" data-scope='openid profile tileApi menuApi itemApi.standard_access role' data-type='id_token token'>
+        <i class="fa fa-sign-in" aria-hidden="true"></i>
+        SIGN IN</button>
 
-    <div id="userPrompt" class="txtWB">No user</div>
-    <button id="sgnInBtn" class="request" data-scope='openid profile tileApi menuApi itemApi.standard_access role' data-type='id_token token'>
-      <i class="fa fa-sign-in" aria-hidden="true"></i>
-      Sign in</button>
-
-    <button id="sgnOffBtn" class="logout">
-      <i class="fa fa-sign-out" aria-hidden="true"></i>
-      Sign out</button>
-
+      <button id="sgnOffBtn" class="logout w3-button w3-block w3-black">
+        <i class="fa fa-sign-out" aria-hidden="true"></i>
+        SIGN OUT</button>
+      </div>
   </div>
-
 
   <div class="w3-container">
 
@@ -343,28 +342,28 @@
 
         <form class="w3-container">
           <div class="w3-section">
-            <select id="itType">
-
-              <option value="2"> City</option>
+            <label>
+              <b>TYPE</b>
+            </label>
+            <select id="itType" class="w3-select w3-border w3-margin-bottom">
+              <option value="2">City</option>
               <option value="15">Non-Player Character</option>
               <option value="16">Player Character</option>
-
             </select>
             <label>
-              <b>Name</b>
+              <b>NAME</b>
             </label>
-            <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Display name..." name="displayname" id="itName"
-              required>
+            <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Display name..." name="displayname" id="itName" required>
             <label>
-              <b>Description</b>
+              <b>DESCRIPTION</b>
             </label>
-            <input class="w3-input w3-border" type="text" placeholder="Enter Password" name="Description" id="itDescr" required>
-            <button class="w3-button w3-block w3-green w3-section w3-padding" type="button" onclick="getItem()">ADD</button>
+            <input class="w3-input w3-border" type="text" placeholder="Enter description..." name="Description" id="itDescr" required>
+            <button class="w3-button w3-block w3-black w3-section w3-padding" type="button" onclick="getItem()">ADD</button>
           </div>
         </form>
 
         <div class="w3-container w3-border-top w3-padding-16 w3-light-grey">
-          <button onclick="document.getElementById('itemForm').style.display='none'" type="button" class="w3-button w3-red">Cancel</button>
+          <button onclick="document.getElementById('itemForm').style.display='none'" type="button" class="w3-button w3-red">CANCEL</button>
         </div>
 
       </div>

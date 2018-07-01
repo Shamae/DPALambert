@@ -2,7 +2,7 @@
 
 <div class="login-page">
     <div class="page-header">
-        <h1>Login</h1>
+        <img src="~/Degenesis_World_Map.png" class="img-responsive center-block" alt="Degenesis World Map">
     </div>
 
     @Html.Partial("_ValidationSummary")
@@ -11,10 +11,10 @@
 
         @if (Model.EnableLocalLogin)
         {
-            <div class="col-sm-6">
+            <div class="col-sm-6 col-sm-offset-3">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Local Login</h3>
+                        <h3 class="panel-title">LOGIN</h3>
                     </div>
                     <div class="panel-body">
 
@@ -35,13 +35,13 @@
                                     <div class="form-group login-remember">
                                         <label asp-for="RememberLogin">
                                             <input asp-for="RememberLogin">
-                                            <strong>Remember My Login</strong>
+                                            REMEMBER MY LOGIN
                                         </label>
                                     </div>
                                 }
                                 <div class="form-group">
-                                    <button class="btn btn-primary" name="button" value="login">Login</button>
-                                    <button class="btn btn-default" name="button" value="cancel">Cancel</button>
+                                    <button class="btn btn-primary" name="button" value="login">LOGIN</button>
+                                    <button class="btn btn-default" name="button" value="cancel">CANCEL</button>
                                 </div>
                             </fieldset>
                         </form>
