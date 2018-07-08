@@ -173,7 +173,7 @@ function getAllFeatures(map) {
 
 };
 
-function toggleTiledLayer() {
+function toggleTiledLayer(featureId) {
 
     if (map.hasLayer(layers[featureId])) {
 
@@ -213,6 +213,8 @@ function createFeatureLayerByType(map, controlparam, typeId) {
 
         // Add features on the map based on type (overlay || geomarkers)
 
+        var layerLvl = config.featureIdLayerOrdering[typeId]; //Retrieve ordering of the overlay based on config object
+
         switch (config.featureIdLayerStyle[typeId]) {
 
             case 'tiledOverlay':
@@ -221,27 +223,32 @@ function createFeatureLayerByType(map, controlparam, typeId) {
                 var tileId = 'feature' + typeId;
                 var apiTileServiceOverlayURL = 'http://localhost:7999/api/tiledOverlay/' + tileId + '/{z}/{x}/{y}';
 
-                var layerLvl = config.featureIdLayerOrdering[typeId]; //Retrieve ordering of the overlay based on config object
-                layers[layerLvl] = L.tileLayer(apiTileServiceOverlayURL, {
+               
+                layers[typeId] = L.tileLayer(apiTileServiceOverlayURL, {
                     minZoom: mapMinZoom, maxZoom: mapMaxZoom,
                     bounds: mapBounds,
                     noWrap: true,
                     tms: false,
                     zIndex: layerLvl,
                     tileSize: 512
-                }).addTo(map);
+                })
 
-                control.addOverlay(layers[layerLvl], name, group);
-                
+               // layers[layerLvl].setZIndex(50);
+                layers[typeId].addTo(map);
+                control.addOverlay(layers[typeId], name + layerLvl, group);
+                console.log("LE Z index de " + layerLvl + " -- is -- "+ layers[typeId].zIndex);
                 break;
 
             case 'geoMarker':
                 //Default is geoMarker
-                var geoMarkers = L.geoJSON(data, {
+                 layers[typeId] = L.geoJSON(data, {
                     onEachFeature: onEachFeature
-                }).addTo(map);
+                })
+                
+                 layers[typeId].zIndex = layerLvl;
+                 layers[typeId].addTo(map);
 
-                control.addOverlay(geoMarkers, name, group);
+                  control.addOverlay(layers[typeId], name + layerLvl, group);
 
                 break;
 
@@ -350,7 +357,7 @@ function initializeWorldMapContent(map) {
             //group_maxHeight: "80px",
             //container_maxHeight : "350px",
             exclusive: false,
-            collapsed: true,
+            collapsed: false,
             position: 'topright'
         };
 
@@ -411,6 +418,10 @@ function initializeWorldMapContent(map) {
 
         };
 
+       
+
+
+     
         // Init Search Engine
 
         // temporary mockup data
@@ -443,6 +454,9 @@ function initializeWorldMapContent(map) {
         console.log("**** Failed to create content!");
         // Error :(
     });
+
+    
+
 
 };
 

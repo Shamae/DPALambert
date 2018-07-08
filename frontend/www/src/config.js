@@ -22,11 +22,12 @@ config.featureIdLayerStyle[16] = "geoMarker";
 
 config.featureIdLayerOrdering = [];
 
-config.featureIdLayerOrdering[2] = 7;
+config.featureIdLayerOrdering[2] = 12;
 config.featureIdLayerOrdering[4] = 5;
 config.featureIdLayerOrdering[8] = 3;
 config.featureIdLayerOrdering[10] = 6;
-
+config.featureIdLayerOrdering[15] = 13;
+config.featureIdLayerOrdering[16] = 14;
 
 
 //TODO: convert this into a convenient JSON/Object so that we can use config.
