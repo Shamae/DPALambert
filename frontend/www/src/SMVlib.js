@@ -227,7 +227,7 @@ function createFeatureLayerByType(map, controlparam, typeId) {
                     bounds: mapBounds,
                     noWrap: true,
                     tms: false,
-                    zIndex: typeId,
+                    zIndex: layerLvl,
                     tileSize: 512
                 }).addTo(map);
 

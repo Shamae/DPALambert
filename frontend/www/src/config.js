@@ -11,6 +11,7 @@ var config = {};
 // Configures the type of overlay {tileOverlay||geoMarker}
 config.featureIdLayerStyle = [];
 
+config.featureIdLayerStyle[2] = "geoMarker";
 config.featureIdLayerStyle[4] = "tiledOverlay";
 config.featureIdLayerStyle[8] = "tiledOverlay";
 config.featureIdLayerStyle[10] = "tiledOverlay";
@@ -21,6 +22,7 @@ config.featureIdLayerStyle[16] = "geoMarker";
 
 config.featureIdLayerOrdering = [];
 
+config.featureIdLayerOrdering[2] = 7;
 config.featureIdLayerOrdering[4] = 5;
 config.featureIdLayerOrdering[8] = 3;
 config.featureIdLayerOrdering[10] = 6;
