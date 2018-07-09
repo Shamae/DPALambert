@@ -1,0 +1,17 @@
+{
+  "name": "identityservice",
+  "version": "1.0.0",
+  "description": "How to get this running:\r     - install .Net Core (Visual Studio Code: https://www.microsoft.com/net/core#windowscmd)\r     - install C# (Visual Studio Code: https://marketplace.visualstudio.com/items?itemName=ms-vscode.csharp)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.4",
+    "express": "^4.16.3",
+    "gulp": "^3.9.1",
+    "gulp-nodemon": "^2.2.1"
+  }
+}

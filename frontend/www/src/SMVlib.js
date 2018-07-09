@@ -232,7 +232,7 @@ function createFeatureLayerByType(map, controlparam, typeId) {
                 }).addTo(map);
 
                 control.addOverlay(layers[layerLvl], name, group);
-                
+
                 break;
 
             case 'geoMarker':
@@ -688,4 +688,3 @@ function api() {
 function logout() {
     mgr.signoutRedirect();
 };
-
