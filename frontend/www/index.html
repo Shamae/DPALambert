@@ -138,8 +138,8 @@
       }
       function logout() {
         console.log("We did try to logout...");
-        ///mgr.signoutRedirect();
-        mgr.removeUser();
+        mgr.signoutRedirect();
+        ///mgr.removeUser();
         checkSigninStatus(mgr);
       }
       function revoke() {
