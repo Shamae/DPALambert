@@ -233,10 +233,15 @@ function createFeatureLayerByType(map, controlparam, typeId) {
                     tileSize: 512
                 })
 
+<<<<<<< HEAD
                // layers[layerLvl].setZIndex(50);
                 layers[typeId].addTo(map);
                 control.addOverlay(layers[typeId], name + layerLvl, group);
                 console.log("LE Z index de " + layerLvl + " -- is -- "+ layers[typeId].zIndex);
+=======
+                control.addOverlay(layers[layerLvl], name, group);
+
+>>>>>>> 91349183fca332e0facb2d60e0be151a02716504
                 break;
 
             case 'geoMarker':
@@ -702,4 +707,3 @@ function api() {
 function logout() {
     mgr.signoutRedirect();
 };
-
