@@ -235,7 +235,7 @@ function createFeatureLayerByType(map, controlparam, typeId) {
 
                // layers[layerLvl].setZIndex(50);
                 layers[typeId].addTo(map);
-                control.addOverlay(layers[typeId], name + layerLvl, group);
+                control.addOverlay(layers[typeId], name , group);
                 console.log("LE Z index de " + layerLvl + " -- is -- "+ layers[typeId].zIndex);
                 break;
 
@@ -248,7 +248,7 @@ function createFeatureLayerByType(map, controlparam, typeId) {
                  layers[typeId].zIndex = layerLvl;
                  layers[typeId].addTo(map);
 
-                  control.addOverlay(layers[typeId], name + layerLvl, group);
+                  control.addOverlay(layers[typeId], name , group);
 
                 break;
 

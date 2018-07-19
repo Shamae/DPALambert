@@ -8,8 +8,8 @@ db.dropDatabase();
 // recreate
 db.createCollection('category');
 db.category.insert([
-    { '_id' : 1, 'displayName' : 'Civilization' },
-    { '_id' : 2, 'displayName' : 'Geography' },
+    { '_id' : 2, 'displayName' : 'Civilization' },
+    { '_id' : 1, 'displayName' : 'Geography' },
     { '_id' : 3, 'displayName' : 'Information' },
     { '_id' : 4, 'displayName' : 'Characters' }
 ]);
