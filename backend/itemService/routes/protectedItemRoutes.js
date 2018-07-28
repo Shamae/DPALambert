@@ -37,11 +37,16 @@ var routes = function(Item){
     // config routes with itemId
     itemRouter.route('/:itemId')
         .put(function(req,res){
+            // only SC markers for non-admins
             if(req.item.properties.featureTypeId = 16 || req.session.userInfo.role == 'admin')
             {
+                // copy from body to item
                 req.item.properties.displayName = req.body.properties.displayName;
                 req.item.properties.description = req.body.properties.description;
+                req.item.properties.factsheet = req.body.properties.factsheet;
+                req.item.properties.url = req.body.properties.url;
                 req.item.geometry.coordinates = req.body.geometry.coordinates;
+                // save
                 req.item.save(function(err){
                     if(err)
                         res.status(500).send(err);

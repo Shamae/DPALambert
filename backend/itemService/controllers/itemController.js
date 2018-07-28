@@ -45,6 +45,7 @@ var itemController = function(Item){
             res.send('Feature type missing');
         }
         else {
+            // only SC markers for non-admins
             if(req.body.properties.featureTypeId == 16 || req.session.userInfo.role == 'admin') {
                 // save item to db
                 item.save();

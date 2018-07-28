@@ -20,6 +20,8 @@ var itemModel = new mongoose.Schema({
         featureTypeId: Number,
         displayName: String,
         description: String,
+        factsheet: mongoose.Schema.Types.Mixed,
+        url: String,
         owner: String,
         visibility: String,
         zoomlevel: Number,
