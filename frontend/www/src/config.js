@@ -17,6 +17,13 @@ config.featureIdLayerStyle[8] = "tiledOverlay";
 config.featureIdLayerStyle[10] = "tiledOverlay";
 config.featureIdLayerStyle[15] = "geoMarker";
 config.featureIdLayerStyle[16] = "geoMarker";
+config.featureIdLayerStyle[17] = "geoMarker";
+config.featureIdLayerStyle[18] = "geoMarker";
+config.featureIdLayerStyle[19] = "geoMarker";
+config.featureIdLayerStyle[20] = "geoMarker";
+config.featureIdLayerStyle[21] = "geoMarker";
+config.featureIdLayerStyle[22] = "geoMarker";
+config.featureIdLayerStyle[23] = "geoMarker";
 
 // Configures the ordering of the type of tiled overlays
 
@@ -35,7 +42,7 @@ config.featureIdLayerOrdering[16] = 14;
 //Configures the types of markers each role may add and modify
 
 config.markersByRole= [];
-config.markersByRole['admin'] = [2, 15, 16];
+config.markersByRole['admin'] = [15, 16, 17];
 config.markersByRole['user'] = [16];
                                
 //Declares an array to save the menu category names 

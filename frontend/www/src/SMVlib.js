@@ -3,7 +3,21 @@ function initialize() {
 
     adminMode = false;
 
+
     // set customized icons
+    
+        
+        unknownIcon = L.icon({
+            iconUrl: 'img/playerIcon.png',
+            //shadowUrl: 'leaf-shadow.png',
+    
+            iconSize: [24, 24], // size of the icon
+            //shadowSize:   [50, 64], // size of the shadow
+            iconAnchor: [16, 16], // point of the icon which will correspond to marker's location
+            //shadowAnchor: [4, 62],  // the same for the shadow
+            popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
+        });
+    
     playerIcon = L.icon({
         iconUrl: 'img/playerIcon.png',
         //shadowUrl: 'leaf-shadow.png',
@@ -120,25 +134,9 @@ function onEachFeature(feature, layer) {
     layer.bindTooltip(feature.properties.displayName);
 
 
-
-    switch (feature.properties.featureTypeId) {
-
-        case 2:
-
-            layer.setIcon(cityIcon);
-            break;
-
-        case 15:
-
-            layer.setIcon(nonPlayerIcon);
-            break;
-        case 16:
-            layer.setIcon(playerIcon);
-            break;
-
-
-
-    };
+    //Select and assign marker icon based on featuretype.
+    layer.setIcon(getIconByType(feature.properties.featureTypeId));
+    
 
 };
 
@@ -509,17 +507,26 @@ function refreshUI(map) {
 
 function getIconByType(featureType) {
 
+    //Select marker icon based on featuretype
     switch (featureType) {
-        case 2: 
-
-            return cityIcon; 
-
+        //NPC icons            
         case 15:
             return nonPlayerIcon;
+            break;
 
+        //Player characters icons
         case 16:
             return playerIcon;
+            break;
 
+        //City icons
+        case 17:
+            return cityIcon;
+            break;
+
+        default:
+            return unknownIcon;
+            break;
 
     };
 };
