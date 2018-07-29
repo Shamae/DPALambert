@@ -38,5 +38,6 @@ config.markersByRole= [];
 config.markersByRole['admin'] = [2, 15, 16];
 config.markersByRole['user'] = [16];
                                
+//Declares an array to save the menu category names 
 
-]
+config.categoryName = [];

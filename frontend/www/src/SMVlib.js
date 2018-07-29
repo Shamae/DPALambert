@@ -300,17 +300,29 @@ function getFeatureByTYpe(map, typeId) {
 
 };
 
+// Retrieve the editing rights based on user profile and modifies the UI accordingly
 function checkUrPrivileges (usrRole){
 
     var usrRights = null; 
 
     if (usrRole != 'none'){
 
-        usrRights = 
+        usrRights = config.markersByRole[usrRole];
+
+        $('#markerOptions').empty();
+        usrRights.forEach(function(element) {
+            $('#markerOptions')
+            .append($('<option>', {
+                value: element,
+                text: config.categoryName[element]
+            }));
+            console.log(element);
+          });
+       
     }
     
 
-    console.log("[DEBUG] Current user is: " + usrRole)
+    console.log("[DEBUG] Current user is: " + usrRole + " with credentials for >> " + usrRights);
 
     return usrRights;
 
@@ -412,6 +424,7 @@ function initializeWorldMapContent(map) {
 
                 var name = subMenu[i].displayName;
                 var typeId = subMenu[i]._id;
+                config.categoryName[subMenu[i]._id] = subMenu[i].displayName;
                 console.log("== We fetched the subcategory name: " + name + " ==");
 
 
@@ -542,7 +555,7 @@ function addItem(map) {
 
     geojsonFeature["properties"] = {};
 
-    var e = document.getElementById("itType");
+    var e = document.getElementById("markerOptions");
     var type = e.options[e.selectedIndex].value;
 
     geojsonFeature["properties"]["featureTypeId"] = parseInt(type);
