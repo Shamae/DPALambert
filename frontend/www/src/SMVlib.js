@@ -477,7 +477,10 @@ function refreshUI(map) {
 function getIconByType(featureType) {
 
     switch (featureType) {
+        case 2: 
 
+            return cityIcon; 
+            
         case 15:
             return nonPlayerIcon;
 
