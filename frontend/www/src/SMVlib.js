@@ -1,4 +1,4 @@
-
+// A series of utility functions 
 function initialize() {
 
     adminMode = false;
@@ -300,6 +300,26 @@ function getFeatureByTYpe(map, typeId) {
 
 };
 
+function checkUrPrivileges (usrRole){
+
+    var usrRights = null; 
+
+    if (usrRole != 'none'){
+
+        usrRights = 
+    }
+    
+
+    console.log("[DEBUG] Current user is: " + usrRole)
+
+    return usrRights;
+
+};
+
+    
+
+// End of utility functions section.
+
 function initializeWorldMapContent(map) {
 
     initialize();
@@ -480,7 +500,7 @@ function getIconByType(featureType) {
         case 2: 
 
             return cityIcon; 
-            
+
         case 15:
             return nonPlayerIcon;
 

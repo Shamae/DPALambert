@@ -31,3 +31,12 @@ config.featureIdLayerOrdering[16] = 14;
 
 
 //TODO: convert this into a convenient JSON/Object so that we can use config.
+
+//Configures the types of markers each role may add and modify
+
+config.markersByRole= [];
+config.markersByRole['admin'] = [2, 15, 16];
+config.markersByRole['user'] = [16];
+                               
+
+]

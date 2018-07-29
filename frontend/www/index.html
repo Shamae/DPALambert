@@ -50,7 +50,8 @@
     var baseLayer;
     var overlayData = []; //
     var fuse; // Instance of fuse search engine
-    var token; //not nice must refine
+    var token; //not super nice, maybe must refine (assigned in checkSigninStatus)
+    var usrRole = 'none'; //not super nice, maybe refine (assigned in checkSigninStatus)
     function init() {
       // Init Leaflet canavs
       mapMinZoom = 3; // made global for createFeatureLayerByType
@@ -134,8 +135,9 @@
       }
       function logout() {
         console.log("We did try to logout...");
-        ///mgr.signoutRedirect();
-        mgr.removeUser();
+        mgr.signoutRedirect();
+        usrRole = 'none';
+        //mgr.removeUser();
         checkSigninStatus(mgr);
       }
       function revoke() {
@@ -230,17 +232,38 @@
         });
       }
       // OIDC-client code off
-      // define toolbar options
+     
+     
+      // Defintion of the avaialble interaction: 
+
+      //Context menu to add markers 
       map.on('contextmenu', function (e) {
         lat = e.latlng.lat;
         lng = e.latlng.lng;
-        console.log("wtf?");
-        document.getElementById('itemForm').style.display = 'block';
+
+        var usrRights = checkUrPrivileges(usrRole);
+
+        if (usrRights !== null) {
+
+          document.getElementById('itemForm').style.display = 'block';
+        } else {
+
+          console.log("[ADMIN] Unlogged users aren't permitted to add markers");
+
+        }
+        
+        ;
       });
+      
+      //Clear searchbox as soon as map is dragged
       map.on("dragstart", function (e) {
         clearSearchList();
       });
+      
+      //Display the coordinates on a clicked area // for debug purposes
       map.on('click', function (e) {
+
+        
         //var myElement = document.getElementById("log");
         //myElement.innerText = "Lon (X), Lat (Y) : " + e.latlng.lng + ", " + e.latlng.lat;
         //alert("Lat, Lon : " + e.latlng.lat + ", " + e.latlng.lng)
@@ -257,11 +280,13 @@
       //closes the modal
       document.getElementById('itemForm').style.display = 'none';
     }
+
     function checkSigninStatus(mgr) {
       mgr.getUser().then(function (user) {
         if (user) {
           console.log("User logged in", user.profile);
           token = user.access_token;
+          usrRole = user.profile.role;
           console.log("Token:" + user.access_token);
           document.getElementById("userPrompt").innerHTML = "Welcome, " + user.profile.name + "";
           document.getElementById("sgnInBtn").style.display = 'none';
@@ -497,6 +522,7 @@
 
   </div><!-- end ID map -->
 
+  <!-- Marker ContextMenu  -->
   <div class="w3-container">
     <div id="itemForm" class="w3-modal">
       <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">
@@ -532,7 +558,7 @@
       </div>
     </div>
   </div>
-
+<!-- End of Marker ContextMenu -->
 
   <script type="text/javascript">
     document.querySelector('.searchbox [type="reset"]').addEventListener('click', function () { this.parentNode.querySelector('input').focus(); });
