@@ -264,7 +264,10 @@
         clearSearchList();
       });
       
+      //Disable double click zoom to avoid zooming when clicking in the feature menu.
+      map.doubleClickZoom.disable();
       //Display the coordinates on a clicked area // for debug purposes
+      /*
       map.on('click', function (e) {
 
         
@@ -275,7 +278,7 @@
         console.log("Lat, Lon : " + e.latlng.lat + ", " + e.latlng.lng);
         console.log("Current user_access_token:" + token);
         //fetchAPIdata();
-      });
+      });*/
       //end the fiddling
     }
     //extract data from form
