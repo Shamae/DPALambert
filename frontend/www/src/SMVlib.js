@@ -8,7 +8,7 @@ function initialize() {
     
         
         unknownIcon = L.icon({
-            iconUrl: 'img/playerIcon.png',
+            iconUrl: 'img/unknown.png',
             //shadowUrl: 'leaf-shadow.png',
     
             iconSize: [24, 24], // size of the icon
