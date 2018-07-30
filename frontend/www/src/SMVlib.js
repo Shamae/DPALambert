@@ -80,6 +80,26 @@ function initialize() {
     //Intitiazes the array containing tiled overlay
     layers = []; // made global for createFeatureLayerByType
 
+    //Marker context menu (implemented via L.Control extension) // maybe not the best idea 
+    L.Control.MarkerContextMenu = L.Control.extend({
+        onAdd: function(map) {
+            var toolbar = L.DomUtil.create('div', 'txtWB');
+            
+            toolbar.innerHTML = "DELETE"; 
+          
+    
+            return toolbar;
+        },
+    
+        onRemove: function(map) {
+            // Nothing to do here
+        }
+    });
+
+    L.control.markerContextMenu = function(opts) {
+        return new L.Control.MarkerContextMenu(opts);
+    };
+
 };
 function fetchAPIdata(url) {
 
@@ -137,7 +157,27 @@ function onEachFeature(feature, layer) {
     //Select and assign marker icon based on featuretype.
     layer.setIcon(getIconByType(feature.properties.featureTypeId));
     
+    //Event handler for editing menu
 
+    layer.on('contextmenu', function(e){
+
+        if (usrRole != 'none'){
+
+       
+            
+          
+            
+           // L.control.markerContextMenu({ position: 'bottomleft' }).addTo(map);
+
+
+
+            alert ('this sounds like a context menu' + e.latlng + this.feature.properties.displayName + this.feature.properties.owner  );
+        
+        } else console.log('[ADMIN] Unlogged users are not allowed to modify markers.');
+
+        
+
+    });
 };
 
 function getAllFeatures(map) {
