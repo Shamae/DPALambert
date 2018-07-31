@@ -83,7 +83,7 @@ function initialize() {
     //Marker context menu (implemented via L.Control extension) // maybe not the best idea 
     L.Control.MarkerContextMenu = L.Control.extend({
         onAdd: function(map) {
-            var toolbar = L.DomUtil.create('div', 'txtWB');
+            var toolbar = L.DomUtil.create('div', 'markerContextMenuButton');
             
             toolbar.innerHTML = "DELETE"; 
           
@@ -100,6 +100,32 @@ function initialize() {
         return new L.Control.MarkerContextMenu(opts);
     };
 
+};
+
+function getIconByType(featureType) {
+
+    //Select marker icon based on featuretype
+    switch (featureType) {
+        //NPC icons            
+        case 15:
+            return nonPlayerIcon;
+            break;
+
+        //Player characters icons
+        case 16:
+            return playerIcon;
+            break;
+
+        //City icons
+        case 17:
+            return cityIcon;
+            break;
+
+        default:
+            return unknownIcon;
+            break;
+
+    };
 };
 function fetchAPIdata(url) {
 
@@ -158,22 +184,41 @@ function onEachFeature(feature, layer) {
     layer.setIcon(getIconByType(feature.properties.featureTypeId));
     
     //Event handler for editing menu
-
     layer.on('contextmenu', function(e){
 
-        if (usrRole != 'none'){
+        if (usrRole != 'none' && usrId == this.feature.properties.owner){
 
-       
+            L.DomUtil.disableTextSelection();
+
+            //Defines HTML elments for the menu
+            var menuContent = L.DomUtil.create('div', 'markerContextMenuButton');
+            menuContent.innerHTML = '<i class="fa fa-trash-o" aria-hidden="true"></i> DELETE';
+            //Event handler of the DELETE button
+            menuContent.onclick = function(e){
+
+                if (confirm('Are you sure you want to delete this marker?')) {
+                    
+                    removeMarker(feature);
+                    popup.remove();
+                } else {
+                    // Do nothing!
+                }
+               
+            };
             
+            //Defines the context menu as a popup
+            var popup = L.popup({
+                closeButton: false,
+                autoClose: false,
+                closeOnEscapeKey:true
+              })
+              .setLatLng([e.latlng.lat, e.latlng.lng])
+              .setContent(menuContent)
+              .openOn(map);
           
-            
-           // L.control.markerContextMenu({ position: 'bottomleft' }).addTo(map);
-
-
-
-            alert ('this sounds like a context menu' + e.latlng + this.feature.properties.displayName + this.feature.properties.owner  );
+           console.log ('[DEBUG] this sounds like a context menu' + e.latlng + this.feature.properties.displayName + this.feature.properties.owner  );
         
-        } else console.log('[ADMIN] Unlogged users are not allowed to modify markers.');
+        } else console.log('[ADMIN] Only logged owners are allowed to modify markers.');
 
         
 
@@ -360,7 +405,7 @@ function checkUrPrivileges (usrRole){
     }
     
 
-    console.log("[DEBUG] Current user is: " + usrRole + " with credentials for >> " + usrRights);
+    console.log("[DEBUG] Current user is: " + usrRole + "/id = "+ usrId + " with credentials for >> " + usrRights);
 
     return usrRights;
 
@@ -370,17 +415,58 @@ function checkUrPrivileges (usrRole){
 
 // End of utility functions section.
 
+// Marker Mangement functions
+function saveMarker(geojsonFeature) {
+
+    var url = apiSaveItemURL;
+    var data = geojsonFeature;
+
+    console.log("Marker saved : ", geojsonFeature);
+
+    // contacts backend to store new feature
+    fetch(url, {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: new Headers({
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        })
+    }).then(res => res.json())
+        .catch(error => console.error('Error :', error))
+        .then(response => console.log('Successfully added item:', response));
+
+    //updates searchlist in live memory
+    overlayData.push(geojsonFeature);
+};
+
+function removeMarker(geojsonFeature) {
+    console.log('[ADMIN] Marker #'+geojsonFeature._id+ ' is being deleted');
+    /*
+    var url = apiSaveItemURL;
+    var data = geojsonFeature;
+
+    console.log("Marker saved : ", geojsonFeature);
+
+    // contacts backend to store new feature
+    fetch(url, {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: new Headers({
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        })
+    }).then(res => res.json())
+        .catch(error => console.error('Error :', error))
+        .then(response => console.log('Successfully added item:', response));
+
+    //updates searchlist in live memory
+    overlayData.push(geojsonFeature);*/
+};
+// End of marker management functions
 function initializeWorldMapContent(map) {
 
     initialize();
-
-    //EXPERIMENTAL
-    if (adminMode) {
-
-        // add leaflet.pm controls to the map
-        map.pm.addControls(options);
-    };
-
+    
     // Retrieve the feature categories and names from MenuService --> create the Menu
     url = apiMenuURL;
 
@@ -545,54 +631,9 @@ function refreshUI(map) {
 
 };
 
-function getIconByType(featureType) {
 
-    //Select marker icon based on featuretype
-    switch (featureType) {
-        //NPC icons            
-        case 15:
-            return nonPlayerIcon;
-            break;
 
-        //Player characters icons
-        case 16:
-            return playerIcon;
-            break;
 
-        //City icons
-        case 17:
-            return cityIcon;
-            break;
-
-        default:
-            return unknownIcon;
-            break;
-
-    };
-};
-
-function saveMarker(geojsonFeature) {
-
-    var url = apiSaveItemURL;
-    var data = geojsonFeature;
-
-    console.log("Marker saved : ", geojsonFeature);
-
-    // contacts backend to store new feature
-    fetch(url, {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: new Headers({
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
-        })
-    }).then(res => res.json())
-        .catch(error => console.error('Error :', error))
-        .then(response => console.log('Successfully added item:', response));
-
-    //updates searchlist in live memory
-    overlayData.push(geojsonFeature);
-};
 
 function addItem(map) {
 

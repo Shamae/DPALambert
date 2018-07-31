@@ -56,6 +56,8 @@
     var fuse; // Instance of fuse search engine
     var token; //not super nice, maybe must refine (assigned in checkSigninStatus)
     var usrRole = 'none'; //not super nice, maybe refine (assigned in checkSigninStatus)
+    var usrId = '0'; //not super nice, maybe refine (assigned in checkSigninStatus)
+
     function init() {
       // Init Leaflet canavs
       mapMinZoom = 3; // made global for createFeatureLayerByType
@@ -141,6 +143,7 @@
         console.log("We did try to logout...");
         mgr.signoutRedirect();
         usrRole = 'none';
+        usrId = 0;
         //mgr.removeUser();
         checkSigninStatus(mgr);
       }
@@ -294,6 +297,7 @@
           console.log("User logged in", user.profile);
           token = user.access_token;
           usrRole = user.profile.role;
+          usrId = user.profile.sub;
           console.log("Token:" + user.access_token);
           document.getElementById("userPrompt").innerHTML = "Welcome, " + user.profile.name + "";
           document.getElementById("sgnInBtn").style.display = 'none';

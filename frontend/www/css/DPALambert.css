@@ -244,7 +244,7 @@ float: right;
   background-color:#333;
 }
 
-
+/* Marker Context Menu */
 .customPopup .leaflet-popup-tip,
 .customPopup .leaflet-popup-content-wrapper {
     background: #e93434;
@@ -269,6 +269,31 @@ float: right;
 
 .txtWB {
   background: #000000;
+  color:#ffffff;
+  font-family: 'Helvetica', sans-serif;
+  font-size: 13px;
+  margin-bottom: 5px;
+
+}
+
+.markerContextMenuButton {
+  background: #000000;
+  color:#ffffff;
+  font-family: 'Helvetica', sans-serif;
+  font-size: 13px;
+  margin-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-top: 2px;
+  padding-bottom: 2px;  
+  cursor: default;
+
+
+
+}
+
+.markerContextMenuButton:hover {
+  background: #770b0b;
   color:#ffffff;
   font-family: 'Helvetica', sans-serif;
   font-size: 13px;
