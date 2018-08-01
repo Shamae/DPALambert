@@ -2,7 +2,13 @@
 function initialize() {
 
     adminMode = false;
+    activePopup = false;
 
+    map.on('click', function (e) {
+        activePopup = false;
+    });
+   
+    
 
     // set customized icons
     
@@ -80,25 +86,7 @@ function initialize() {
     //Intitiazes the array containing tiled overlay
     layers = []; // made global for createFeatureLayerByType
 
-    //Marker context menu (implemented via L.Control extension) // maybe not the best idea 
-    L.Control.MarkerContextMenu = L.Control.extend({
-        onAdd: function(map) {
-            var toolbar = L.DomUtil.create('div', 'markerContextMenuButton');
-            
-            toolbar.innerHTML = "DELETE"; 
-          
-    
-            return toolbar;
-        },
-    
-        onRemove: function(map) {
-            // Nothing to do here
-        }
-    });
-
-    L.control.markerContextMenu = function(opts) {
-        return new L.Control.MarkerContextMenu(opts);
-    };
+   
 
 };
 
@@ -186,41 +174,45 @@ function onEachFeature(feature, layer) {
     //Event handler for editing menu
     layer.on('contextmenu', function(e){
 
-        if (usrRole != 'none' && usrId == this.feature.properties.owner){
+        if (!activePopup) {
+            if ((usrRole != 'none' && usrId == this.feature.properties.owner) || usrRole == 'admin') {
 
-            L.DomUtil.disableTextSelection();
+                activePopup = true;
+                L.DomUtil.disableTextSelection();
 
-            //Defines HTML elments for the menu
-            var menuContent = L.DomUtil.create('div', 'markerContextMenuButton');
-            menuContent.innerHTML = '<i class="fa fa-trash-o" aria-hidden="true"></i> DELETE';
-            //Event handler of the DELETE button
-            menuContent.onclick = function(e){
+                //Defines HTML elments for the menu
+                var menuContent = L.DomUtil.create('div', 'markerContextMenuButton');
+                menuContent.innerHTML = '<i class="fa fa-trash-o" aria-hidden="true"></i> DELETE';
+                //Event handler of the DELETE button
+                menuContent.onclick = function (e) {
 
-                if (confirm('Are you sure you want to delete this marker?')) {
-                    
-                    removeMarker(feature);
-                    popup.remove();
-                } else {
-                    // Do nothing!
-                }
-               
-            };
-            
-            //Defines the context menu as a popup
-            var popup = L.popup({
-                closeButton: false,
-                autoClose: false,
-                closeOnEscapeKey:true
-              })
-              .setLatLng([e.latlng.lat, e.latlng.lng])
-              .setContent(menuContent)
-              .openOn(map);
-          
-           console.log ('[DEBUG] this sounds like a context menu' + e.latlng + this.feature.properties.displayName + this.feature.properties.owner  );
-        
-        } else console.log('[ADMIN] Only logged owners are allowed to modify markers.');
+                    if (confirm('Are you sure you want to delete this marker?')) {
 
-        
+                        removeMarker(feature);
+                        popup.remove();
+                        activePopup = false;
+                    } else {
+                        // Do nothing!
+                    }
+
+                };
+
+                //Defines the context menu as a popup
+                var popup = L.popup({
+                    closeButton: false,
+                    autoClose: false,
+                    closeOnEscapeKey: true,
+                    className: 'customPopup'
+                })
+                    .setLatLng([e.latlng.lat, e.latlng.lng])
+                    .setContent(menuContent)
+                    .openOn(map);
+
+                console.log('[DEBUG] this sounds like a context menu' + e.latlng + this.feature.properties.displayName + this.feature.properties.owner);
+
+            } else console.log('[ADMIN] Only logged owners are allowed to modify markers.');
+
+        };
 
     });
 };
