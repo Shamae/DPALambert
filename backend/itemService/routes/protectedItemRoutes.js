@@ -20,7 +20,7 @@ var routes = function(Item){
                 res.status(500);
                 res.send(err);
             }
-            else if(item){
+            else if(item) {
                 // put item into request
                 req.item = item;
                 // advance in pipeline
@@ -36,11 +36,11 @@ var routes = function(Item){
 
     // config routes with itemId
     itemRouter.route('/:itemId')
+        // update marker
         .put(function(req,res){
-            // only SC markers for non-admins
-            if(req.item.properties.featureTypeId = 16 || req.session.userInfo.role == 'admin')
-            {
-                // copy from body to item
+            // only owner of admin can delete marker
+            if(req.item.properties.owner = req.session.userInfo.sub || req.session.userInfo.role == 'admin') {
+                // copy fields from body to item
                 req.item.properties.displayName = req.body.properties.displayName;
                 req.item.properties.description = req.body.properties.description;
                 req.item.properties.factsheet = req.body.properties.factsheet;
@@ -60,8 +60,27 @@ var routes = function(Item){
                 // user rights limited
                 res.status(403);
                 res.send('not allowed');
-                };
-        });
+            };
+        })
+        // delete marker
+        .delete(function(req,res){
+            // only owner of admin can delete marker
+            if(req.item.properties.owner = req.session.userInfo.sub || req.session.userInfo.role == 'admin') {
+                req.item.remove(function(err){
+                    if(err)
+                        res.status(500).send(err);
+                    else{
+                        // return item
+                        res.status(204).send('Removed');
+                    }
+                })
+            }
+            else {
+                // user rights limited
+                res.status(403);
+                res.send('not allowed');
+            };
+    });
 
     return itemRouter;
 };

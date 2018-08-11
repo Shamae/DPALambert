@@ -1,7 +1,7 @@
 'use strict';
 
 var itemController = function(Item){
-    // get function
+    // get all markers
     var get = function(req, res){
         // initialize query
         var query = {};
@@ -22,7 +22,7 @@ var itemController = function(Item){
         });
     };
 
-    // post function
+    // post new marker
     var post = function(req, res){
         // convert to model
         var item = new Item(req.body);
