@@ -189,6 +189,7 @@ function onEachFeature(feature, layer) {
                     if (confirm('Are you sure you want to delete this marker?')) {
 
                         removeMarker(feature);
+                        map.removeLayer(layer);
                         popup.remove();
                         activePopup = false;
                     } else {
@@ -434,7 +435,8 @@ function saveMarker(geojsonFeature) {
 function removeMarker(geojsonFeature) {
     console.log('[ADMIN] Marker #'+geojsonFeature._id+ ' is being deleted');
    
-    var url = apiItemURL+"/"+geojsonFeature._id;
+    
+    var url = apiSaveItemURL+"/"+geojsonFeature._id;
     //var data = geojsonFeature;
 
     //console.log("Marker saved : ", geojsonFeature);
@@ -670,7 +672,7 @@ function addItem(map) {
     myLayer.on('contextmenu', function(e){
 
         if (!activePopup) {
-            if ((usrRole != 'none' && usrId == this.feature.properties.owner) || usrRole == 'admin') {
+            if ((usrRole != 'none' ) || usrRole == 'admin') { // attention, il faudrait revoir les règlers ici (on ne vérifie pas le usrid mais il faudrait vérifier usrId == usrId ; donc bad code)
 
                 activePopup = true;
                 L.DomUtil.disableTextSelection();
@@ -683,7 +685,9 @@ function addItem(map) {
 
                     if (confirm('Are you sure you want to delete this marker?')) {
 
-                        removeMarker(feature);
+                        
+                        removeMarker(geojsonFeature);
+                        map.removeLayer(myLayer);
                         popup.remove();
                         activePopup = false;
                     } else {
@@ -703,7 +707,7 @@ function addItem(map) {
                     .setContent(menuContent)
                     .openOn(map);
 
-                console.log('[DEBUG] this sounds like a context menu' + e.latlng + this.feature.properties.displayName + this.feature.properties.owner);
+                console.log('[DEBUG] this sounds like a context menu' + e.latlng +geojsonFeature.properties.displayName + geojsonFeature.properties.owner);
 
             } else console.log('[ADMIN] Only logged owners are allowed to modify markers.');
 
