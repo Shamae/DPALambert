@@ -444,7 +444,7 @@ function removeMarker(geojsonFeature) {
         method: 'DELETE',
         //body: JSON.stringify(data),
         headers: new Headers({
-            'Content-Type': 'application/json',
+           // 'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + token
         })
     }).then(res => res.json())
