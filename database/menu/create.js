@@ -42,8 +42,7 @@ db.featureType.insert([
     { '_id' : 19, 'displayName' : 'Outposts', 'categoryId' : 5, 'geometryType' : 'point' },
     { '_id' : 20, 'displayName' : 'Ruins', 'categoryId' : 5, 'geometryType' : 'point' },
     { '_id' : 21, 'displayName' : 'Oil Rigs', 'categoryId' : 5, 'geometryType' : 'point' },
-    { '_id' : 22, 'displayName' : 'Cities', 'categoryId' : 5, 'geometryType' : 'point' },
-    { '_id' : 23, 'displayName' : 'Zigguraths', 'categoryId' : 5, 'geometryType' : 'point' }
+    { '_id' : 22, 'displayName' : 'Zigguraths', 'categoryId' : 5, 'geometryType' : 'point' }
 ]);
 db.featureType.createIndex({ 'categoryId' : 1 });
 
