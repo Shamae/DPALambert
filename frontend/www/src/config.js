@@ -42,7 +42,7 @@ config.featureIdLayerOrdering[16] = 14;
 //Configures the types of markers each role may add and modify
 
 config.markersByRole= [];
-config.markersByRole['admin'] = [15, 16, 17];
+config.markersByRole['admin'] = [15, 16, 17, 18, 19,20,21,22,23];
 config.markersByRole['user'] = [16];
                                
 //Declares an array to save the menu category names 

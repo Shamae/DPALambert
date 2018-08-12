@@ -433,26 +433,26 @@ function saveMarker(geojsonFeature) {
 
 function removeMarker(geojsonFeature) {
     console.log('[ADMIN] Marker #'+geojsonFeature._id+ ' is being deleted');
-    /*
-    var url = apiSaveItemURL;
-    var data = geojsonFeature;
+   
+    var url = apiItemURL+"/"+geojsonFeature._id;
+    //var data = geojsonFeature;
 
-    console.log("Marker saved : ", geojsonFeature);
+    //console.log("Marker saved : ", geojsonFeature);
 
     // contacts backend to store new feature
     fetch(url, {
-        method: 'POST',
-        body: JSON.stringify(data),
+        method: 'DELETE',
+        //body: JSON.stringify(data),
         headers: new Headers({
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + token
         })
     }).then(res => res.json())
         .catch(error => console.error('Error :', error))
-        .then(response => console.log('Successfully added item:', response));
+        .then(response => console.log('Successfully deleted item:', response));
 
     //updates searchlist in live memory
-    overlayData.push(geojsonFeature);*/
+    //overlayData.push(geojsonFeature);*/
 };
 // End of marker management functions
 function initializeWorldMapContent(map) {
@@ -665,6 +665,50 @@ function addItem(map) {
     myLayer.bindPopup(popupContent, {
         'maxWidth': '500',
         'className': 'customPopup'
+    });
+
+    myLayer.on('contextmenu', function(e){
+
+        if (!activePopup) {
+            if ((usrRole != 'none' && usrId == this.feature.properties.owner) || usrRole == 'admin') {
+
+                activePopup = true;
+                L.DomUtil.disableTextSelection();
+
+                //Defines HTML elments for the menu
+                var menuContent = L.DomUtil.create('div', 'markerContextMenuButton');
+                menuContent.innerHTML = '<i class="fa fa-trash-o" aria-hidden="true"></i> DELETE';
+                //Event handler of the DELETE button
+                menuContent.onclick = function (e) {
+
+                    if (confirm('Are you sure you want to delete this marker?')) {
+
+                        removeMarker(feature);
+                        popup.remove();
+                        activePopup = false;
+                    } else {
+                        // Do nothing!
+                    }
+
+                };
+
+                //Defines the context menu as a popup
+                var popup = L.popup({
+                    closeButton: false,
+                    autoClose: false,
+                    closeOnEscapeKey: true,
+                    className: 'customPopup'
+                })
+                    .setLatLng([e.latlng.lat, e.latlng.lng])
+                    .setContent(menuContent)
+                    .openOn(map);
+
+                console.log('[DEBUG] this sounds like a context menu' + e.latlng + this.feature.properties.displayName + this.feature.properties.owner);
+
+            } else console.log('[ADMIN] Only logged owners are allowed to modify markers.');
+
+        };
+
     });
 
     saveMarker(geojsonFeature);
