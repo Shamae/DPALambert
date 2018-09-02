@@ -318,6 +318,26 @@ L.Control.StyledLayerControl = L.Control.Layers.extend({
 
     _checkIfDisabled: function(layers) {
         var currentZoom = this._map.getZoom();
+		
+		// zoom level 6
+		if (this._map.getZoom() == 6){
+			$('.iconZoom').css({'width':'42px','height':'42px','margin-top':'-20px','margin-left':'-20px'});
+		}
+		// zoom level 5
+		if (this._map.getZoom() == 5){
+			$('.iconZoom').css({'width':'20px','height':'20px','margin-top':'-8px','margin-left':'-8px'});
+		}
+		// zoom level 4
+		if (this._map.getZoom() == 4){
+			$('.iconZoom').css({'width':'9px','height':'9px','margin-top':'-3px','margin-left':'-3px'});
+		}
+		// zoom level 3
+		if (this._map.getZoom() == 3){
+			$('.iconZoom').css({'width':'6px','height':'6px','margin-top':'-2px','margin-left':'-2px'});
+		}
+		if (this._map.getZoom() == 2){
+			$('.iconZoom').css({'width':'3px','height':'3px','margin-top':'-1px','margin-left':'-1px'});
+		}		
 
         for (layerId in this._layers) {
             if (this._layers[layerId].layer.options && (this._layers[layerId].layer.options.minZoom || this._layers[layerId].layer.options.maxZoom)) {
