@@ -495,7 +495,7 @@
   <!-- Manage the marker form-->
    <script type = "text/javascript">
     $(function () {
-       $('#dialogMsg').dialog();
+      // $('#dialogMsg').dialog();
        $( ".characterFieldSet" ).hide();
        $( ".locationFieldSet" ).hide();
 
@@ -508,14 +508,14 @@
           $( ".locationFieldSet" ).show();
           
 
-          alert("This is a location");
+          
         }
 
         else if (data.item.value >=15 && data.item.value <=16){
 
             $( ".locationFieldSet" ).hide();
             $( ".characterFieldSet" ).show();
-          alert("This is a character");
+          
         } else {
           alert("ERROR");
         };
@@ -558,7 +558,7 @@
         <fieldset class="characterFieldSet">
            
           <label for="name">Name</label>
-          <input type="text" name="name" id="name" value="" class="text ui-widget-content ui-corner-all">
+          <input type="text" name="name" id="name" value="" class="text ui-widget-content ui-corner-all ">
           <label for="culture">Culture</label>
           <input type="text" name="culture" id="culture" value="" class="text ui-widget-content ui-corner-all">
           <label for="cult">Cult</label>

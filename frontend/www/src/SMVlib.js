@@ -171,6 +171,44 @@ function onEachFeature(feature, layer) {
     //Select and assign marker icon based on featuretype.
     layer.setIcon(getIconByType(feature.properties.featureTypeId));
     
+    //momentarily hooks edit menu to double click on marker --> should be hook to contextmenu as soon as the context menu is done
+
+    layer.on('dblclick', function(e){
+
+        $('#dialogMsg').dialog();
+
+        $("#category").val(feature.properties.featureTypeId);
+
+        if (feature.properties.featureTypeId >= 17 && feature.properties.featureTypeId <= 22){
+            $( ".characterFieldSet" ).hide();
+            $( ".locationFieldSet" ).show();
+            
+  
+            
+          }
+  
+          else if (feature.properties.featureTypeId >=15 && feature.properties.featureTypeId <=16){
+  
+              $( ".locationFieldSet" ).hide();
+              $( ".characterFieldSet" ).show();
+
+              $("#name").val(feature.properties.displayName)
+              $("#description").val(feature.properties.displayName)
+
+              
+            
+          } else {
+            alert("ERROR");
+          };
+
+       
+
+
+    }
+
+    )
+    
+    
     //Event handler for editing menu
     layer.on('contextmenu', function(e){
 
