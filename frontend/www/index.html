@@ -19,13 +19,20 @@
   <script src="https://npmcdn.com/leaflet@1.0.0-rc.3/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet.pm@0.17.3/dist/leaflet.pm.min.js"></script>
 
-  <link rel="stylesheet" href="plugins/Leaflet.StyledLayerControl/css/styledLayerControl.css" />
+  <link rel="stylesheet" href="plugins//Leaflet.StyledLayerControl/css/styledLayerControl.css" />
   <script src="plugins/Leaflet.StyledLayerControl/src/styledLayerControl.js"></script>
   <!-- Add JQuery 3.3.1 // CDN -->
   <script
   src="https://code.jquery.com/jquery-3.3.1.min.js"
   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
   crossorigin="anonymous"></script>
+
+  <!-- Add JQuery UI // local -->
+
+  <link rel="stylesheet" href="plugins/jquery-ui-1.12.1.custom/jquery-ui.min.css">
+<script src="plugins/jquery-ui-1.12.1.custom/external/jquery/jquery.js"></script>
+<script src="plugins/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+
   <!-- Add font awesome // CDN -->
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
     crossorigin="anonymous">
@@ -485,11 +492,113 @@
     })();
   </script>
 
+  <!-- Manage the marker form-->
+   <script type = "text/javascript">
+    $(function () {
+       $('#dialogMsg').dialog();
+       $( ".characterFieldSet" ).hide();
+       $( ".locationFieldSet" ).hide();
+
+
+       $( "#category" ).selectmenu({
+      change: function( event, data ) {
+       
+        if (data.item.value >= 17 && data.item.value <= 22){
+          $( ".characterFieldSet" ).hide();
+          $( ".locationFieldSet" ).show();
+          
+
+          alert("This is a location");
+        }
+
+        else if (data.item.value >=15 && data.item.value <=16){
+
+            $( ".locationFieldSet" ).hide();
+            $( ".characterFieldSet" ).show();
+          alert("This is a character");
+        } else {
+          alert("ERROR");
+        };
+        
+      }
+     });
+
+    });
+ </script>
+
 </head>
 
 <body onload="init()">
 
   <div id="map"><!-- ID map -->
+
+    <!-- Marker form -->
+
+    <div id="dialogMsg" title="Update marker">
+      <p class="validateTips">All form fields are required.</p>
+     
+      <form>
+
+        <label for="category">Category</label>
+        <select name="category" id="category">
+            <optgroup label="Locations">
+              <option value="18">Town</option>
+              <option value="19">Outpost</option>
+              <option value="20">Ruin</option>
+              <option value="17">City</option>
+              <option value="21">Oil Rig</option>
+              <option value="22">Ziggurath</option>
+            </optgroup>
+            <optgroup label="Characters">
+              <option value="15">Non-Player Character</option>
+              <option value="16">Player Character</option>              
+            </optgroup>
+          </select>
+
+        <fieldset class="characterFieldSet">
+           
+          <label for="name">Name</label>
+          <input type="text" name="name" id="name" value="" class="text ui-widget-content ui-corner-all">
+          <label for="culture">Culture</label>
+          <input type="text" name="culture" id="culture" value="" class="text ui-widget-content ui-corner-all">
+          <label for="cult">Cult</label>
+          <input type="text" name="cult" id="cult" value="" class="text ui-widget-content ui-corner-all">
+          <label for="concept">Concept</label>
+          <input type="text" name="concept" id="concept" value="" class="text ui-widget-content ui-corner-all">
+          <label for="description">Description</label>
+          <input type="text" name="description" id="description" value="" class="text ui-widget-content ui-corner-all">
+          
+                    
+          <!-- Allow form submission with keyboard without duplicating the dialog button -->
+          <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+        </fieldset>
+
+        <fieldset class="locationFieldSet">
+           
+            <label for="name">Name</label>
+            <input type="text" name="name" id="name" value="" class="text ui-widget-content ui-corner-all">
+            <label for="province">Province</label>
+            <input type="text" name="province" id="province" value="" class="text ui-widget-content ui-corner-all">
+            <label for="population">Population</label>
+            <input type="text" name="population" id="population" value="" class="text ui-widget-content ui-corner-all">
+            <label for="leader">Leader</label>
+            <input type="text" name="leader" id="leader" value="" class="text ui-widget-content ui-corner-all">
+            <label for="power">Representative Power</label>
+            <input type="text" name="power" id="power" value="" class="text ui-widget-content ui-corner-all">
+            <label for="trading">Trade / Goods</label>
+            <input type="text" name="trading" id="trading" value="" class="text ui-widget-content ui-corner-all">
+            <label for="guard">City Guard</label>
+            <input type="text" name="guard" id="guard" value="" class="text ui-widget-content ui-corner-all">           
+            <label for="artefact">Artefact trade</label>
+            <input type="text" name="artefact" id="artefact" value="" class="text ui-widget-content ui-corner-all">
+
+            <!-- Allow form submission with keyboard without duplicating the dialog button -->
+            <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+          </fieldset>
+      </form>
+    </div>
+
+   
 
   <!-- Searchbox -->
 

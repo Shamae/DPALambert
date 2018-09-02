@@ -181,7 +181,7 @@ function onEachFeature(feature, layer) {
                 L.DomUtil.disableTextSelection();
 
                 //Defines HTML elments for the menu
-                var menuContent = L.DomUtil.create('div', 'markerContextMenuButton');
+                var menuContent = L.DomUtil.create('div', 'markerContextMenuButton'); 
                 menuContent.innerHTML = '<i class="fa fa-trash-o" aria-hidden="true"></i> DELETE';
                 //Event handler of the DELETE button
                 menuContent.onclick = function (e) {
