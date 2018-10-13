@@ -248,10 +248,11 @@
       // OIDC-client code off
      
      
-      // Defintion of the avaialble interaction: 
+      // DECLARES INTERACTIONS WITH THE MAP
 
       //Context menu to add markers 
       map.on('contextmenu', function (e) {
+        clearSearchList();
         lat = e.latlng.lat;
         lng = e.latlng.lng;
 
@@ -273,6 +274,13 @@
       map.on("dragstart", function (e) {
         clearSearchList();
       });
+
+      //Clear searchbox as soon as map is clicked
+      map.on("click", function (e) {
+        clearSearchList();
+      });
+
+      // END OF MAP INTERACTIONS DECLARATION
 	  
 	// Change icons size
 	map.on('zoomend', function() {
@@ -315,7 +323,8 @@
       });*/
       //end the fiddling
     }
-    //extract data from form
+
+    // Extracts data from form
     function getItem() {
       addItem(map);
       //closes the modal
@@ -342,6 +351,8 @@
         }
       });
     };
+
+    
     /**** Fullscreen ***/
     (function () {
     L.Control.FullScreen = L.Control.extend({

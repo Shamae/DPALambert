@@ -145,7 +145,7 @@ function fetchAPIdata(url) {
 
 };
 
-function onEachFeature(feature, layer) {
+function configureFeature(feature, layer) {
 
     overlayData.push(feature);
 
@@ -173,7 +173,7 @@ function onEachFeature(feature, layer) {
     
     //momentarily hooks edit menu to double click on marker --> should be hook to contextmenu as soon as the context menu is done
 
-    layer.on('dblclick', function(e){
+    layer.on('dblclick', function(e){  
 
         $('#dialogMsg').dialog();
 
@@ -277,7 +277,7 @@ function getAllFeatures(map) {
         console.log("**** Items are: " + JSON.stringify(data));
         console.log("**** Putting items on the map");
         L.geoJSON(data, {
-            onEachFeature: onEachFeature
+            onEachFeature: configureFeature
         }).addTo(map);
         console.log("**** Putting items on the map - done!")
 
@@ -356,7 +356,7 @@ function createFeatureLayerByType(map, controlparam, typeId) {
             case 'geoMarker':
                 //Default is geoMarker
                  layers[typeId] = L.geoJSON(data, {
-                    onEachFeature: onEachFeature
+                    onEachFeature: configureFeature
                 })
                 
                  layers[typeId].zIndex = layerLvl;
@@ -404,7 +404,7 @@ function getFeatureByTYpe(map, typeId) {
         console.log("**** Items are: " + JSON.stringify(data));
         console.log("**** Putting items of typeId (" + typeId + ") on the map");
         L.geoJSON(data, {
-            onEachFeature: onEachFeature
+            onEachFeature: configureFeature
         }).addTo(map);
         console.log("**** Putting items of typeId (" + typeId + ") the map - done!")
 
@@ -470,6 +470,11 @@ function saveMarker(geojsonFeature) {
     overlayData.push(geojsonFeature);
 };
 
+function updateMarker(geojsonFeature){
+
+    console.log('[ADMIN] Marker #'+geojsonFeature._id+ ' is being updated');
+    //TODO
+};
 function removeMarker(geojsonFeature) {
     console.log('[ADMIN] Marker #'+geojsonFeature._id+ ' is being deleted');
    
@@ -690,11 +695,14 @@ function addItem(map) {
 
     geojsonFeature["geometry"]["coordinates"] = [lng, lat];
 
+    
+/*
     var myLayer = L.geoJSON(geojsonFeature, {
         pointToLayer: function (feature, latlng) {
             return L.marker(latlng, { icon: getIconByType(parseInt(type)) });
         }
     }).addTo(map);
+
 
     myLayer.bindTooltip(geojsonFeature["properties"]["displayName"]);
 
@@ -751,9 +759,9 @@ function addItem(map) {
 
         };
 
-    });
+    });*/
 
-    saveMarker(geojsonFeature);
+   // saveMarker(geojsonFeature);
 
     //closes the modal
     document.getElementById('itemForm').style.display = 'none';
