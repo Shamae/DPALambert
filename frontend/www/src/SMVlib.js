@@ -7,23 +7,19 @@ function initialize() {
     map.on('click', function (e) {
         activePopup = false;
     });
-   
-    
 
     // set customized icons
-    
-        
-        unknownIcon = L.icon({
-            iconUrl: 'img/unknown.png',
-            //shadowUrl: 'leaf-shadow.png',
-    
-            iconSize: [24, 24], // size of the icon
-            //shadowSize:   [50, 64], // size of the shadow
-            iconAnchor: [16, 16], // point of the icon which will correspond to marker's location
-            //shadowAnchor: [4, 62],  // the same for the shadow
-            popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
-        });
-    
+    unknownIcon = L.icon({
+        iconUrl: 'img/unknown.png',
+        //shadowUrl: 'leaf-shadow.png',
+
+        iconSize: [24, 24], // size of the icon
+        //shadowSize:   [50, 64], // size of the shadow
+        iconAnchor: [16, 16], // point of the icon which will correspond to marker's location
+        //shadowAnchor: [4, 62],  // the same for the shadow
+        popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
+    });
+
     playerIcon = L.icon({
         iconUrl: 'img/playerIcon.png',
         //shadowUrl: 'leaf-shadow.png',
@@ -49,16 +45,16 @@ function initialize() {
     cityIcon = L.icon({
         iconUrl: 'img/cityIcon.png',
         //shadowUrl: 'leaf-shadow.png',
-		className:'iconZoom',
+        className: 'iconZoom',
         //iconSize: [32, 32], // size of the icon
         //shadowSize:   [50, 64], // size of the shadow
         //iconAnchor: [16, 16], // point of the icon which will correspond to marker's location
         //shadowAnchor: [4, 62],  // the same for the shadow
         popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
-    });	
+    });
+
 
     // set editing UI
-
     loggedOptions = {
         position: 'topleft', // toolbar position, options are 'topleft', 'topright', 'bottomleft', 'bottomright'
         drawMarker: true,  // adds button to draw markers
@@ -86,7 +82,7 @@ function initialize() {
     //Intitiazes the array containing tiled overlay
     layers = []; // made global for createFeatureLayerByType
 
-   
+
 
 };
 
@@ -148,7 +144,7 @@ function fetchAPIdata(url) {
 function configureFeature(feature, layer) {
 
 
-     //updates searchlist in live memory
+    //updates searchlist in live memory
     overlayData.push(feature);
 
     // does this feature have a property named popupContent?
@@ -172,10 +168,10 @@ function configureFeature(feature, layer) {
 
     //Select and assign marker icon based on featuretype.
     layer.setIcon(getIconByType(feature.properties.featureTypeId));
-    
+
     //momentarily hooks edit menu to double click on marker --> should be hook to contextmenu as soon as the context menu is done
 
-    layer.on('dblclick', function(e){  
+    layer.on('dblclick', function (e) {
 
         // bad practice = high technical debt 
         selectedMarker = feature;
@@ -184,38 +180,38 @@ function configureFeature(feature, layer) {
 
         $("#category").val(feature.properties.featureTypeId);
 
-        if (feature.properties.featureTypeId >= 17 && feature.properties.featureTypeId <= 22){
-            $( ".characterFieldSet" ).hide();
-            $( ".locationFieldSet" ).show();
-            
-  
-            
-          }
-  
-          else if (feature.properties.featureTypeId >=15 && feature.properties.featureTypeId <=16){
-  
-              $( ".locationFieldSet" ).hide();
-              $( ".characterFieldSet" ).show();
-              $("#name").val(feature.properties.displayName);
-              $("#description").val(feature.properties.description);
-              $("#culture").val(feature.properties.culture);
-              $("#cult").val(feature.properties.cult);
-              $("#concept").val(feature.properties.concept);
-                     
-          } else {
-            alert("ERROR");
-          };
+        if (feature.properties.featureTypeId >= 17 && feature.properties.featureTypeId <= 22) {
+            $(".characterFieldSet").hide();
+            $(".locationFieldSet").show();
 
-       
+
+
+        }
+
+        else if (feature.properties.featureTypeId >= 15 && feature.properties.featureTypeId <= 16) {
+
+            $(".locationFieldSet").hide();
+            $(".characterFieldSet").show();
+            $("#name").val(feature.properties.displayName);
+            $("#description").val(feature.properties.description);
+            $("#culture").val(feature.properties.culture);
+            $("#cult").val(feature.properties.cult);
+            $("#concept").val(feature.properties.concept);
+
+        } else {
+            alert("ERROR");
+        };
+
+
 
 
     }
 
     )
-    
-    
+
+
     //Event handler for editing menu
-    layer.on('contextmenu', function(e){
+    layer.on('contextmenu', function (e) {
 
         if (!activePopup) {
             if ((usrRole != 'none' && usrId == this.feature.properties.owner) || usrRole == 'admin') {
@@ -224,7 +220,7 @@ function configureFeature(feature, layer) {
                 L.DomUtil.disableTextSelection();
 
                 //Defines HTML elments for the menu
-                var menuContent = L.DomUtil.create('div', 'markerContextMenuButton'); 
+                var menuContent = L.DomUtil.create('div', 'markerContextMenuButton');
                 menuContent.innerHTML = '<i class="fa fa-trash-o" aria-hidden="true"></i> DELETE';
                 //Event handler of the DELETE button
                 menuContent.onclick = function (e) {
@@ -342,7 +338,7 @@ function createFeatureLayerByType(map, controlparam, typeId) {
                 var tileId = 'feature' + typeId;
                 var apiTileServiceOverlayURL = 'http://localhost:7999/api/tiledOverlay/' + tileId + '/{z}/{x}/{y}';
 
-               
+
                 layers[typeId] = L.tileLayer(apiTileServiceOverlayURL, {
                     minZoom: mapMinZoom, maxZoom: mapMaxZoom,
                     bounds: mapBounds,
@@ -352,22 +348,22 @@ function createFeatureLayerByType(map, controlparam, typeId) {
                     tileSize: 512
                 })
 
-               // layers[layerLvl].setZIndex(50);
+                // layers[layerLvl].setZIndex(50);
                 layers[typeId].addTo(map);
-                control.addOverlay(layers[typeId], name , group);
-                console.log("LE Z index de " + layerLvl + " -- is -- "+ layers[typeId].zIndex);
+                control.addOverlay(layers[typeId], name, group);
+                console.log("LE Z index de " + layerLvl + " -- is -- " + layers[typeId].zIndex);
                 break;
 
             case 'geoMarker':
                 //Default is geoMarker
-                 layers[typeId] = L.geoJSON(data, {
+                layers[typeId] = L.geoJSON(data, {
                     onEachFeature: configureFeature
                 })
-                
-                 layers[typeId].zIndex = layerLvl;
-                 layers[typeId].addTo(map);
 
-                  control.addOverlay(layers[typeId], name , group);
+                layers[typeId].zIndex = layerLvl;
+                layers[typeId].addTo(map);
+
+                control.addOverlay(layers[typeId], name, group);
 
                 break;
 
@@ -420,41 +416,41 @@ function getFeatureByTYpe(map, typeId) {
 };
 
 // Retrieve the editing rights based on user profile and modifies the UI accordingly
-function checkUrPrivileges (usrRole){
+function checkUrPrivileges(usrRole) {
 
-    var usrRights = null; 
+    var usrRights = null;
 
-    if (usrRole != 'none'){
+    if (usrRole != 'none') {
 
         usrRights = config.markersByRole[usrRole];
 
         $('#markerOptions').empty();
-        usrRights.forEach(function(element) {
+        usrRights.forEach(function (element) {
             $('#markerOptions')
-            .append($('<option>', {
-                value: element,
-                text: config.categoryName[element]
-            }));
+                .append($('<option>', {
+                    value: element,
+                    text: config.categoryName[element]
+                }));
             console.log(element);
-          });
-       
-    }
-    
+        });
 
-    console.log("[DEBUG] Current user is: " + usrRole + "/id = "+ usrId + " with credentials for >> " + usrRights);
+    }
+
+
+    console.log("[DEBUG] Current user is: " + usrRole + "/id = " + usrId + " with credentials for >> " + usrRights);
 
     return usrRights;
 
 };
 
-    
+
 
 // End of utility functions section.
 
 // Marker Mangement functions
 function saveMarker(geojsonFeature) {
 
-  
+
     var url = apiSaveItemURL;
     var data = geojsonFeature;
 
@@ -472,7 +468,7 @@ function saveMarker(geojsonFeature) {
         .catch(error => console.error('Error :', error))
         .then(
             function (response) {
-                
+
                 // Successfully put in DB
                 console.log('Successfully added item:', response);
 
@@ -481,11 +477,11 @@ function saveMarker(geojsonFeature) {
                 }).addTo(map);
 
 
-                
-                
+
+
             }
         );
-       
+
 };
 
 function updateMarker(geojsonFeature) {
@@ -525,10 +521,10 @@ function updateMarker(geojsonFeature) {
         );
 };
 function removeMarker(geojsonFeature) {
-    console.log('[ADMIN] Marker #'+geojsonFeature._id+ ' is being deleted');
-   
-    
-    var url = apiSaveItemURL+"/"+geojsonFeature._id;
+    console.log('[ADMIN] Marker #' + geojsonFeature._id + ' is being deleted');
+
+
+    var url = apiSaveItemURL + "/" + geojsonFeature._id;
     //var data = geojsonFeature;
 
     //console.log("Marker saved : ", geojsonFeature);
@@ -538,7 +534,7 @@ function removeMarker(geojsonFeature) {
         method: 'DELETE',
         //body: JSON.stringify(data),
         headers: new Headers({
-           // 'Content-Type': 'application/json',
+            // 'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + token
         })
     }).then(res => res.json())
@@ -546,14 +542,14 @@ function removeMarker(geojsonFeature) {
         .then(response => console.log('Successfully deleted item:', response));
 
     //updates searchlist in live memory
-    overlayData.splice( overlayData.indexOf(geojsonFeature), 1 );
-    
+    overlayData.splice(overlayData.indexOf(geojsonFeature), 1);
+
 };
 // End of marker management functions
 function initializeWorldMapContent(map) {
 
     initialize();
-    
+
     // Retrieve the feature categories and names from MenuService --> create the Menu
     url = apiMenuURL;
 
@@ -662,10 +658,10 @@ function initializeWorldMapContent(map) {
 
         };
 
-       
 
 
-     
+
+
         // Init Search Engine
 
         // temporary mockup data
@@ -699,7 +695,7 @@ function initializeWorldMapContent(map) {
         // Error :(
     });
 
-    
+
 
 
 };
@@ -720,15 +716,15 @@ function refreshUI(map) {
 
 
 
-function updateItem(map){
+function updateItem(map) {
 
     var data = selectedMarker;
 
-    
-    data.properties.displayName =  $("#name").val();
+
+    data.properties.displayName = $("#name").val();
     data.properties.description = $("#description").val();
-    data.properties.culture = $("#culture").val(); 
-    data.properties.cult = $("#cult").val(); 
+    data.properties.culture = $("#culture").val();
+    data.properties.cult = $("#cult").val();
     data.properties.concept = $("#concept").val();
 
     console.log("Mes nouvelles données sont:" + JSON.stringify(data));
@@ -762,78 +758,78 @@ function addItem(map) {
 
     geojsonFeature["geometry"]["coordinates"] = [lng, lat];
 
-   
-    
-/*
-    var myLayer = L.geoJSON(geojsonFeature, {
-        pointToLayer: function (feature, latlng) {
-            return L.marker(latlng, { icon: getIconByType(parseInt(type)) });
-        }
-    }).addTo(map);
 
-     L.geoJSON(data, {
-            onEachFeature: configureFeature
+
+    /*
+        var myLayer = L.geoJSON(geojsonFeature, {
+            pointToLayer: function (feature, latlng) {
+                return L.marker(latlng, { icon: getIconByType(parseInt(type)) });
+            }
         }).addTo(map);
+    
+         L.geoJSON(data, {
+                onEachFeature: configureFeature
+            }).addTo(map);
+    
+    /*
+        myLayer.bindTooltip(geojsonFeature["properties"]["displayName"]);
+    
+        var popupContent = "<div class='txtWB'>" + geojsonFeature["properties"]["displayName"] + "</div>" + "<br>"
+            + "<div>" + geojsonFeature["properties"]["description"] + "</div>";
+    
+    
+        myLayer.bindPopup(popupContent, {
+            'maxWidth': '500',
+            'className': 'customPopup'
+        });
+    
+        myLayer.on('contextmenu', function(e){
+    
+            if (!activePopup) {
+                if ((usrRole != 'none' ) || usrRole == 'admin') { // attention, il faudrait revoir les règlers ici (on ne vérifie pas le usrid mais il faudrait vérifier usrId == usrId ; donc bad code)
+    
+                    activePopup = true;
+                    L.DomUtil.disableTextSelection();
+    
+                    //Defines HTML elments for the menu
+                    var menuContent = L.DomUtil.create('div', 'markerContextMenuButton');
+                    menuContent.innerHTML = '<i class="fa fa-trash-o" aria-hidden="true"></i> DELETE';
+                    //Event handler of the DELETE button
+                    menuContent.onclick = function (e) {
+    
+                        if (confirm('Are you sure you want to delete this marker?')) {
+    
+                            
+                            removeMarker(geojsonFeature);
+                            map.removeLayer(myLayer);
+                            popup.remove();
+                            activePopup = false;
+                        } else {
+                            // Do nothing!
+                        }
+    
+                    };
+    
+                    //Defines the context menu as a popup
+                    var popup = L.popup({
+                        closeButton: false,
+                        autoClose: false,
+                        closeOnEscapeKey: true,
+                        className: 'customPopup'
+                    })
+                        .setLatLng([e.latlng.lat, e.latlng.lng])
+                        .setContent(menuContent)
+                        .openOn(map);
+    
+                    console.log('[DEBUG] this sounds like a context menu' + e.latlng +geojsonFeature.properties.displayName + geojsonFeature.properties.owner);
+    
+                } else console.log('[ADMIN] Only logged owners are allowed to modify markers.');
+    
+            };
+    
+        });*/
 
-/*
-    myLayer.bindTooltip(geojsonFeature["properties"]["displayName"]);
-
-    var popupContent = "<div class='txtWB'>" + geojsonFeature["properties"]["displayName"] + "</div>" + "<br>"
-        + "<div>" + geojsonFeature["properties"]["description"] + "</div>";
-
-
-    myLayer.bindPopup(popupContent, {
-        'maxWidth': '500',
-        'className': 'customPopup'
-    });
-
-    myLayer.on('contextmenu', function(e){
-
-        if (!activePopup) {
-            if ((usrRole != 'none' ) || usrRole == 'admin') { // attention, il faudrait revoir les règlers ici (on ne vérifie pas le usrid mais il faudrait vérifier usrId == usrId ; donc bad code)
-
-                activePopup = true;
-                L.DomUtil.disableTextSelection();
-
-                //Defines HTML elments for the menu
-                var menuContent = L.DomUtil.create('div', 'markerContextMenuButton');
-                menuContent.innerHTML = '<i class="fa fa-trash-o" aria-hidden="true"></i> DELETE';
-                //Event handler of the DELETE button
-                menuContent.onclick = function (e) {
-
-                    if (confirm('Are you sure you want to delete this marker?')) {
-
-                        
-                        removeMarker(geojsonFeature);
-                        map.removeLayer(myLayer);
-                        popup.remove();
-                        activePopup = false;
-                    } else {
-                        // Do nothing!
-                    }
-
-                };
-
-                //Defines the context menu as a popup
-                var popup = L.popup({
-                    closeButton: false,
-                    autoClose: false,
-                    closeOnEscapeKey: true,
-                    className: 'customPopup'
-                })
-                    .setLatLng([e.latlng.lat, e.latlng.lng])
-                    .setContent(menuContent)
-                    .openOn(map);
-
-                console.log('[DEBUG] this sounds like a context menu' + e.latlng +geojsonFeature.properties.displayName + geojsonFeature.properties.owner);
-
-            } else console.log('[ADMIN] Only logged owners are allowed to modify markers.');
-
-        };
-
-    });*/
-
-   saveMarker(geojsonFeature);
+    saveMarker(geojsonFeature);
 
     //closes the modal
     document.getElementById('itemForm').style.display = 'none';
