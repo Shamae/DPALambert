@@ -177,6 +177,9 @@ function configureFeature(feature, layer) {
 
     layer.on('dblclick', function(e){  
 
+        // bad practice = high technical debt 
+        selectedMarker = feature;
+        selectedLayer = layer;
         $('#dialogMsg').dialog();
 
         $("#category").val(feature.properties.featureTypeId);
@@ -193,12 +196,12 @@ function configureFeature(feature, layer) {
   
               $( ".locationFieldSet" ).hide();
               $( ".characterFieldSet" ).show();
-
-              $("#name").val(feature.properties.displayName)
-              $("#description").val(feature.properties.displayName)
-
-              
-            
+              $("#name").val(feature.properties.displayName);
+              $("#description").val(feature.properties.description);
+              $("#culture").val(feature.properties.culture);
+              $("#cult").val(feature.properties.cult);
+              $("#concept").val(feature.properties.concept);
+                     
           } else {
             alert("ERROR");
           };
@@ -485,10 +488,41 @@ function saveMarker(geojsonFeature) {
        
 };
 
-function updateMarker(geojsonFeature){
+function updateMarker(geojsonFeature) {
 
-    console.log('[ADMIN] Marker #'+geojsonFeature._id+ ' is being updated');
-    //TODO
+    console.log('[ADMIN] Marker #' + geojsonFeature._id + ' is being updated');
+
+    var url = apiSaveItemURL + "/" + geojsonFeature._id;
+    var data = geojsonFeature;
+
+    // contacts backend to update the feature
+    fetch(url, {
+        method: 'PUT',
+        body: JSON.stringify(data),
+        headers: new Headers({
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        })
+    }).then(res => res.json())
+        .catch(error => console.error('Error :', error))
+        .then(
+
+            function (response) {
+
+
+                console.log('Successfully updated item:', response);
+
+                //updates searchlist in live memory
+                overlayData.splice(overlayData.indexOf(selectedMarker), 1);
+                map.removeLayer(selectedLayer);
+                L.geoJSON(response, {
+                    onEachFeature: configureFeature
+                }).addTo(map);
+
+            }
+
+
+        );
 };
 function removeMarker(geojsonFeature) {
     console.log('[ADMIN] Marker #'+geojsonFeature._id+ ' is being deleted');
@@ -686,7 +720,24 @@ function refreshUI(map) {
 
 
 
+function updateItem(map){
 
+    var data = selectedMarker;
+
+    
+    data.properties.displayName =  $("#name").val();
+    data.properties.description = $("#description").val();
+    data.properties.culture = $("#culture").val(); 
+    data.properties.cult = $("#cult").val(); 
+    data.properties.concept = $("#concept").val();
+
+    console.log("Mes nouvelles données sont:" + JSON.stringify(data));
+
+
+    updateMarker(data);
+    $('#dialogMsg').dialog("close");
+
+};
 
 function addItem(map) {
 
@@ -899,13 +950,6 @@ function generateSearchList(results) {
         document.getElementById("srchResults").appendChild(div);
 
     };
-
-
-
-
-
-
-
 
 };
 
