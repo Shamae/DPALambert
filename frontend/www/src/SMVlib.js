@@ -147,6 +147,8 @@ function fetchAPIdata(url) {
 
 function configureFeature(feature, layer) {
 
+
+     //updates searchlist in live memory
     overlayData.push(feature);
 
     // does this feature have a property named popupContent?
@@ -449,6 +451,7 @@ function checkUrPrivileges (usrRole){
 // Marker Mangement functions
 function saveMarker(geojsonFeature) {
 
+  
     var url = apiSaveItemURL;
     var data = geojsonFeature;
 
@@ -464,10 +467,22 @@ function saveMarker(geojsonFeature) {
         })
     }).then(res => res.json())
         .catch(error => console.error('Error :', error))
-        .then(response => console.log('Successfully added item:', response));
+        .then(
+            function (response) {
+                
+                // Successfully put in DB
+                console.log('Successfully added item:', response);
 
-    //updates searchlist in live memory
-    overlayData.push(geojsonFeature);
+                L.geoJSON(response, {
+                    onEachFeature: configureFeature
+                }).addTo(map);
+
+
+                
+                
+            }
+        );
+       
 };
 
 function updateMarker(geojsonFeature){
@@ -497,7 +512,8 @@ function removeMarker(geojsonFeature) {
         .then(response => console.log('Successfully deleted item:', response));
 
     //updates searchlist in live memory
-    //overlayData.push(geojsonFeature);*/
+    overlayData.splice( overlayData.indexOf(geojsonFeature), 1 );
+    
 };
 // End of marker management functions
 function initializeWorldMapContent(map) {
@@ -695,6 +711,7 @@ function addItem(map) {
 
     geojsonFeature["geometry"]["coordinates"] = [lng, lat];
 
+   
     
 /*
     var myLayer = L.geoJSON(geojsonFeature, {
@@ -703,7 +720,11 @@ function addItem(map) {
         }
     }).addTo(map);
 
+     L.geoJSON(data, {
+            onEachFeature: configureFeature
+        }).addTo(map);
 
+/*
     myLayer.bindTooltip(geojsonFeature["properties"]["displayName"]);
 
     var popupContent = "<div class='txtWB'>" + geojsonFeature["properties"]["displayName"] + "</div>" + "<br>"
@@ -761,7 +782,7 @@ function addItem(map) {
 
     });*/
 
-   // saveMarker(geojsonFeature);
+   saveMarker(geojsonFeature);
 
     //closes the modal
     document.getElementById('itemForm').style.display = 'none';
