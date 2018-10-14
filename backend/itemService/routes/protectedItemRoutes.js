@@ -38,7 +38,7 @@ var routes = function(Item){
     itemRouter.route('/:itemId')
         // update marker
         .put(function(req,res){
-            // only owner of admin can delete marker
+            // only owner or admin can delete marker
             if(req.item.properties.owner = req.session.userInfo.sub || req.session.userInfo.role == 'admin') {
                 // copy fields from body to item
                 req.item.properties.displayName = req.body.properties.displayName;
@@ -64,7 +64,7 @@ var routes = function(Item){
         })
         // delete marker
         .delete(function(req,res){
-            // only owner of admin can delete marker
+            // only owner or admin can delete marker
             if(req.item.properties.owner = req.session.userInfo.sub || req.session.userInfo.role == 'admin') {
                 req.item.remove(function(err){
                     if(err)
