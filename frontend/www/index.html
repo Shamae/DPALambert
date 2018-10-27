@@ -41,6 +41,10 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css">
   <script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
 
+  <!-- Add leaflet contextmenu plugin // CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-contextmenu/1.4.0/leaflet.contextmenu.min.css" >
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-contextmenu/1.4.0/leaflet.contextmenu.min.js"></script>
+
   <!-- Add PM geometry plugin // sources-->
   <link rel="stylesheet" href="plugins/Leaflet.PM/leaflet.pm.css" />
   <!--<script src="plugins/Leaflet.PM/leaflet.pm.min.js"></script>-->
@@ -252,6 +256,7 @@
      
       // DECLARES INTERACTIONS WITH THE MAP
 
+/*
       //Context menu to add markers 
       map.on('contextmenu', function (e) {
         clearSearchList();
@@ -270,10 +275,11 @@
         }
         
         ;
-      });
+      });*/
       
       //Clear searchbox as soon as map is dragged
       map.on("dragstart", function (e) {
+        map.contextmenu.hide();
         clearSearchList();
       });
 

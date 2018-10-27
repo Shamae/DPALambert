@@ -169,11 +169,19 @@ function configureFeature(feature, layer) {
     //Select and assign marker icon based on featuretype.
     layer.setIcon(getIconByType(feature.properties.featureTypeId));
 
-    //momentarily hooks edit menu to double click on marker --> should be hook to contextmenu as soon as the context menu is done
+    //Binds a context menu to the marker
 
-    layer.on('dblclick', function (e) {
+    layer.bindContextMenu({
+        contextmenu: true,
+        contextmenuItems: 	 [{
+            text: 'Edit',
+            callback: function(){
 
-        // bad practice = high technical debt 
+                //code to update the marker -- to refactor
+
+                // bad practice = high technical debt 
+
+               
         selectedMarker = feature;
         selectedLayer = layer;
         $('#dialogMsg').dialog();
@@ -201,18 +209,70 @@ function configureFeature(feature, layer) {
         } else {
             alert("ERROR");
         };
+            }
+        },
+        {
+            text:'Move',
+            callback: function(){
+
+                layer.dragging.enable();
+            }
+
+        },
+    
+        {
+            text:"Delete",
+            callback: function(){
+               
+                    if (confirm('Are you sure you want to delete this marker?')) {
+
+                        removeMarker(feature);
+                        map.removeLayer(layer);
+                        popup.remove();
+                        activePopup = false;
+                    } else {
+                        // Do nothing!
+                    };
+
+               
 
 
+            }
 
+        }]
+    });
+    
 
+    layer.on('mouseover', function (){
+
+        map.contextmenu.hide();
     }
+    
+    );
 
-    )
+    layer.on('dragend', function (e) {
+              
+       layer.dragging.disable();
+       
+       var pos = e.target.getLatLng();
+       
+       //updates position of the feature associated to the marker
+       layer.feature.geometry.coordinates[0] = pos.lng;
+       layer.feature.geometry.coordinates[1] = pos.lat;
+
+       updateMarker(layer.feature);
+
+
+       
+    });
+
 
 
     //Event handler for editing menu
     layer.on('contextmenu', function (e) {
 
+        
+        /*
         if (!activePopup) {
             if ((usrRole != 'none' && usrId == this.feature.properties.owner) || usrRole == 'admin') {
 
@@ -253,7 +313,7 @@ function configureFeature(feature, layer) {
             } else console.log('[ADMIN] Only logged owners are allowed to modify markers.');
 
         };
-
+*/
     });
 };
 
