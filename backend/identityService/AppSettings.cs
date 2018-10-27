@@ -1,12 +1,15 @@
-public class AppSettings
+namespace identityService
 {
-    public string[] AdminUsers { get; set; }
-    public string[] BannedUsers { get; set; }
-
-    public class FacebookSettings 
+    public class AppSettings
     {
-        public string ClientId { get; set; }
+        public string[] AdminUsers { get; set; }
+        public string[] BannedUsers { get; set; }
 
-        public string ClientSecret { get; set; }
+        public class FacebookSettings 
+        {
+            public string ClientId { get; set; }
+
+            public string ClientSecret { get; set; }
+        }
     }
 }
